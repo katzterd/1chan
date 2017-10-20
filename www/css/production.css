@@ -217,13 +217,13 @@ a.g-strike {
     padding-top: 10px;
 }
 .l-footer-wrap.m-mascot-news {
-    background: url(/img/mascot_end.jpg) top center no-repeat;
+    background: url(/img/mascot_end.png) top center no-repeat;
 }
 .l-footer-wrap.m-mascot-alone {
     background: url(/img/mascot_keany_end.png) top center no-repeat;
 }
 .l-footer-wrap.m-mascot-fav {
-    background: url(/img/mascot_end.jpg) top center no-repeat;
+    background: url(/img/mascot_end.png) top center no-repeat;
 }
 /**
  * b, m:
@@ -336,10 +336,10 @@ a.g-strike {
     padding: 15px 0;
 }
 .b-header-block.m-mascot-news {
-    background: url(/img/mascot_hikka.png) bottom center no-repeat;
+    background: url(/img/mascot.png) bottom center no-repeat;
 }
 .b-header-block.m-mascot-fav {
-    background: url(/img/mascot_hikka.png) top center no-repeat;
+    background: url(/img/mascot.png) top center no-repeat;
 }
 .b-header-block.m-mascot-alone {
     background: url(/img/mascot_keany.png) top center no-repeat;

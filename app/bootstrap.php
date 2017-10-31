@@ -25,7 +25,6 @@ require_once(LIBS_DIR .'/3rdparty/kcaptcha/kcaptcha.class.php');
 require_once(LIBS_DIR .'/3rdparty/sphinx.class.php');
 require_once(LIBS_DIR .'/3rdparty/texy.class.php');
 require_once(LIBS_DIR .'/3rdparty/realplexor.class.php');
-require_once(LIBS_DIR .'/3rdparty/jabberbot.class.php');
 require_once(LIBS_DIR .'/3rdparty/rss.class.php');
 
 /**

@@ -998,6 +998,51 @@ class BlogController extends BaseController
 	}
 
 	/**
+	 * Действие просмотр rss ленты скрытых постов:
+	 */
+	public function rssHiddenAction(Application $application, Template $template)
+	{
+		$posts = Blog_BlogPostsModel::GetHiddenPosts(0, 20, false);
+
+		if ($posts)
+		{
+			$rss = new rss('utf-8');
+
+			$rss->channel('Первый канал - Скрытые', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+			$rss->language('ru-ru');
+			$rss->copyright('Все права пренадлежат вам © 2010');
+			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+			$rss->category('Все');
+
+			$rss->startRSS();
+			foreach($posts as $key => $post) {
+				$title = $post['category'] ?
+					TemplateHelper::BlogCategory($post['category'], 'title') .' — '. $post['title'] :
+					$post['title'];
+
+			    $rss->itemTitle($title);
+			    $rss->itemLink('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/');
+			    $rss->itemDescription(($post['link'] ? '<a href="'.$post['link'].'">'.$post['link'].'</a><br />'.$post['text'] : $post['text']));
+			    $rss->itemAuthor('anonymous');
+			    $rss->itemGuid('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/', true);
+			    $rss->itemPubDate(date('D, d M Y H:i:s O', $post['created_at']));
+			    $rss->addItem();
+			}
+
+			$result = $rss->RSSdone();
+		}
+
+		EventModel::getInstance()
+			-> Broadcast('view_rss_hidden_post');
+
+		$template -> headerOk();
+		$template -> headerContentType('application/rss+xml', 'UTF-8');
+		echo $result;
+
+		return false;
+	}
+
+	/**
 	 * Действие выбора сортировки:
 	 */
 	public function sortAction(Application $application, Template $template)

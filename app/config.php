@@ -241,6 +241,10 @@ return array(
 			'controller' => 'blog',
 			'action' => 'rssAll'
 		),
+		'/news/hidden/rss.xml' => array(
+			'controller' => 'blog',
+			'action' => 'rssHidden'
+		),
 		'/mod/getPost/(\d+)' => array(
 			'id',
 			'controller' => 'mod',

@@ -1022,7 +1022,7 @@ class BlogController extends BaseController
 
 			    $rss->itemTitle($title);
 			    $rss->itemLink('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/');
-			    $rss->itemDescription(($post['link'] ? '<a href="'.$post['link'].'">'.$post['link'].'</a><br />'.$post['text'] : $post['text']));
+			    $rss->itemDescription(($post['link'] ? '<a href="'.$post['link'].'">'.$post['link'].'</a><br />'.$post['text'].$post['special_comment'] : $post['text'].$post['special_comment']));
 			    $rss->itemAuthor('anonymous');
 			    $rss->itemGuid('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/', true);
 			    $rss->itemPubDate(date('D, d M Y H:i:s O', $post['created_at']));

@@ -16,8 +16,8 @@ class LiveController extends BaseController
 
 		$template -> setParameter('title', '«Онлайн»');
 
-		$this['links']  = Blog_BlogOnlineModel::GetLinks($filter);
-		$this['filter'] = $filter;
+//		$this['links']  = Blog_BlogOnlineModel::GetLinks($filter);
+//		$this['filter'] = $filter;
 
 		$session -> persistenceSet('live_last_visit', time());
 		return true;
@@ -74,7 +74,7 @@ class LiveController extends BaseController
 	{
 		$session = Session::getInstance();
 
-		if (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl())
+		if (!isset($_SERVER['HTTP_REFERER']) || (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl()))
 			return false;
 
 		if (ControlModel::isLiveCaptcha())

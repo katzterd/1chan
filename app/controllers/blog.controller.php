@@ -485,7 +485,7 @@ class BlogController extends BaseController
 	 */
 	public function ratePostAction(Application $application, Template $template)
 	{
-		if (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl())
+		if (!isset($_SERVER['HTTP_REFERER']) || (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl()))
 			return false;
 
 		if (ControlModel::isPostRateCaptcha())

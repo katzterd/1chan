@@ -1,0 +1,4 @@
+/1chan.conf
+/app/config.php
+/app/models/chat/chatrooms.model.php
+/scripts/cron.sh

@@ -2,3 +2,5 @@
 /app/config.php
 /app/models/chat/chatrooms.model.php
 /scripts/cron.sh
+/www/uploads
+/app/views/static

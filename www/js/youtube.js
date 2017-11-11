@@ -21,7 +21,7 @@ jQ('p > a[href*=youtu]').each(function(){
                                    .match(/(\d+)/);
     var videoID      = jQ(this).attr('href')
                                    .match(/(v=)?(%3D)?(\/)?(%2F)?([_\-\d\w+]{11})/);
-    var videoSRC     = 'https://hooktube.com/embed/' + videoID[5];
+    var videoSRC     = 'https://www.youtube-nocookie.com/embed/' + videoID[5];
     var imageSRCbig  = 'https://i.ytimg.com/vi/' + videoID[5] + '/0.jpg';
     var imageSRCmini = 'https://i.ytimg.com/vi/' + videoID[5] + '/default.jpg';
     var videoBlockID = 'video' + thisPostID[0] + videoID[5];

@@ -240,7 +240,7 @@ class ControlModel
 		$settings = self::GetSettings();
 		$session  = Session::getInstance();
 		$words    = self::GetWordfilter();
-		$text_cl  = preg_replace("/[^a-zа-я0-9 ]/iu", "", trim(preg_replace("/(&#?[^ ]+;)/", "", $text)));
+		$text_cl  = preg_replace("/[^a-zа-я0-9 .]/iu", "", trim(preg_replace("/(&#?[^ ]+;)/", "", $text)));
 
 		if (is_array($words) && sizeof($words) > 0 && $words[0] != '') {
 			if (preg_match('~('. implode('|', $words) .')~iu', $text_cl)) {

@@ -598,6 +598,11 @@ a.g-strike {
 }
 .b-blog-entry_b-body.fold {
     width: 600px;
+    max-height: 250px;
+    overflow: auto;
+}
+.b-blog-entry_b-body.fullfold {
+    width: 600px;
     max-height: 400px;
     overflow: auto;
 }

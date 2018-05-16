@@ -22,7 +22,8 @@
 						</a>
 
 					</div>
-					<div class="b-blog-entry_b-body g-clearfix">
+					<?php $postlength = substr_count($post['text'], "<p>") + substr_count($post['text'], "<br") + substr_count($post['text_full'], "<p>") + substr_count($post['text_full'], "<br"); ?>
+					<div class="b-blog-entry_b-body g-clearfix <?php if ($postlength > 20): ?>fullfold<?php endif; ?>">
 							<?php echo($post['text']); ?>
 
 							<?php echo($post['text_full']); ?>
@@ -158,7 +159,7 @@
 							<input type="submit" value="Отправить" />
 
 							<span class="b-homeboard-form">
-								<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+								<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" />
 								<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 								<div class="b-homeboard-form_select js-homeboard-select g-hidden">
 								<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>

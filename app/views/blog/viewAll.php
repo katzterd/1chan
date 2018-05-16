@@ -31,7 +31,7 @@
 						</a>
 
 					</div>
-					<div class="b-blog-entry_b-body g-clearfix">
+					<div class="b-blog-entry_b-body g-clearfix <?php if (count($post['text']) > 25): ?>fold<?php endif; ?>">
 							<?php echo($post['text']); ?>
 						<?php if (strlen($post['text_full']) > 0): ?><p><a href="/news/res/<?php echo($post['id']); ?>/">Читать дальше</a></p><?php endif; ?>
                         <?php if ($this -> getParameter('section') == 'hidden'): ?><p><em><?php echo($post['special_comment']); ?></em></p><?php endif; ?>

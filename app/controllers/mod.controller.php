@@ -28,6 +28,43 @@ class ModController extends BaseController
 	}
 
 	/**
+	 * Действие просмотра RSS-ленты лога модераторских действий:
+	 */
+	public function getModActionsRssAction(Application $application, Template $template)
+	{
+	 	$modlog = array_reverse(ControlModel::getLogModEvent());
+	 	if ($modlog)
+	 	{
+	 		$rss = new rss('utf-8');
+
+	 		$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+	 		$rss->language('ru-ru');
+	 		$rss->copyright('Все права пренадлежат вам © 2010');
+	 		$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+	 		$rss->category('Лог модераторских действий');
+
+	 		$rss->startRSS();
+
+	 		foreach($modlog as $entry)
+	 		{
+	 			$rss->itemDescription($entry);
+	 			$rss->itemAuthor('anonymous');
+	 			$rss->addItem();
+	 		}
+
+	 		$result = $rss->RSSdone();
+	 	}
+
+	 	EventModel::getInstance()
+	 		-> Broadcast('view_rss_modlog');
+
+	 	$template -> headerOk();
+	 	$template -> headerContentType('application/rss+xml', 'UTF-8');
+	 	echo $result;
+	 	return false;
+	}
+
+	/**
 	 * Действие просмотра поста комментария:
 	 */
 	public function getLastCommentsAjaxAction(Application $application)
@@ -204,7 +241,7 @@ class ModController extends BaseController
 
 		$post = Blog_BlogPostsModel::GetPost($_GET['id']);
 		if ($post && ControlModel::checkModrights($post['category'])) {
-			Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'], 
+			Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'],
 				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['hidden'] ? ' скрыл' : ' показал') .' пост.'.
 				'<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
 
@@ -276,13 +313,13 @@ class ModController extends BaseController
 		$validator -> assertExists('link', '');
 		$validator -> assertRegexp('link', ValidatorHelper::URL_REGEXP, '');
 		$validator -> assertLength('description', 128, '');
-		
+
 		if ($validator -> isValid())
 		{
 			$key     = md5(strtolower($_GET['link']));
 			$ip      = md5($_SERVER['REMOTE_ADDR']);
 			$counter = $kvs -> get(__CLASS__, 'shared_links_ip', $ip);
-			
+
 			if (!$kvs -> exists(__CLASS__, 'shared_links', $key) && !$kvs -> exists(__CLASS__, 'shared_links_ban', $ip))
 			{
 				if ($kvs -> exists(__CLASS__, 'shared_links_ip', $ip))
@@ -305,10 +342,10 @@ class ModController extends BaseController
 					$kvs -> expire(__CLASS__, 'shared_links_ip', $ip, 60);
 				}
 
-				
+
 				$kvs -> set(__CLASS__,    'shared_links', $key, true);
 				$kvs -> expire(__CLASS__, 'shared_links', $key, 60 * 60);
-				
+
 				$template -> headerOk();
 				$template -> headerContentTypeWOCharset('image/png');
 				readfile(WEB_DIR .'/ico/tick.png');

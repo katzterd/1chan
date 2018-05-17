@@ -83,7 +83,7 @@ return array(
 			'action'     => 'lastBoardPosts'
 		),
 		'/service/last_board_posts/(\d+)' => array(
-			'page',			
+			'page',
 			'controller' => 'board',
 			'action'     => 'lastBoardPosts'
 		),
@@ -331,6 +331,10 @@ return array(
 		'/service/modlog' => array(
 		    'controller' => 'mod',
 		    'action' => 'getModActions'
+		),
+		'/service/modlog/rss.xml' => array(
+				'controller' => 'mod',
+				'action' => 'getModActionsRss'
 		),
 		'/service/share' => array(
 			'controller' => 'mod',

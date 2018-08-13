@@ -25,7 +25,7 @@
 						&rarr;
 					<?php endif; ?>
 
-						<a href="<?php echo($post['link'] ? $post['link'] : '/news/res/'. $post['id'] .'/'); ?>" <?php if(!empty($post['link'])): ?>class="m-external"<?php endif;?>>
+						<a href="<?php echo($post['link'] ? $post['link'] : '/news/res/'. $post['id'] .'/'); ?>" <?php if(!empty($post['link'])): ?>class="m-external" rel="nofollow noopener noreferrer"<?php endif;?>>
 							<?php echo($post['title']); ?>
 
 						</a>

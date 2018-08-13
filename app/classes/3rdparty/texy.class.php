@@ -2328,7 +2328,7 @@ final class TexyModifier extends TexyObject
 								if ($tx->linkModule->forceNoFollow && strpos($elAttrs['href'], '//') !== FALSE)
 								{
 									if (isset($elAttrs['rel'])) $elAttrs['rel'] = (array)$elAttrs['rel'];
-									$elAttrs['rel'][] = 'nofollow';
+									$elAttrs['rel'][] = 'nofollow noopener noreferrer';
 								}
 
 								if (!$tx->checkURL($elAttrs['href'], Texy::FILTER_ANCHOR)) return FALSE;
@@ -2987,7 +2987,7 @@ final class TexyModifier extends TexyObject
 										else
 										{
 											$el->attrs['href'] = Texy::prependRoot($link->URL, $this->root);
-											if ($nofollow || ($this->forceNoFollow && strpos($el->attrs['href'], '//') !== FALSE)) $el->attrs['rel'] = 'nofollow';
+											if ($nofollow || ($this->forceNoFollow && strpos($el->attrs['href'], '//') !== FALSE)) $el->attrs['rel'] = 'nofollow noopener noreferrer';
 										}
 
 										if ($popup) $el->attrs['onclick'] = $this->popupOnClick;

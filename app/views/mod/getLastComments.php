@@ -29,7 +29,7 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 
-					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<textarea id="template_comment" style="display:none">
 						<div class="b-comment" id="comment_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <a href="/news/res/<%=post_id%>/"><%=post_title%></a>

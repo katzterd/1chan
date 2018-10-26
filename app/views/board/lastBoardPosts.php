@@ -45,7 +45,7 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 
-						<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+						<textarea id="template_comment" style="display:none">
 							<div class="b-comment m-new" id="comment_<%=board_id%>_<%=id%>">
 								<div class="b-comment_b-info">
 									<%=created_at%>, <span class="js-comment-id"><a href="/<%=board_id%>/" class="js-paste-link"><%=board_title%></a>, <a href="/<%=board_id%>/res/<% if(parent_id) { %><%=parent_id%><% } else { %><%=id%><% } %>/#<%=id%>" class="js-paste-link" name="<%=id%>">№<%=id%></a></span>

@@ -2,9 +2,6 @@
 <html lang="ru">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
-		<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self' pipe.<?php echo TemplateHelper::getSiteUrl(); ?>; img-src 'self' *.imgur.com *.ytimg.com proxy.duckduckgo.com; style-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>'; script-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>';" />
 		<meta name="description" content="Первый канал интернетов" />
 		<meta name="keywords" content="крокодил, залупа, сыр" />
 
@@ -52,7 +49,7 @@
 				font-size: 11px;
 				padding: 5px;
 				text-align: center;
-			" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"><div class="js-poo-target" style="text-align: center; padding-top: 3px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"><img src="/img/poo.png" width="64" height="65"></div><a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a></div> */ ?>
+			"><div class="js-poo-target" style="text-align: center; padding-top: 3px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px;"><img src="/img/poo.png" width="64" height="65"></div><a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a></div> */ ?>
 
 			<div class="b-top-panel">
 				<ul>
@@ -104,10 +101,11 @@
 			                <em>Нет активных ссылок</em>
 			            <?php endif; ?>
 			            </div>
-			            <textarea id="template_link_panel" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
- 					        <div class="b-live-entry">
- 						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a> 					        	</div>
- 				    </textarea>
+			            <textarea id="template_link_panel" style="display:none">
+					        <div class="b-live-entry">
+						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
+					        </div>
+				        </textarea>
 				    </div>
 				    <div class="b-links-panel_b-footer">
 				        <a href="/live/">К подробному списку &rarr;</a>
@@ -146,7 +144,7 @@
 				            <a href="/service/last_board_posts/">&larr; последние посты</a>
 				        </li>
 				    </ul>
-                                    <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb; text-align: center;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">Telegram-конференция:<br><a style="color: #bbb;" href="https://t.me/jedenchan" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">@jedenchan</a></div>
+                                    <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb; text-align: center;">Telegram-конференция:<br><a style="color: #bbb;" href="https://t.me/jedenchan">@jedenchan</a></div>
 				    </div>
 				</div>
 			</div>
@@ -208,7 +206,7 @@
 				</div>
 				<div class="b-footer-copyrights">
 					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/"><?php echo TemplateHelper::getSiteUrl(); ?></a></span><br><br>
-					<a href="https://validator.w3.org/check?uri=referer"><img src="/img/valid-xhtml10-blue.png" alt="Valid XHTML 1.0 Transitional" style="border:none;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"></a>
+					<a href="https://validator.w3.org/check?uri=referer"><img src="/img/valid-xhtml10-blue.png" alt="Valid XHTML 1.0 Transitional" style="border:none;"></a>
 				</div>
 			</div>
 		</div>

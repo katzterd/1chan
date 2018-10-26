@@ -107,7 +107,7 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 
-					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<textarea id="template_comment" style="display:none">
 						<div class="b-comment m-new" id="comment_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <span class="js-comment-id"><a href="#<%=id%>">№</a><a href="javascript://" class="js-paste-link" name="<%=id%>"><%=id%></a></span>
@@ -179,6 +179,6 @@
 					</div>
 					</form>
 					<?php endif; ?>
-                <p style="font-size:0.6em;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"><a style="float:left" href="#" class="js-back-link" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">(&larr; + Сtrl)  вернуться назад</a><a style="float:right" href="/news/all/new/" class="js-next-link" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">к новым сообщениям (Сtrl + &rarr;)</a></p>
+                <p style="font-size:0.6em;"><a style="float:left" href="#" class="js-back-link">(&larr; + Сtrl)  вернуться назад</a><a style="float:right" href="/news/all/new/" class="js-next-link">к новым сообщениям (Сtrl + &rarr;)</a></p>
 				</div>
 			<?php endif; ?>

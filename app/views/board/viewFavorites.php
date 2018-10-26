@@ -20,8 +20,8 @@
 						<p>Добавить в избранное можно нажав на <img src="/ico/favorites-false.png" width="16" height="16" alt="" /> в информации об интересном посте.</p>
 					</div>
 					<?php else: ?>
-					<iframe src="about:blank" name="board_form_iframe" style="position:absolute;left:-9999px;visibility:hidden" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"></iframe>
-					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<iframe src="about:blank" name="board_form_iframe" style="position:absolute;left:-9999px;visibility:hidden"></iframe>
+					<textarea id="template_comment" style="display:none">
 						<div class="b-comment m-new" id="comment_<%=board_id%>_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <span class="js-comment-id"><a href="/<%=board_id%>/res/<%=parent_id%>/#<%=id%>" class="js-paste-link" name="<%=id%>">№<%=id%></a></span>
@@ -47,12 +47,12 @@
 						</div>
 					</textarea>
 
-					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="Обратный тест Тьюринга" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="Обратный тест Тьюринга">
 						<img id="captchaimage" src="/captcha/?key=board_comment&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 
-					<textarea id="template_form_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<textarea id="template_form_comment" style="display:none">
 						<form action="/<%=board%>/createPost/" method="post" id="comment_form" enctype="multipart/form-data">
 						<input type="text" name="email" value="" class="g-hidden" />
 						<input type="hidden" name="captcha" value="" />
@@ -179,7 +179,7 @@
 						<?php endforeach; ?>
 						<?php endif; ?>
 						</div>
-						<div class="b-post-statistics js-postload-link" name="<?php echo($post['board_id']);?>/<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+						<div class="b-post-statistics js-postload-link" name="<?php echo($post['board_id']);?>/<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer">
 							Еще <b class="js-postload-num"></b>, нажмите на это сообщение для загрузки 
 							<span class="b-post-statistics_m-right">
 								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['board_id']); ?>/<?php echo($post['id']); ?>"><img src="/ico/reload.png" width="16" height="16" alt="" /> быстрый ответ</a>)

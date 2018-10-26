@@ -88,5 +88,5 @@
 				</div>
 				<?php endforeach; ?>
 				<?php include(dirname(__FILE__) .'/chunks/blog_pager.php'); ?>
-				<?php if ($this -> getParameter('section') == 'all'): ?><p style="text-align:center;font-size:0.6em;position:relative;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"><a href="/news/all/reset/">отметить все, как прочитанное</a> <a href="/service/modlog/" style="position:absolute;right:40px;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">[модлог]</a></p><?php endif; ?>
+				<?php if ($this -> getParameter('section') == 'all'): ?><p style="text-align:center;font-size:0.6em;position:relative;"><a href="/news/all/reset/">отметить все, как прочитанное</a> <a href="/service/modlog/" style="position:absolute;right:40px;">[модлог]</a></p><?php endif; ?>
 			<?php endif; ?>

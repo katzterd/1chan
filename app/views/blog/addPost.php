@@ -9,7 +9,7 @@
 					<div class="b-blog-form_b-error" id="blog_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
 
 					<div id="placeholder_preview"></div>
-					<textarea id="template_preview" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+					<textarea id="template_preview" style="display:none">
 						<div class="b-blog-entry">
 							<div class="b-blog-entry_b-header">
 								<img src="<%=icon%>" width="16" height="16" alt="" />
@@ -106,12 +106,12 @@
 							<input type="button" value="Предпросмотр" disabled="disabled" id="blog_form_preview_button" />
 						</div>
 
-						<div class="b-blog-form_b-form"  id="blog_form_last_posts" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+						<div class="b-blog-form_b-form"  id="blog_form_last_posts" style="display:none">
 							<div class="b-blog-form_b-form_b-field">
 								<h2>Новые сообщения:</h2>
 								<p>С момента начала написания нового поста, были добавлены нижеперечисленные записи. Пожалуйста, избегайте повторяющихся тем сообщений.</p>
 								<div id="placeholder_last_posts"></div>
-								<textarea id="template_last_posts" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+								<textarea id="template_last_posts" style="display:none">
 							        <div class="b-live-entry">
 								        <a href="/news/res/<%=id%>/" class="b-live-entry_b-description"><%=title%></a> <% if (category) { %> &larr; <a href="/news/cat/<%=category%>/" class="b-live-entry_b-board"><%=category_title%></a><% } %>
 							        </div>

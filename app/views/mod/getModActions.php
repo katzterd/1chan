@@ -1,7 +1,7 @@
 			<?php include(dirname(__FILE__) .'/../blog/chunks/blog_control.php'); ?>
-				<div class="b-static" style="position:relative" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
+				<div class="b-static" style="position:relative">
 					<h1>Последние действия модераторов</h1>
-					<a href="/news/hidden/" style="position:absolute; top: 7px;right:0px;font-size:11px;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">Просмотр скрытых тредов</a>
+					<a href="/news/hidden/" style="position:absolute; top: 7px;right:0px;font-size:11px;">Просмотр скрытых тредов</a>
 				</div>
 				<div class="l-comments-wrap">
 					<div id="placeholder_comment"></div>
@@ -16,7 +16,7 @@
 					<?php endif; endforeach; ?>
 					<?php endif; ?>
 
-					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"> 
+					<textarea id="template_comment" style="display:none">
 						<div class="b-comment" id="comment_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <a href="/news/res/<%=post_id%>/"><%=post_title%></a>

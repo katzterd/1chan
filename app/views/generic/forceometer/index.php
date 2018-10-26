@@ -3,7 +3,7 @@
                         <h1>Форсометр<sup>beta</sup></h1>
                         <form action="" method="get">
                             <div>
-                                <input type="text" name="query" value="<?php if(isset($query)) echo htmlspecialchars($query); ?>" style="width:460px" nonce="<?php echo(Session::getInstance() -> getKey()); ?>" />
+                                <input type="text" name="query" value="<?php if(isset($query)) echo htmlspecialchars($query); ?>" style="width:460px" />
                                 <input type="submit" value="Вывести график" />
                             </div>
                         </form>
@@ -14,7 +14,7 @@
                         <h3>Не найдено ни одного вхождения поисковой строки.</h3>                    
                     </div>
                 <?php elseif (isset($results)): ?>
-                    <div class="js-chart" id="result_chart" style="width: 660px; height: 500px; margin: 0 auto; font-size: 12px;" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"></div>
+                    <div class="js-chart" id="result_chart" style="width: 660px; height: 500px; margin: 0 auto; font-size: 12px;"></div>
 
                     <script type="text/javascript">
                         var data = <?php echo($results); ?>;

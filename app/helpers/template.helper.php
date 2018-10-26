@@ -21,7 +21,7 @@ class TemplateHelper
 		if (is_file(WEB_DIR .'/ico/favicons/'. $site .'.png'))
 			return '/ico/favicons/'. $site .'.png';
 
-		return 'https://favicon.yandex.net/favicon/'. $site;
+		return 'https://proxy.duckduckgo.com/ip3/'. $site . '.ico';
 	}
 
 	/**

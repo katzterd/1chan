@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
 		<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self' pipe.<?php echo TemplateHelper::getSiteUrl(); ?>; img-src 'self' *.imgur.com *.ytimg.com proxy.duckduckgo.com; style-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>'; script-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>';" />
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' pipe.<?php echo TemplateHelper::getSiteUrl(); ?>; img-src 'self' *.imgur.com *.ytimg.com proxy.duckduckgo.com; style-src 'self' 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>'; script-src 'self' pipe.<?php echo TemplateHelper::getSiteUrl(); ?> 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>';" />
 		<meta name="description" content="Первый канал интернетов" />
 		<meta name="keywords" content="крокодил, залупа, сыр" />
 

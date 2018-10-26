@@ -16,7 +16,7 @@
 			
 				<div class="b-live_b-error" id="live_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
 
-				<textarea id="template_link" style="display:none">
+				<textarea id="template_link" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 					<div class="b-live-entry" id="live_link_<%=id%>">
 						<a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
 						<span class="b-live-entry_b-clicks">Переходов: <span class="js-live-clicks"><%=clicks%></span></span>
@@ -46,12 +46,12 @@
                 </div>
 			
 			<?php if(!$this -> getParameter('right_panel')): ?>
-			    <div class="b-static" style="text-align: right">
+			    <div class="b-static" style="text-align: right" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 			        <a href="/live/linksPanel/?status=on" class="g-dynamic js-open-right-panel">Показывать панель онлайн ссылок</a>
 			    </div>
 			<?php endif; ?>
 			
-				<div class="b-static" style="padding-top: 35px;font-size: 0.65em">
+				<div class="b-static" style="padding-top: 35px;font-size: 0.65em" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 				    <p>
 					    <em>Добавьте этот букмарклет в закладки и используйте на страницах, чтобы добавлять ссылки на них в этот раздел (перетащите на панель закладок для добавления):</em>
 					    <a href="javascript:(function(){f=document.getElementsByTagName('frame');with((f.length && f[f.length-1].contentWindow)||window){d=prompt('%D0%92%D0%B2%D0%B5%D0%B4%D0%B8%D1%82%D0%B5 %D0%BE%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5 %D0%B4%D0%BB%D1%8F %D1%8D%D1%82%D0%BE%D0%B9 %D1%81%D1%81%D1%8B%D0%BB%D0%BA%D0%B8','');if (d){i=new Image(); i.onload=function(){document.body.appendChild(i);i.style.position='fixed';i.style.top='0px';i.style.left='0px';i.style.zIndex=99999;setTimeout(function(){i.parentNode.removeChild(i);},2000)};i.src='https://1chan.pl/live/addXS/?link='+encodeURIComponent(location.href)+'&description='+encodeURIComponent(d);}}})();" class="g-dynamic">Добавить ссылку в «Онлайн»</a><br />

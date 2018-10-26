@@ -131,7 +131,7 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 
-					<textarea id="template_comment" style="display:none">
+					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-comment m-new" id="comment_<%=board_id%>_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <span class="js-comment-id"><a href="#<%=id%>">№</a><a href="javascript://" class="js-paste-link" name="<%=id%>"><%=id%></a></span>
@@ -170,13 +170,13 @@
 					</div>
 
 
-					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>">
+					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?> nonce="<?php echo(Session::getInstance() -> getKey()); ?>"">
 						<img src="/captcha/?key=board_comment&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 
 
-					<iframe src="about:blank" name="comment_form_iframe" style="position:absolute;left:-9999px;visibility:hidden"></iframe>
+					<iframe src="about:blank" name="comment_form_iframe" style="position:absolute;left:-9999px;visibility:hidden" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"></iframe>
 					<form action="/<?php echo($post['board_id']); ?>/createPost/" method="post" id="comment_form" enctype="multipart/form-data">
 					<input type="text" name="email" value="" class="g-hidden" />
 					<input type="hidden" name="parent_id" value="<?php echo($post['id']); ?>" />

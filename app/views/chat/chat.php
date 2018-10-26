@@ -23,7 +23,7 @@
 					</div>
 					<div class="b-chat_b-messages g-clearfix">
 					
-					<textarea id="template_message_password" style="display:none">
+					<textarea id="template_message_password" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-chat_b-message m-info">
 							<div class="b-chat_b-message_b-body">
 							<form action="" method="post" id="password_form">
@@ -35,7 +35,7 @@
 						</div>
 				    </textarea>
 					
-					<textarea id="template_message_info" style="display:none">
+					<textarea id="template_message_info" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-chat_b-message m-info">
 							<div class="b-chat_b-message_b-body">
 								<p>
@@ -45,7 +45,7 @@
 						</div>
 				    </textarea>
 					
-					<textarea id="template_message_error" style="display:none">
+					<textarea id="template_message_error" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-chat_b-message m-error">
 							<div class="b-chat_b-message_b-body">
 								<p>
@@ -55,7 +55,7 @@
 						</div>
 				    </textarea>
 					
-					<textarea id="template_message_normal" style="display:none">
+					<textarea id="template_message_normal" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-chat_b-message m-normal">
 							<a href="#" class="b-chat_b-message_b-link js-message-from-link" title="<%=id%>">№<%=id%></a>: <em class="b-chat_b-message_b-date"><%=date%></em>
 							<div class="b-chat_b-message_b-body">

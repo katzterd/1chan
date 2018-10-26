@@ -13,12 +13,12 @@
 				</div>
 
 				<div class="b-board-form">
-					<div id="board_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>">
+					<div id="board_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<img src="/captcha/?key=board&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 					<div class="b-board-form_b-error" id="board_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
-					<iframe src="about:blank" name="board_form_iframe" style="position:absolute;left:-9999px;visibility:hidden"></iframe>
+					<iframe src="about:blank" name="board_form_iframe" style="position:absolute;left:-9999px;visibility:hidden" nonce="<?php echo(Session::getInstance() -> getKey()); ?>"></iframe>
 					<form action="/<?php echo($this -> getParameter('board_id')); ?>/create/" method="post" id="board_form" enctype="multipart/form-data">
 					<input type="hidden" name="captcha" value="" />
 					<input type="hidden" name="homeboard" value="anonymous" />
@@ -43,7 +43,7 @@
 							</div>
 							<div class="b-board-form_submit">
 							    <?php if (!$ENG): ?>
-								<span class="b-homeboard-form" style="font-size: 0.6em">
+								<span class="b-homeboard-form" style="font-size: 0.6em" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 									<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
 									<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 									<div class="b-homeboard-form_select js-homeboard-select g-hidden">
@@ -89,7 +89,7 @@
 					</div>
 					<?php endif; ?>
 
-					<textarea id="template_comment" style="display:none">
+					<textarea id="template_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<div class="b-comment m-new" id="comment_<%=board_id%>_<%=id%>">
 							<div class="b-comment_b-info">
 								<%=created_at%>, <span class="js-comment-id"><a href="/<?php echo($this -> getParameter('board_id')); ?>/res/<%=parent_id%>/#<%=id%>" class="js-paste-link" name="<%=id%>">№<%=id%></a></span>
@@ -121,12 +121,12 @@
 						</div>
 					</textarea>
 
-					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>">
+					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<img src="/captcha/?key=board_comment&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 
-					<textarea id="template_form_comment" style="display:none">
+					<textarea id="template_form_comment" style="display:none" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 						<form action="/<?php echo($this -> getParameter('board_id')); ?>/createPost/" method="post" id="comment_form" enctype="multipart/form-data">
 						<input type="text" name="email" value="" class="g-hidden" />
 						<input type="hidden" name="parent_id" value="<%=id%>" />
@@ -280,14 +280,14 @@
 						<?php endif; ?>
 						</div>
 						<?php if (!$ENG): ?>
-						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer">
+						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 							Еще <b class="js-postload-num"></b>, нажмите на это сообщение для загрузки
 							<span class="b-post-statistics_m-right">
 								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="/ico/reload.png" width="16" height="16" alt="" /> быстрый ответ</a>)
 							</span>	
 						</div>
 						<?php else: ?>
-						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer">
+						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer" nonce="<?php echo(Session::getInstance() -> getKey()); ?>">
 							New posts avaliable (<b class="js-postload-num"></b>). Click on this message to load them.
 							<span class="b-post-statistics_m-right">
 								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="/ico/reload.png" width="16" height="16" alt="" /> quick reply</a>)

@@ -2,6 +2,9 @@
 <html xmlns="https://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' pipe.<?php echo TemplateHelper::getSiteUrl(); ?>; img-src 'self' *.imgur.com *.ytimg.com proxy.duckduckgo.com; style-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>'; script-src 'nonce-<?php echo(Session::getInstance() -> getKey()); ?>';" />
 <title>1chan | Администраторская</title>
 <link href="/admin_style/css/transdmin.css" rel="stylesheet" type="text/css" media="screen" />
 <!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/admin_style/css/ie6.css" /><![endif]-->

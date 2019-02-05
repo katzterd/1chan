@@ -61,7 +61,7 @@
 						<a href="/chat/">Анонимные чаты</a>
 					</li>
 					<li class="b-top-panel_m-right">
-						<a href="http://kolchplzpprjfa7e.onion">Tor-зеркало</a>
+						<a href="http://kolchpl6sf4t7yjf57an3gxyprqqtjm2gtvatzkcsx27uu3psssnmyad.onion">Tor-зеркало</a>
 					</li>
 				</ul>
 			</div>

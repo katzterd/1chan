@@ -144,7 +144,7 @@
 				            <a href="/service/last_board_posts/">&larr; последние посты</a>
 				        </li>
 				    </ul>
-                                    <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb; text-align: center;">Telegram-конференция:<br><a style="color: #bbb;" href="https://t.me/jedenchan">@jedenchan</a></div>
+                                    <!-- div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb; text-align: center;">Telegram-конференция:<br><a style="color: #bbb;" href="https://t.me/jedenchan">@jedenchan</a></div -->
 				    </div>
 				</div>
 			</div>

@@ -51,7 +51,7 @@ CREATE TABLE `1chan_comment` (
   `author` varchar(32) DEFAULT 'anonymous',
   `created_at` int(32) NOT NULL,
   `text` text NOT NULL,
-  `special_comment` text NOT NULL,
+  `special_comment` text DEFAULT NULL,
   PRIMARY KEY (`id`,`post_id`),
   KEY `ip_index` (`ip`(16))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;

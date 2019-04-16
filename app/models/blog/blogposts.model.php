@@ -18,6 +18,15 @@ class Blog_BlogPostsModel
 		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
 		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
 
+		// грязный хак для свежих MariaDB (?), не воспринимающих пустые поля как фолс
+		$params['ip']		= (@$params['ip'] ? "1" : "0");
+		$params['hidden']	= (@$params['hidden'] ? "1" : "0");
+		$params['pinned']	= (@$params['pinned'] ? "1" : "0");
+		$params['rated']	= (@$params['rated'] ? "1" : "0");
+		$params['closed']	= (@$params['closed'] ? "1" : "0");
+		$params['rateable']	= (@$params['rateable'] ? "1" : "0");
+		$params['bumpable']	= (@$params['bumpable'] ? "1" : "0");
+
 		$record = array(
 			'id'         => $id,
 			'ip'         => $_SERVER['REMOTE_ADDR'],
@@ -36,12 +45,12 @@ class Blog_BlogPostsModel
 		if (!$safeMode)
 		{
 			$record = array_merge($record, array(
-				'hidden'          => (bool)@$params['hidden'],
-				'pinned'          => (bool)@$params['pinned'],
-				'rated'           => (bool)@$params['rated'],
-				'closed'          => (bool)@$params['closed'],
-				'rateable'        => (bool)@$params['rateable'],
-				'bumpable'        => (bool)@$params['bumpable'],
+				'hidden'          => $params['hidden'],
+				'pinned'          => $params['pinned'],
+				'rated'           => $params['rated'],
+				'closed'          => $params['closed'],
+				'rateable'        => $params['rateable'],
+				'bumpable'        => $params['bumpable'],
 				'special_comment' => @$params['special_comment']
 			));
 		}
@@ -259,6 +268,14 @@ class Blog_BlogPostsModel
 		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
 		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
 
+		$params['ip']		= ($params['ip'] ? "1" : "0");
+		$params['hidden']	= ($params['hidden'] ? "1" : "0");
+		$params['pinned']	= ($params['pinned'] ? "1" : "0");
+		$params['rated']	= ($params['rated'] ? "1" : "0");
+		$params['closed']	= ($params['closed'] ? "1" : "0");
+		$params['rateable']	= ($params['rateable'] ? "1" : "0");
+		$params['bumpable']	= ($params['bumpable'] ? "1" : "0");
+
 		$record = array(
 			'category'   => $params['category'],
 			'link'       => $params['link'],
@@ -271,13 +288,13 @@ class Blog_BlogPostsModel
 		{
 			$record = array_merge($record, array(
 				'ip'              => $params['ip'],
-				'hidden'          => (bool)$params['hidden'],
-				'pinned'          => (bool)$params['pinned'],
-				'rated'           => (bool)$params['rated'],
-				'closed'          => (bool)$params['closed'],
-				'rateable'        => (bool)$params['rateable'],
-				'bumpable'        => (bool)$params['bumpable'],
-				'special_comment' => (bool)$params['special_comment']
+				'hidden'          => $params['hidden'],
+				'pinned'          => $params['pinned'],
+				'rated'           => $params['rated'],
+				'closed'          => $params['closed'],
+				'rateable'        => $params['rateable'],
+				'bumpable'        => $params['bumpable'],
+				'special_comment' => $params['special_comment']
 			));
 		}
 
@@ -353,6 +370,9 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		// такой же хак, как и прошлый
+		if(!$rated) {$rated = "0";}
+
 		return $dbh -> update('1chan_post', array('rated' => $rated), 'id = '. $dbh -> q($id));
 	}
 
@@ -366,6 +386,8 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		if(!$rated) {$rateable = "0";}
+
 		return $dbh -> update('1chan_post', array('rateable' => $rateable), 'id = '. $dbh -> q($id));
 	}
 
@@ -375,6 +397,7 @@ class Blog_BlogPostsModel
 	public static function BumpablePost($id, $bumpable = true)
 	{
 		$dbh = PDOQuery::getInstance();
+		if(!$bumpable) {$bumpable = "0";}
 		return $dbh -> update('1chan_post', array('bumpable' => $bumpable), 'id = '. $dbh -> q($id));
 	}
 
@@ -387,6 +410,8 @@ class Blog_BlogPostsModel
 
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
+
+		if(!$pinned) {$pinned = "0";}
 
 		return $dbh -> update('1chan_post', array('pinned' => $pinned), 'id = '. $dbh -> q($id));
 	}
@@ -401,6 +426,8 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		if(!$closed) {$closed = "0";}
+
 		return $dbh -> update('1chan_post', array('closed' => $closed), 'id = '. $dbh -> q($id));
 	}
 
@@ -413,6 +440,8 @@ class Blog_BlogPostsModel
 
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
+
+		if(!$hidden) {$hidden = "0";}
 
 		return $dbh -> update('1chan_post', array('hidden' => $hidden), 'id = '. $dbh -> q($id));
 	}

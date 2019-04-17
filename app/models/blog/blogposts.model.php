@@ -386,7 +386,7 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
-		if(!$rated) {$rateable = "0";}
+		if(!$rateable) {$rateable = "0";}
 
 		return $dbh -> update('1chan_post', array('rateable' => $rateable), 'id = '. $dbh -> q($id));
 	}

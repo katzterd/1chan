@@ -580,7 +580,11 @@ class BoardController extends BaseController
 
 		$template -> setParameter('total_read',   $stats['online']);
 		$template -> setParameter('total_write',  $stats['writers']);
-		$template -> setParameter('total_unique', $stats['unique']);
+		if (isset($stats['unique'])) {
+			$template -> setParameter('total_unique', $stats['unique']);
+		} else {
+			$template -> setParameter('total_unique', 1);
+		}
 
 		$session  -> instantSet('captcha_board_comment', true);
 

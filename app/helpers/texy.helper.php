@@ -377,7 +377,7 @@ class TexyHelper
 	/**
 	 * Кятбокс:
 	 */
-	static function imgur($parser, $matches, $name) {
+	static function catbox($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
 		if ($GLOBALS['post_image_count']++) {

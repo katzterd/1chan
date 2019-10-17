@@ -8,7 +8,11 @@
 						<dl>
 							<dt>Изображение (с сервиса Imgur):</dt>
 							<dd>
-								<p>https://i.imgur.com/XXXXXXX.jpg --> [:XXXXXXX:] (не работает в разделах для общения)</p>
+								<p>https://i.imgur.com/XXXXXXX.jpg --> [i:XXXXXXX:] (не работает в разделах для общения)</p>
+							</dd>
+							<dt>Изображение (с сервиса Catbox):</dt>
+							<dd>
+								<p>https://files.catbox.moe/xxxxxx.jpg --> [c:xxxxxx.jpg:] (не работает в разделах для общения)</p>
 							</dd>
 							<dt>Жирный:</dt>
 							<dd>
@@ -40,7 +44,7 @@
 
 							<dt>Ссылка:</dt>
 							<dd>
-								<p>"Двач":https://2ch.hk</p>
+								<p>"Двач":https://2ch.net</p>
 							</dd>
 
 							<dt>Ссылка на пост:</dt>

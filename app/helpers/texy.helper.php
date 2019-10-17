@@ -234,8 +234,14 @@ class TexyHelper
 		{
 			$texy->registerLinePattern(
 				array('TexyHelper', 'imgur'),
-				'/\[:([^\]]+):\]/',
+				'/\[i:([^\]]+):\]/',
 				'TexyHelper_imgur'
+			);
+
+			$texy->registerLinePattern(
+				array('TexyHelper', 'catbox'),
+				'/\[c:(([^\]]+)\.(jpg|jpeg|gif|png|webp)):\]/',
+				'TexyHelper_catbox'
 			);
 /*
 			$texy->registerLinePattern(
@@ -252,8 +258,8 @@ class TexyHelper
 			);
 */
 
-	if ($post_link)
-	{
+			if ($post_link)
+			{
 			    $texy->registerLinePattern(
 				    array('TexyHelper', 'postlink'),
 				    '/>>(\d+)/',
@@ -265,7 +271,7 @@ class TexyHelper
 				    '/>>([^\/]+)\/(\d+)/',
 				    'boardlink'
 			    );
-	}
+			}
 		}
 		else
 		{
@@ -312,39 +318,35 @@ class TexyHelper
 		return $texy -> process($text);
 	}
 
-	/**
+    	/**
 	 * Вставка картинок:
 	 */
-	/** static function images($parser, $matches, $name) {
-	 *	list(, $mContent) = $matches;
-	 *
- * if (preg_match(self::URL_REGEXP, $mContent))
- * {
- *     if ($GLOBALS['post_image_count']++) {
-	 * 	$parser -> again = false;
- * return '['. $mContent .']';
- *     }
- *
- *    if (($u = PreviewHelper::upload($mContent)) !== false) {   
- *       $img = TexyHtml::el('img');
-	 * 	$img -> attrs['src']    = $u;
-	 * 	$img -> attrs['alt']    = '';
- *	 
-	 * 	$link = TexyHtml::el('a');
-	 * 	$link -> attrs['target'] = '_blank';
-	 * 	$link -> attrs['class']  = 'b-image-link';
-	 * 	$link -> href($mContent);
-	 * 	$link -> add($img);
- *
-	 * 	$parser -> again = false;
- *
-	 * 	$GLOBALS['post_image_count'] = true;
-	 * 	return $link;
-	 * 	    }
- * }
- * return '['. $mContent .']';
-	 * }
-	 */
+/*
+	static function images($parser, $matches, $name) {
+		list(, $mContent) = $matches;
+        if (preg_match(self::URL_REGEXP, $mContent))
+        {
+            if ($GLOBALS['post_image_count']++) {
+		        $parser -> again = false;
+                return '['. $mContent .']';
+            }
+            if (($u = PreviewHelper::upload($mContent)) !== false) {   
+                $img = TexyHtml::el('img');
+		        $img -> attrs['src']    = $u;
+		        $img -> attrs['alt']    = '';
+		        $link = TexyHtml::el('a');
+		        $link -> attrs['target'] = '_blank';
+		        $link -> attrs['class']  = 'b-image-link';
+		        $link -> href($mContent);
+		        $link -> add($img);
+		        $parser -> again = false;
+		        $GLOBALS['post_image_count'] = true;
+		        return $link;
+		    }
+        }
+        return '['. $mContent .']';
+	}
+*/
 
 	/**
 	 * Имгур:
@@ -352,10 +354,10 @@ class TexyHelper
 	static function imgur($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
-if ($GLOBALS['post_image_count']++) {
-		    $parser -> again = false;
-    return '[:'. $mContent .':]';
-}
+		if ($GLOBALS['post_image_count']++) {
+			$parser -> again = false;
+			return '[i:'. $mContent .':]';
+		}
 
 		$img = TexyHtml::el('img');
 		$img -> attrs['src']    = 'https://i.imgur.com/'.$mContent.'.jpg';
@@ -364,7 +366,34 @@ if ($GLOBALS['post_image_count']++) {
 		$link = TexyHtml::el('a');
 		$link -> attrs['target'] = '_blank';
 		$link -> attrs['class'] = 'b-image-link';
+		$link -> attrs['rel'] = 'nofollow noopener noreferrer';
 		$link -> href('https://i.imgur.com/'.$mContent.'.jpg');
+		$link -> add($img);
+
+		$parser -> again = false;
+		return $link;
+	}
+
+	/**
+	 * Кятбокс:
+	 */
+	static function imgur($parser, $matches, $name) {
+		list(, $mContent, $mMod) = $matches;
+
+		if ($GLOBALS['post_image_count']++) {
+			$parser -> again = false;
+			return '[c:'. $mContent .':]';
+		}
+
+		$img = TexyHtml::el('img');
+		$img -> attrs['src']    = 'https://files.catbox.moe/'.$mContent;
+		$img -> attrs['alt']    = '';
+
+		$link = TexyHtml::el('a');
+		$link -> attrs['target'] = '_blank';
+		$link -> attrs['class'] = 'b-image-link';
+		$link -> attrs['rel'] = 'nofollow noopener noreferrer';
+		$link -> href('https://files.catbox.moe/'.$mContent);
 		$link -> add($img);
 
 		$parser -> again = false;

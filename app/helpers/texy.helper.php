@@ -427,7 +427,7 @@ class TexyHelper
 
 		$spl = TexyHtml::el('span');
 		$spl -> attrs['class'] = 'b-coincidence';
-		$spl -> setText($mContent);
+		$spl -> setText( '((('.$mContent.')))' );
 
 		$parser -> again = true;
 		return $spl;

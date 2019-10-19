@@ -225,7 +225,7 @@ class TexyHelper
 		
 		$texy->registerLinePattern(
 			array('TexyHelper', 'conicidence'),
-			'/\(\(\((([^\(\)]|(\(|\))[^\(\)])+)\)\)\)/',
+			'/\(\(\((.[^\(\)]+)\)\)\)/',
 			'TexyHelper_coincidence'
 		);
 /*

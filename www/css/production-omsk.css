@@ -266,6 +266,10 @@ a.g-strike {
 .b-spoiler-text:hover {
     color: #bfbab4 !important;
 }
+.b-coincidence {
+    background: #FAF8F8;
+    color: #3060A8 !important;
+}
 .b-global-message-panel {
     width: 100%;
     line-height: 25px;

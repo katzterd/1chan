@@ -223,6 +223,11 @@ class TexyHelper
 			'TexyHelper_tts'
 		);
 		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'conicidence'),
+			'/\(\(\((([^\(\)]|(\(|\))[^\(\)])+)\)\)\)/',
+			'TexyHelper_coincidence'
+		);
 /*
 		$texy->registerLinePattern(
 			array('TexyHelper', 'redline'),
@@ -413,6 +418,21 @@ class TexyHelper
 		$parser -> again = true;
 		return $spl;
 	}
+
+	/**
+	 * Детектор совпадений:
+	 */
+	static function coincidence($parser, $matches, $name) {
+		list(, $mContent, $mMod) = $matches;
+
+		$spl = TexyHtml::el('span');
+		$spl -> attrs['class'] = 'b-coincidence';
+		$spl -> setText($mContent);
+
+		$parser -> again = true;
+		return $spl;
+	}
+
 
 	/**
 	 * Розмовлялка:

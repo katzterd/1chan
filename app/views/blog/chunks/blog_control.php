@@ -1,19 +1,27 @@
 			<div class="b-blog-panel g-clearfix">
 					<ul>
 						<li class="b-blog-panel_b-add-entry<?php if ($this -> getParameter('section') == 'add'): ?> b-blog-panel_m-active<?php endif; ?>">
-							<img src="/ico/add-entry.png" width="16" height="16" alt="" />
-							<a href="/news/add/">Добавить запись</a>
+							<a href="/news/add/">
+								<img src="/ico/add-entry.png" width="16" height="16" alt="" />
+								<span>Добавить запись</span>
+							</a>
 						</li>
 						<li class="b-blog-panel_b-favorites<?php if ($this -> getParameter('section') == 'favorite'): ?> b-blog-panel_m-active<?php endif; ?>">
-							<img src="/ico/favorites.png" width="16" height="16" alt="" />
-							<a href="/news/fav/">Избранные</a>
+							<a href="/news/fav/">
+								<img src="/ico/favorites.png" width="16" height="16" alt="" />
+								<span>Избранные</span>
+							</a>
 						</li>
 						<li class="b-blog-panel_b-approved<?php if ($this -> getParameter('section') == 'rated'): ?> b-blog-panel_m-active<?php endif; ?>">
-							<img src="/ico/tick.png" width="16" height="16" alt="" />
-							<a href="/news/">Одобренные</a>
+							<a href="/news/">
+								<img src="/ico/tick.png" width="16" height="16" alt="" />
+								<span>Одобренные</span>
+							</a>
 						</li>
 						<li class="b-blog-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-blog-panel_m-active<?php endif; ?>">
-							<a href="/news/all/">Все</a>
+							<a href="/news/add/">
+								<span>Все</span>
+							</a>
 						</li>
 					</ul>
 					<div class="b-blog-panel_b-searchmenu">

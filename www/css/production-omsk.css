@@ -434,26 +434,33 @@ a.g-strike {
     margin-bottom: 15px;
 }
 .b-blog-panel ul {
-    width: 100%;
     list-style: none;
-    padding: 0 8px;
-    margin: 10px 0 0 0;
+    padding: 0 2px;
+    margin: 2px 0 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
 }
 .b-blog-panel ul li {
-    float: left;
-    margin: 0 1px 0 0;
+    margin: 0;
+    margin-right: 0px;
     padding: 0;
     line-height: 40px;
     text-align: center;
     font-size: 0.7em;
+    text-shadow: 1px 1px 2px #ddd;
 }
 .b-blog-panel ul li img {
     vertical-align: middle;
     margin-right: 3px;
 }
-.b-blog-panel ul li a:link,
-.b-blog-panel ul li a:visited,
-.b-blog-panel ul li a:hover {
+.b-blog-panel ul li a {
+    display: block;
+    text-decoration: none;
+}
+.b-blog-panel ul li span {
+    text-decoration: underline;
     color: #666;
 }
 .b-blog-panel ul li a.g-dynamic:link,
@@ -461,34 +468,43 @@ a.g-strike {
     border-bottom: 1px dashed #666;
 }
 .b-blog-panel ul li.b-blog-panel_b-add-entry {
-    width: 150px;
     background: #001a38;
-    -webkit-border-radius: 20px 0 0 20px;
-    -moz-border-radius: 20px 0 0 20px;
-    border-radius: 20px 0 0 20px;
+    border-radius: 5px 0 0 5px;
+    width: auto;
+    display: block;
+    flex-grow: 1;
+    min-width: 25%;
+    margin-right: 2px;
 }
 .b-blog-panel ul li.b-blog-panel_b-favorites {
-    width: 180px;
     background: #001a38;
+    display: block;
+    flex-grow: 1;
+    min-width: 25%;
+    margin-right: 2px;
 }
 .b-blog-panel ul li.b-blog-panel_b-approved {
-    width: 180px;
     background: #001a38;
+    display: block;
+    flex-grow: 1;
+    min-width: 25%;
+    margin-right: 2px;
 }
 .b-blog-panel ul li.b-blog-panel_b-all {
-    width: 150px;
     background: #001a38;
-    -webkit-border-radius: 0 20px 20px 0;
-    -moz-border-radius: 0 20px 20px 0;
-    border-radius: 0 20px 20px 0;
+    border-radius: 0 5px 5px 0;
+    display: block;
+    flex-grow: 1;
+    width: 100%;
 }
 .b-blog-panel ul li.b-blog-panel_m-active {
     background: #113f5f;
+    text-shadow: 1px 1px 1px #bbb;
 }
 .b-blog-panel ul li.b-blog-panel_m-active a:link,
 .b-blog-panel ul li.b-blog-panel_m-active a:visited,
 .b-blog-panel ul li.b-blog-panel_m-active a:hover {
-    color: #bfbab4;
+    color: #40454b;
     text-decoration: none;
 }
 .b-blog-panel ul li.b-blog-panel_m-active a.g-dynamic:link,

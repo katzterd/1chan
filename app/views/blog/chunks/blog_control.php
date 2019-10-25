@@ -19,7 +19,7 @@
 							</a>
 						</li>
 						<li class="b-blog-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-blog-panel_m-active<?php endif; ?>">
-							<a href="/news/add/">
+							<a href="/news/all/">
 								<span>Все</span>
 							</a>
 						</li>

@@ -498,7 +498,6 @@ a.g-strike {
 }
 .b-blog-panel ul li.b-blog-panel_m-active {
     background: #113f5f;
-    text-shadow: 1px 1px 1px #bbb;
 }
 .b-blog-panel ul li.b-blog-panel_m-active a:link,
 .b-blog-panel ul li.b-blog-panel_m-active a:visited,

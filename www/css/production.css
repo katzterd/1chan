@@ -549,6 +549,10 @@ a.g-strike {
     background: #e1ecfe;
     text-shadow: 1px 1px 1px #bbb;
 }
+.b-blog-panel ul li.b-blog-panel_m-active span {
+    color: #40454b;
+    text-decoration: none;
+}
 .b-blog-panel ul li.b-blog-panel_m-active a:link,
 .b-blog-panel ul li.b-blog-panel_m-active a:visited,
 .b-blog-panel ul li.b-blog-panel_m-active a:hover {

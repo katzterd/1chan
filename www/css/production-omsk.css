@@ -499,6 +499,10 @@ a.g-strike {
 .b-blog-panel ul li.b-blog-panel_m-active {
     background: #113f5f;
 }
+.b-blog-panel ul li.b-blog-panel_m-active span {
+    color: #40454b;
+    text-decoration: none;
+}
 .b-blog-panel ul li.b-blog-panel_m-active a:link,
 .b-blog-panel ul li.b-blog-panel_m-active a:visited,
 .b-blog-panel ul li.b-blog-panel_m-active a:hover {

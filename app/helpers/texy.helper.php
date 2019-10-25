@@ -429,7 +429,7 @@ class TexyHelper
 		$spl -> attrs['class'] = 'b-coincidence';
 		$spl -> setText( '((('.$mContent.')))' );
 
-		$parser -> again = true;
+		$parser -> again = false;
 		return $spl;
 	}
 

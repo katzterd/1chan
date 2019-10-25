@@ -103,16 +103,16 @@ class Texy extends TexyObject
 	public $nontextParagraph = 'div';
 
 	/** @var TexyScriptModule */
-	public $scriptModule;
+	// public $scriptModule;
 
 	/** @var TexyParagraphModule */
 	public $paragraphModule;
 
 	/** @var TexyHtmlModule */
-	public $htmlModule;
+	// public $htmlModule;
 
 	/** @var TexyImageModule */
-	public $imageModule;
+	// public $imageModule;
 
 	/** @var TexyLinkModule */
 	public $linkModule;
@@ -121,7 +121,7 @@ class Texy extends TexyObject
 	public $phraseModule;
 
 	/** @var TexyEmoticonModule */
-	public $emoticonModule;
+	// public $emoticonModule;
 
 	/** @var TexyBlockModule */
 	public $blockModule;
@@ -139,10 +139,10 @@ class Texy extends TexyObject
 	public $listModule;
 
 	/** @var TexyTableModule */
-	public $tableModule;
+	// public $tableModule;
 
 	/** @var TexyFigureModule */
-	public $figureModule;
+	// public $figureModule;
 
 	/** @var TexyTypographyModule */
 	public $typographyModule;
@@ -295,20 +295,20 @@ class Texy extends TexyObject
 	protected function loadModules()
 	{
 		// line parsing
-		$this->scriptModule = new TexyScriptModule($this);
-		$this->htmlModule = new TexyHtmlModule($this);
-		$this->imageModule = new TexyImageModule($this);
+		// $this->scriptModule = new TexyScriptModule($this);
+		// $this->htmlModule = new TexyHtmlModule($this);
+		// $this->imageModule = new TexyImageModule($this);
 		$this->phraseModule = new TexyPhraseModule($this);
 		$this->linkModule = new TexyLinkModule($this);
-		$this->emoticonModule = new TexyEmoticonModule($this);
+		// $this->emoticonModule = new TexyEmoticonModule($this);
 
 		// block parsing
 		$this->paragraphModule = new TexyParagraphModule($this);
 		$this->blockModule = new TexyBlockModule($this);
-		$this->figureModule = new TexyFigureModule($this);
+		// $this->figureModule = new TexyFigureModule($this);
 		$this->horizLineModule = new TexyHorizLineModule($this);
 		$this->blockQuoteModule = new TexyBlockQuoteModule($this);
-		$this->tableModule = new TexyTableModule($this);
+		// $this->tableModule = new TexyTableModule($this);
 		$this->headingModule = new TexyHeadingModule($this);
 		$this->listModule = new TexyListModule($this);
 

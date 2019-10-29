@@ -95,7 +95,7 @@
 			            <?php if (!empty($links)): ?>
 				            <?php foreach($links as $link): ?>
 				            <div class="b-live-entry">
-					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
+					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><?php echo($link['category']['title']); ?></a>
 				            </div>
 				            <?php endforeach; ?>
 

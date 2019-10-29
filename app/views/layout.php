@@ -93,7 +93,7 @@
 			            <?php if (!empty($links)): ?>
 				            <?php foreach($links as $link): ?>
 				            <div class="b-live-entry">
-					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
+					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
 				            </div>
 				            <?php endforeach; ?>
 
@@ -103,7 +103,7 @@
 			            </div>
 			            <textarea id="template_link_panel" style="display:none">
 					        <div class="b-live-entry">
-						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
+						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
 					        </div>
 				        </textarea>
 				    </div>

@@ -18,7 +18,7 @@
 
 				<textarea id="template_link" style="display:none">
 					<div class="b-live-entry" id="live_link_<%=id%>">
-						<a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
+						<a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
 						<span class="b-live-entry_b-clicks">Переходов: <span class="js-live-clicks"><%=clicks%></span></span>
 						<a href="#" class="js-remove-button g-hidden">
 							<img src="/ico/remove.gif" width="16" height="16" alt="<%=id%>" />
@@ -35,7 +35,7 @@
 			<?php if (!empty($links)): ?>
 				<?php foreach($links as $link): ?>
 				<div class="b-live-entry" id="live_link_<?php echo($link['id']); ?>">
-					<a href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board">🌐</a>
+					<a href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
 					<span class="b-live-entry_b-clicks">Переходов: <span class="js-live-clicks"><?php echo($link['clicks']); ?></span></span>
 					<a href="#" class="js-remove-button g-hidden">
 						<img src="/ico/remove.gif" width="16" height="16" alt="<?php echo($link['id']); ?>" />

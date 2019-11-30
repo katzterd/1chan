@@ -114,7 +114,7 @@ class KVS
 	 */
 	public function remove($class, $id = null, $name = null)
 	{
-		return $this -> connection -> delete(
+		return $this -> connection -> unlink(
 			$this -> getNS($class, $id, $name)
 		);
 	}
@@ -134,11 +134,11 @@ class KVS
 		if (!empty($keys[0]))
 			foreach ($keys as $key)
 			{
-				$this -> connection -> delete($key);
+				$this -> connection -> unlink($key);
 			}
 
 		if ($pattern == '*')
-			$this -> connection -> delete(
+			$this -> connection -> unlink(
 				$this -> getNS($class, $id, $pattern)
 			);
 

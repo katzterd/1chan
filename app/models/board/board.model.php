@@ -179,7 +179,7 @@ class Board_BoardModel
 		$kvs -> remove(__CLASS__, $this -> board, 'thread('. $id .')_count');
 		$kvs -> remove(__CLASS__, $this -> board, 'thread('. $id .')_tail');
 		$kvs -> remove(__CLASS__, $this -> board, '0pagecache');
-		$kvs -> hashRemove('Board_Thread', 'Subscribers', $id);
+		$kvs -> hashRemove('Board_Thread', 'Subscribers', null, $id);
 
 		EventModel::getInstance()
 			-> Broadcast('remove_board_thread', array($this -> board, $id));

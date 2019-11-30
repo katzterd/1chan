@@ -563,9 +563,9 @@ class BoardController extends BaseController
 		$session  = Session::getInstance();
 		$settings = $board -> getSettings();
 
-		$template -> setParameter('title',             $settings['title']);
-		$template -> setParameter('description', $settings['description']);
-		$template -> setParameter('board_id',      $board -> getId());
+		$template -> setParameter('title', isset($settings) ? $settings['title'] : '');
+		$template -> setParameter('description', isset($settings) ? $settings['description'] : '');
+		$template -> setParameter('board_id', $board -> getId());
 
 		$thread = $board -> getThread($_GET['thread_id']);
 		
@@ -578,9 +578,9 @@ class BoardController extends BaseController
 
 		$stats = Board_StatisticsModel::getPostStats($thread['board_id'], $thread['id']);
 
-		$template -> setParameter('total_read',   $stats['online']);
-		$template -> setParameter('total_write',  $stats['writers']);
-		$template -> setParameter('total_unique', $stats['unique']);
+		$template -> setParameter('total_read',   isset($stats['online']) ? $stats['online'] : 0);
+		$template -> setParameter('total_write',  isset($stats['writers']) ? $stats['writers'] : 0);
+		$template -> setParameter('total_unique', isset($stats['unique']) ? $stats['unique'] : 0);
 
 		$session  -> instantSet('captcha_board_comment', true);
 

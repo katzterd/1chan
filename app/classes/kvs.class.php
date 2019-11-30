@@ -385,7 +385,7 @@ class KVS
 	 */
 	public function listRemove($class, $id = null, $name = null, $value = null)
 	{
-		return $this -> connection -> lremove(
+		return $this -> connection -> lrem(
 			$this -> getNS($class, $id, $name), $value, 1
 		);
 	}

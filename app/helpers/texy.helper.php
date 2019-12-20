@@ -74,11 +74,41 @@ class TexyHelper
 		);
 
 		$texy->registerLinePattern(
+			array('TexyHelper', 'cancer'),
+			'/:cancer:/',
+			'TexyHelper_cancer'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'mrgreen'),
+			'/:mrgreen:/',
+			'TexyHelper_mrgreen'
+		);
+
+		$texy->registerLinePattern(
 			array('TexyHelper', 'nyan'),
 			'/:nyan:/',
 			'TexyHelper_nyan'
 		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'cat'),
+			'/:cat:/',
+			'TexyHelper_cat'
+		);
 		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'c2m'),
+			'/:c2m:/',
+			'TexyHelper_c2m'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'c3b'),
+			'/:c3b:/',
+			'TexyHelper_c3b'
+		);
+
 		$texy->registerLinePattern(
 			array('TexyHelper', 'sheez'),
 			'/:sheez:/',
@@ -175,12 +205,36 @@ class TexyHelper
 			'TexyHelper_jackdaniels'
 		);
 		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'nemiroff'),
+			'/:nemiroff:/',
+			'TexyHelper_nemiroff'
+		);
+
 	       	$texy->registerLinePattern(
 			array('TexyHelper', 'projector'),
 			'/:projector:/',
 			'TexyHelper_projector'
 		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'hazard'),
+			'/:hazard:/',
+			'TexyHelper_hazard'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'mic'),
+			'/:mic:/',
+			'TexyHelper_mic'
+		);
 		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'monies'),
+			'/:monies:/',
+			'TexyHelper_monies'
+		);
+
 		$texy->registerLinePattern(
 			array('TexyHelper', 'jlby'),
 			'/:Jlby:/',
@@ -572,6 +626,38 @@ class TexyHelper
 
 		return $el;
 	}
+
+	/**
+	 * cancer smile
+	 */
+	static function cancer($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/cancer.gif';
+		$el -> attrs['width']  = '31';
+		$el -> attrs['height'] = '29';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * mrgreen smile
+	 */
+	static function mrgreen($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/mrgreen.gif';
+		$el -> attrs['width']  = '32';
+		$el -> attrs['height'] = '32';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
 	
 	/**
 	 * omsk smile
@@ -582,6 +668,54 @@ class TexyHelper
 		$el -> attrs['src']    = '/img/omsk.png';
 		$el -> attrs['width']  = '17';
 		$el -> attrs['height'] = '19';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * cat
+	 */
+	static function cat($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/cat.png';
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['width']  = '50';
+		$el -> attrs['height'] = '39';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * c2m
+	 */
+	static function c2m($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/c2m.png';
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['width']  = '50';
+		$el -> attrs['height'] = '39';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * c3b
+	 */
+	static function c3b($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/c3b.png';
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['width']  = '50';
+		$el -> attrs['height'] = '39';
 		$el -> attrs['alt']    = '';
 
 		$parser -> again = false;
@@ -892,6 +1026,22 @@ class TexyHelper
 
 		return $el;
 	}
+
+	/**
+	 * Немирофф:
+	 */
+	static function nemiroff($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/nemiroff.png';
+		$el -> attrs['width']  = '14';
+		$el -> attrs['height'] = '50';
+		$el -> attrs['alt']    = '';
+
+		$parser->again = false;
+
+		return $el;
+	}
 	
        	/**
 	 * Проектор:
@@ -909,6 +1059,54 @@ class TexyHelper
 		return $el;
 	}
 	
+	/**
+	 * Бабосики:
+	 */
+	static function monies($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/monies.png';
+		$el -> attrs['width']  = '45';
+		$el -> attrs['height'] = '50';
+		$el -> attrs['alt']    = '';
+
+		$parser->again = false;
+
+		return $el;
+	}
+
+	/**
+	 * Микрофон:
+	 */
+	static function mic($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/mic.png';
+		$el -> attrs['width']  = '50';
+		$el -> attrs['height'] = '50';
+		$el -> attrs['alt']    = '';
+
+		$parser->again = false;
+
+		return $el;
+	}
+
+	/**
+	 * Хазард:
+	 */
+	static function hazard($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['class']  = 'smiley';
+		$el -> attrs['src']    = '/img/hazard.png';
+		$el -> attrs['width']  = '32';
+		$el -> attrs['height'] = '32';
+		$el -> attrs['alt']    = '';
+
+		$parser->again = false;
+
+		return $el;
+	}
+
 	/**
 	 * Жилби:
 	 */

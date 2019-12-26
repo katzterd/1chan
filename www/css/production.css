@@ -304,11 +304,7 @@ a.g-strike {
     width: 100%;
     height: 25px;
     font-size: 0.7em;
-    background:
-    /*url(/img/mes_bg1.gif)*/
-
-    #eaf4ff;
-    /*background: #eaf4ff;*/
+    background: #eaf4ff;
 
     text-shadow: 1px 1px 2px #ddd;
     border-left: 1px solid #ddd;
@@ -772,12 +768,7 @@ a.g-strike {
     width: 560px;
     margin: 2px auto;
     padding: 5px 10px 0 10px;
-    background:
-    /*url(/img/mes_bg1.gif)*/
-
-    #eaf4ff;
-    /*background: #eaf4ff;*/
-
+    background: #eaf4ff;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
@@ -1491,20 +1482,11 @@ a.g-strike {
 }
 .b-chat-panel ul li.b-chat-panel_b-all {
     width: 220px;
-    background:
-    /*url(/img/mes_bg1.gif)*/
-
-    #eaf4ff;
-    /*background: #eaf4ff;*/
+    background: #eaf4ff;
 }
 .b-chat-panel ul li.b-chat-panel_b-common {
     width: 220px;
-    background:
-    /*url(/img/mes_bg1.gif)*/
-
-    #eaf4ff;
-    /*background: #eaf4ff;*/
-
+    background: #eaf4ff;
     -webkit-border-radius: 0 20px 20px 0;
     -moz-border-radius: 0 20px 20px 0;
     border-radius: 0 20px 20px 0;

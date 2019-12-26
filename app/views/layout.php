@@ -9,6 +9,7 @@
 
 		<link rel="icon"       type="image/png" href="/ico/favicon.png" />
 		<link rel="stylesheet" type="text/css"     href="/css/production.css?14" media="all" />
+		<!-- link rel="stylesheet" type="text/css"     href="/css/snow.css" media="all" / -->
 		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 
 		<script type="text/javascript" src="/js/jquery.js"></script>

@@ -1,0 +1,21 @@
+.b-top-panel {
+    background: url(/img/mes_bg1.gif) #eaf4ff;
+}
+.b-menu-panel .b-menu-panel_b-links ul li.m-active {
+    background: url(/img/mes_bg1.gif) #eaf4ff;
+}
+.b-blog-panel ul li.b-blog-panel_b-favorites, .b-blog-panel ul li.b-blog-panel_b-approved, .b-blog-panel ul li.b-blog-panel_b-all {
+    background: url(/img/mes_bg1.gif) #eaf4ff;
+}
+.b-comment {
+    background: url(/img/mes_bg1.gif) #eaf4ff;
+}
+.b-chat-panel ul li.b-chat-panel_b-all, .b-chat-panel ul li.b-chat-panel_b-common {
+    background: url(/img/mes_bg1.gif) #eaf4ff;
+}
+.b-header-block.m-mascot-news {
+    background: url(/img/mascot_ny.png) bottom center no-repeat;
+}
+.b-header-block.m-mascot-fav {
+    background: url(/img/mascot_ny.png) top center no-repeat;
+}

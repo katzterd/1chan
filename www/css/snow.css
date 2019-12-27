@@ -7,6 +7,9 @@
 .b-blog-panel ul li.b-blog-panel_b-favorites, .b-blog-panel ul li.b-blog-panel_b-approved, .b-blog-panel ul li.b-blog-panel_b-all {
     background: url(/img/mes_bg1.gif) #eaf4ff;
 }
+.b-blog-panel ul li.b-blog-panel_m-active {
+    background: #e1ecfe;
+}
 .b-comment {
     background: url(/img/mes_bg1.gif) #eaf4ff;
 }

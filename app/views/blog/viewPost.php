@@ -147,6 +147,7 @@
 						</span>
 
 						<div>
+							<textarea id="comment_form_text" name="text" rows="5"><?php echo @htmlspecialchars($blog_form['text']); ?></textarea>
 						<?php if(ControlModel::isCommentCaptcha()): ?>
 							<div class="b-comment-form_b-captcha">
 								<input type="hidden" name="captcha_key" value="<?php echo($this -> getParameter('captcha_key')); ?>" />
@@ -154,8 +155,6 @@
 								<img id="captchaimage" src="/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
 							</div>
 						<?php endif; ?>
-
-							<textarea id="comment_form_text" name="text" rows="5"><?php echo @htmlspecialchars($blog_form['text']); ?></textarea>
 							<input type="submit" value="Отправить" />
 
 							<span class="b-homeboard-form">

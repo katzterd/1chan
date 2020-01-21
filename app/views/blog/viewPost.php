@@ -149,6 +149,7 @@
 						<div>
 							<textarea id="comment_form_text" name="text" rows="5"><?php echo @htmlspecialchars($blog_form['text']); ?></textarea>
 						<?php if(ControlModel::isCommentCaptcha()): ?>
+							<br />
 							<div class="b-comment-form_b-captcha">
 								<input type="hidden" name="captcha_key" value="<?php echo($this -> getParameter('captcha_key')); ?>" />
 								<input type="text" name="captcha" value=""<?php if(array_key_exists('captcha', $form_errors)):?> class="g-input-error"<?php endif; ?> />

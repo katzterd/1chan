@@ -38,6 +38,10 @@ p {
     margin: 12px 0;
     line-height: 16px;
 }
+code {
+    max-height: 100%;
+    word-wrap: anywhere;
+}
 /**
  * g:
  */

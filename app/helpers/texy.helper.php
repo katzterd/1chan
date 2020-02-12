@@ -299,13 +299,13 @@ class TexyHelper
 
 			$texy->registerLinePattern(
 				array('TexyHelper', 'catbox'),
-				'/\[c:(([^\]]+)\.((?i)jpe?g|gif|png|webp)):\]/',
+				'/\[c:(([^\]]+)\.([Jj][Pp][Ee]?[Gg]|[Gg][Ii][Ff]|[Pp][Nn][Gg]|[Ww][Ee][Bb][Pp])):\]/',
 				'TexyHelper_catbox'
 			);
 
 			$texy->registerLinePattern(
 				array('TexyHelper', 'catboxvid'),
-				'/\[c:(([^\]]+)\.((?i)webm|mp4)):\]/',
+				'/\[c:(([^\]]+)\.((?i)[Ww][Ee][Bb][Mm]|[Mm][Pp]4)):\]/',
 				'TexyHelper_catbox'
 			);
 /*
@@ -481,6 +481,7 @@ class TexyHelper
 		$vid -> attrs['autoplay'] = '';
 		$vid -> attrs['loop'] = '';
 		$vid -> attrs['muted'] = '';
+		$vid -> attrs['controls'] = '';
 
 		$link = TexyHtml::el('a');
 		$link -> attrs['target'] = '_blank';

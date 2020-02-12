@@ -299,14 +299,14 @@ class TexyHelper
 
 			$texy->registerLinePattern(
 				array('TexyHelper', 'catbox'),
-				'/\[c:(([^\]]+)\.([Jj][Pp][Ee]?[Gg]|[Gg][Ii][Ff]|[Pp][Nn][Gg]|[Ww][Ee][Bb][Pp])):\]/',
+				'/\[c:(([^\]]+)\.((?i)jpe?g|gif|png|webp)):\]/',
 				'TexyHelper_catbox'
 			);
 
 			$texy->registerLinePattern(
 				array('TexyHelper', 'catboxvid'),
-				'/\[c:(([^\]]+)\.((?i)[Ww][Ee][Bb][Mm]|[Mm][Pp]4)):\]/',
-				'TexyHelper_catbox'
+				'/\[c:(([^\]]+)\.((?i)webm|mp4)):\]/',
+				'TexyHelper_catboxvid'
 			);
 /*
 			$texy->registerLinePattern(

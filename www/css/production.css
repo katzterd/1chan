@@ -24,7 +24,7 @@ a:hover {
     color: #ff5a00;
     text-decoration: none;
 }
-a img {
+a img, a video {
     border: none;
     text-decoration: none;
     max-width: 250px;
@@ -272,7 +272,7 @@ a.g-strike {
 .b-mobile-button {
     display: none;
 }
-.b-image-link img {
+.b-image-link img, .b-image-link video {
     float: left;
     margin: 3px;
     max-width: 200px;

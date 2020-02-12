@@ -299,7 +299,13 @@ class TexyHelper
 
 			$texy->registerLinePattern(
 				array('TexyHelper', 'catbox'),
-				'/\[c:(([^\]]+)\.(jpg|jpeg|gif|png|webp)):\]/',
+				'/\[c:(([^\]]+)\.((?i)jpe?g|gif|png|webp)):\]/',
+				'TexyHelper_catbox'
+			);
+
+			$texy->registerLinePattern(
+				array('TexyHelper', 'catboxvid'),
+				'/\[c:(([^\]]+)\.((?i)webm|mp4)):\]/',
 				'TexyHelper_catbox'
 			);
 /*
@@ -454,6 +460,34 @@ class TexyHelper
 		$link -> attrs['rel'] = 'nofollow noopener noreferrer';
 		$link -> href('https://files.catbox.moe/'.$mContent);
 		$link -> add($img);
+
+		$parser -> again = false;
+		return $link;
+	}
+
+	/**
+	 * Кятбокс (видео):
+	 */
+	static function catboxvid($parser, $matches, $name) {
+		list(, $mContent, $mMod) = $matches;
+
+		if ($GLOBALS['post_image_count']++) {
+			$parser -> again = false;
+			return '[c:'. $mContent .':]';
+		}
+
+		$vid = TexyHtml::el('video');
+		$vid -> attrs['src'] = 'https://files.catbox.moe/'.$mContent;
+		$vid -> attrs['autoplay'] = '';
+		$vid -> attrs['loop'] = '';
+		$vid -> attrs['muted'] = '';
+
+		$link = TexyHtml::el('a');
+		$link -> attrs['target'] = '_blank';
+		$link -> attrs['class'] = 'b-image-link';
+		$link -> attrs['rel'] = 'nofollow noopener noreferrer';
+		$link -> href('https://files.catbox.moe/'.$mContent);
+		$link -> add($vid);
 
 		$parser -> again = false;
 		return $link;

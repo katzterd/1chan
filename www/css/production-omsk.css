@@ -24,7 +24,7 @@ a:hover {
     color: #00a5ff;
     text-decoration: none;
 }
-a img {
+a img, a video {
     border: none;
     text-decoration: none;
     max-width: 250px;
@@ -249,7 +249,7 @@ a.g-strike {
     font-size: 0.7em;
     color: #000;
 }
-.b-image-link img {
+.b-image-link img, .b-image-link video {
     float: left;
     margin: 3px;
     max-width: 150px;

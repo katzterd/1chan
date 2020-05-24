@@ -3,7 +3,7 @@
  */
 (function(){
 	var x = {
-		socket:     new Dklab_Realplexor(location.protocol + "://pipe." + location.host + "/", "1chan_"),
+		socket:     new Dklab_Realplexor(location.protocol + "//pipe." + location.host + "/", "1chan_"),
 		processors: [],
 		addPageProcessor: function(path, processor) {
 			path = path instanceof Array ? path : [path];
@@ -36,7 +36,7 @@
 			$("#blog_form input, #blog_form textarea").removeClass("g-input-error");
 
 			$.post(
-				location.protocol + "://"+ location.host +"/news/add/validate/",
+				location.protocol + "//"+ location.host +"/news/add/validate/",
 				{
 					"category":   $("#blog_form [name=category]").val(),
 					"link":       $("#blog_form [name=link]").val(),
@@ -70,7 +70,7 @@
 				.click(function() {
 					validatePost(function()  {
 						$.post(
-							location.protocol + "://"+ location.host +"/news/add/preview/",
+							location.protocol + "//"+ location.host +"/news/add/preview/",
 							{
 								"category":   $("#blog_form [name=category]").val(),
 								"link":       $("#blog_form [name=link]").val(),
@@ -93,7 +93,7 @@
 					});
 				});
 
-		$.getJSON(location.protocol + "://"+ location.host +"/news/cat/", function(data, status) {
+		$.getJSON(location.protocol + "//"+ location.host +"/news/cat/", function(data, status) {
 			$( "input[name=category]" )
 					.autocomplete({
 						minLength: 0,
@@ -209,7 +209,7 @@
 				    }
 
 				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==39)) {
-					    location.href = location.protocol + "://"+ location.host +"/news/all/new/";
+					    location.href = location.protocol + "//"+ location.host +"/news/all/new/";
 				    }
 
 				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==37)) {
@@ -221,9 +221,9 @@
 				var img = $("img", this);
 				$.getJSON(this.href, function(data, status) {
 					if (data.favorite == true)
-						$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-true.png");
+						$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
 					else
-						$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-false.png");
+						$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
 				});
 				return false;
 			});
@@ -260,7 +260,7 @@
 					            var id = $(this).attr("name");
     						    
     						    setTimeout((function(id, why) {
-    						        return function() { $.getJSON(location.protocol + "://"+ location.host +"/mod/hiddenPost/"+ id +"/?why="+ encodeURIComponent(why)); };
+    						        return function() { $.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ id +"/?why="+ encodeURIComponent(why)); };
     						    })(id, why), 1000 * ind);
     						});
 					    }
@@ -272,31 +272,31 @@
                 
 				$("#mod_category").click(function() {
 				    var cat = prompt('Введите id категории:', '');
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/categoryPost/"+ current_id +"/?cat="+ encodeURIComponent(cat));
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/categoryPost/"+ current_id +"/?cat="+ encodeURIComponent(cat));
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
 					return false;
 				});
 				$("#mod_pinned").click(function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/pinnedPost/"+ current_id +"/");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/pinnedPost/"+ current_id +"/");
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
 					return false;
 				});
 				$("#mod_rated").click(function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/ratedPost/"+ current_id +"/");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/ratedPost/"+ current_id +"/");
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
 					return false;
 				});
 				$("#mod_rateable").click(function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/rateablePost/"+ current_id +"/");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/rateablePost/"+ current_id +"/");
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
 					return false;
 				});
 				$("#mod_closed").click(function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/closedPost/"+ current_id +"/");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/closedPost/"+ current_id +"/");
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
 					return false;
@@ -305,7 +305,7 @@
 				    $("#mod_remove").click(function() {
 					    if (confirm("Вы уверены, что хотите скрыть пост "+ current_id +"?")) {
 					        var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
-						    $.getJSON(location.protocol + "://"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent(why));
+						    $.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent(why));
 						    $(".b-mod-toolbar").addClass("g-hidden");
 						    current_id = null;
 					    }
@@ -316,11 +316,11 @@
 			    }
 				$(".b-blog-entry_b-info").bind("dblclick", function() {
 					var current_id = $(this).attr("id").substring(5).substring(0, -5); console.log(current_id);
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent("Мусор (читайте правила)"));
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent("Мусор (читайте правила)"));
 				});
 				$(".js-moderator-button").removeClass("g-hidden").click(function(e) {
 					current_id = $("img", this).attr("alt");
-					$.getJSON(location.protocol + "://"+ location.host +"/mod/getPost/"+ current_id +"/" , function(data, status) {
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/getPost/"+ current_id +"/" , function(data, status) {
 						if (status != "error" && data) {
 							$("#mod_pinned img")  .css({opacity: data.pinned == true ?   1 : .5});
 							$("#mod_rated img")   .css({opacity: data.rated == true ?    1 : .5});
@@ -414,7 +414,7 @@
 			$("#comment_form_error").html("");
 			$("#comment_form input[type=submit]").attr("disabled", "disabled");
 			$.post(
-				location.protocol + "://"+ location.host +"/news/res/"+ id +"/add_comment/",
+				location.protocol + "//"+ location.host +"/news/res/"+ id +"/add_comment/",
 				{
 					"post_id":   $("#comment_form input[name=post_id]").val(),
 					"text":      $("#comment_form textarea").val(),
@@ -436,13 +436,13 @@
 								error_strings.push(result.validationResults[field]);
 							$("#comment_form_error").html(error_strings.join(", "));
 							$("#comment_form input[name=captcha]").val("");
-							$.get(location.protocol + "://"+ location.host +"/news/res/"+ id +"/");
+							$.get(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
 							$("#captchaimage").attr('src',$("#captchaimage").attr('src')+'&u=n');
 							return false;
 						}
 						$("#comment_form textarea").val("");
 						$("#comment_form input[name=captcha]").val("");
-						$.get(location.protocol + "://"+ location.host +"/news/res/"+ id +"/");
+						$.get(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
 						$("#captchaimage").attr('src',$("#captchaimage").attr('src')+'&u=n');
 					}
 				},
@@ -451,7 +451,7 @@
 		};
 		var writing, waiting, writingTimeout = null, _title = document.title,
 		   statusReading = function() {
-			$.getJSON(location.protocol + "://"+ location.host +"/news/res/"+ id +"/stats/?writing=0");
+			$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/stats/?writing=0");
 			writing = false;
 		};
 		var scrollingInterval = null,
@@ -509,7 +509,7 @@
 						commentPreview(tip, true);
 					} else {
 						var link_ = this;
-						$.getJSON(location.protocol + "://"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
+						$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
 									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -589,7 +589,7 @@
 		});
 
 		$(".js-next-link").click(function() {
-			location.href = location.protocol + "://"+ location.host +"/news/all/new/";
+			location.href = location.protocol + "//"+ location.host +"/news/all/new/";
 			return false;
 		});
 		
@@ -621,7 +621,7 @@
 		$("#comment_form_text")
 			.bind("keyup", function(e) {
 				if (!writing) {
-					$.getJSON(location.protocol + "://"+ location.host +"/news/res/"+ id +"/stats/?writing=1");
+					$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/stats/?writing=1");
 					writing = true;
 				}
 
@@ -633,7 +633,7 @@
 				scrollEnable();
 			})
 			.bind("blur", function() {
-				$.getJSON(location.protocol + "://"+ location.host +"/news/res/"+ id +"/stats/?writing=0");
+				$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/stats/?writing=0");
 				writing = false;
 				scrollDisable();
 			})
@@ -670,7 +670,7 @@
 				    });
 			    }
 			    commentPreview(node);
-			    $.getJSON(location.protocol + "://"+ location.host +"/news/res/"+ id +"/");
+			    $.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
 		});
 		x.subscribe("post_"+ id, "remove_post_comment", function(data) {
 			$("#comment_" + data.id).slideUp(500);
@@ -696,7 +696,7 @@
 		    if (params == false)  {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "://"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
+				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
 				    return false;
 			    });
 	        }
@@ -705,7 +705,7 @@
 		    if (params == false)  {
 			    $(".js-setusercaptcha-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "://"+ location.host +"/mod/setUserCaptcha/"+ comment_id +"/");
+				    $.getJSON(location.protocol + "//"+ location.host +"/mod/setUserCaptcha/"+ comment_id +"/");
 				    return false;
 			    });
 	        }
@@ -748,7 +748,7 @@
 						commentPreview(tip, true);
 					} else {
 						var link_ = this;
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
 									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -791,7 +791,7 @@
 
 		if (!page) {
 			x.subscribe("board_global", "add_post_comment", function(data) {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
 						var node = $(template("template_comment", data));
 						$("#placeholder_comment").prepend(node);
 						node.slideUp(0).slideDown(300);
@@ -804,7 +804,7 @@
 							$(".js-remove-button", node).removeClass("g-hidden").click(function() {
 								var full_id = $("img", this).attr("alt").split("/", 2);
 								var board = full_id[0], comment_id = full_id[1];
-								$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
+								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
 
 								return false;
 							});
@@ -823,7 +823,7 @@
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var full_id = $("img", this).attr("alt").split("/", 2);
 				    var board = full_id[0], comment_id = full_id[1];
-				    $.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
+				    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
 
 				    return false;
 			    });
@@ -870,9 +870,9 @@
 			var img = $("img", this);
 			$.getJSON(this.href, function(data, status) {
 				if (data.favorite == true)
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-true.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
 				else
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-false.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
 			});
 			return false;
 		});
@@ -911,7 +911,7 @@
 						commentPreview(tip, true);
 					} else {
 						var link_ = this;
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
 									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -948,7 +948,7 @@
 
 			if (postloader[board +"_"+ id] && postloader[board +"_"+ id].length)
 			{
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {id: postloader[board +"_"+ id]}, function(data) {
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[board +"_"+ id]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
 				    		$("#placeholder_comment_"+ board +"_"+ id).append(node);
@@ -966,7 +966,7 @@
 			var full_id = $(this).attr("name").split("/", 2);
 			var nm = full_id[1], board = full_id[0];
 
-			$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
+			$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
 				$("#placeholder_comment_"+ board +"_"+ nm).html("");				
 				for(var i in data) {
 					var node = $(template("template_comment", data[i]));
@@ -985,7 +985,7 @@
 					return false;
 
 				if (updateMode && updateThread == data.board_id +"_"+ data.parent_id) {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
 						var node = $(template("template_comment", data));
 						$("#placeholder_comment_"+ data.board_id +"_"+ data.parent_id).append(node);
 						node.slideUp(0).slideDown(300);
@@ -1093,7 +1093,7 @@
 
 			if (postloader[updateThread] && postloader[updateThread].length)
 			{
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
 					    	$("#placeholder_comment_"+ updateThread).append(node);
@@ -1111,20 +1111,20 @@
 			
 			$("#comment_form")
 				.attr("target", "board_form_iframe")
-				.attr("action", location.protocol + "://"+ location.host +"/"+ board +"/createPostAjaxForm/")
+				.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
 				.submit(function() {
 					$("#comment_form input[type=submit]").attr("disabled", "disabled");
 				});
 
 			var statusReading = function(id) {
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
 				writing = false;
 			};
 
 			$("#comment_form_text")
 				.bind("keyup", function(e) {
 					if (!writing) {
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
 						writing = true;
 					}
 
@@ -1133,7 +1133,7 @@
 					e.stopPropagation();
 				})
 				.bind("blur", function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
 					writing = false;
 				})
 				.bind("keyup", function(e) {
@@ -1189,7 +1189,7 @@
 			}
 
 			$("#board_form").get(0).reset();
-			location.href = location.protocol + "://"+ location.host +"/"+ board +"/res/"+ data.id +"/";
+			location.href = location.protocol + "//"+ location.host +"/"+ board +"/res/"+ data.id +"/";
 			throw void(0);
 		};
 
@@ -1236,19 +1236,19 @@
 			var img = $("img", this);
 			$.getJSON(this.href, function(data, status) {
 				if (data.favorite == true)
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-true.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
 				else
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-false.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
 			});
 			return false;
 		});
 
 		$(".js-subscribe-checkbox").bind("change", function() {
 			if ($(this).is(":checked")) {
-				$.getJSON(location.protocol + "://"+ location.host +"/service/subscribeBoard/"+ board +"/");
+				$.getJSON(location.protocol + "//"+ location.host +"/service/subscribeBoard/"+ board +"/");
 				console.log("subscibed");
 			} else {
- 				$.getJSON(location.protocol + "://"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
+ 				$.getJSON(location.protocol + "//"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
 			}
 		});
 
@@ -1285,7 +1285,7 @@
 						commentPreview(tip, true);
 					} else {
 						var link_ = this;
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
 									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -1321,7 +1321,7 @@
 
 			if (postloader[nm] && postloader[nm].length)
 			{
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
 				    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
@@ -1338,7 +1338,7 @@
 		$(".js-thread-load").click(function() {
 			var nm = $(this).attr("name");
 
-			$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
+			$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
 				$("#placeholder_comment_"+ board +"_"+ nm).html("");				
 				for(var i in data) {
 					var node = $(template("template_comment", data[i]));
@@ -1389,7 +1389,7 @@
 				    document.title = " ★ " + _title + " ★ ";
 
 				if (updateMode && data.parent_id == updateThread) {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
 						var node = $(template("template_comment", data));
 						$("#placeholder_comment_"+ board +"_"+ data.parent_id).append(node);
 						node.slideUp(0).slideDown(300);
@@ -1447,7 +1447,7 @@
 
 		$("#board_form")
 			.attr("target", "board_form_iframe")
-			.attr("action", location.protocol + "://"+ location.host +"/"+ board +"/createAjaxForm/")
+			.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createAjaxForm/")
 			.submit(function() {
 				if ($("input[name=captcha]").val().length == 0) {
 					$("#board_captcha").dialog("open");
@@ -1510,7 +1510,7 @@
 
 			if (postloader[updateThread] && postloader[updateThread].length)
 			{
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
 					    	$("#placeholder_comment_"+ board +"_"+ updateThread).append(node);
@@ -1528,20 +1528,20 @@
 			
 			$("#comment_form")
 				.attr("target", "board_form_iframe")
-				.attr("action", location.protocol + "://"+ location.host +"/"+ board +"/createPostAjaxForm/")
+				.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
 				.submit(function() {
 					$("#comment_form input[type=submit]").attr("disabled", "disabled");
 				});
 
 			var statusReading = function(id) {
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
 				writing = false;
 			};
 
 			$("#comment_form_text")
 				.bind("keyup", function(e) {
 					if (!writing) {
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
 						writing = true;
 					}
 
@@ -1550,7 +1550,7 @@
 					e.stopPropagation();
 				})
 				.bind("blur", function() {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
 					writing = false;
 				})
 				.bind("keyup", function(e) {
@@ -1615,7 +1615,7 @@
 			    link.click(function() {
 				    var title       = prompt("title", $(".b-board-header_name h1").text());
 				    var description = prompt("description", $(".b-board-header_desc").text());
-				    $.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
+				    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
 			    });
 			    $(".b-board-header_options").append(link);
 	        }
@@ -1647,7 +1647,7 @@
 
 		var writing, waiting, writingTimeout = null, _title = document.title,
 		   statusReading = function() {
-			$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+			$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
 			writing = false;
 		};
 		var scrollingInterval = null,
@@ -1705,7 +1705,7 @@
 						commentPreview(tip, true);
 					} else {
 						var link_ = this;
-						$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
 									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -1758,9 +1758,9 @@
 			var img = $("img", this);
 			$.getJSON(this.href, function(data, status) {
 				if (data.favorite == true)
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-true.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
 				else
-					$(img).attr("src", location.protocol + "://"+ location.host +"/ico/favorites-false.png");
+					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
 			});
 			return false;
 		});
@@ -1807,7 +1807,7 @@
 
 		$("#comment_form")
 			.attr("target", "comment_form_iframe")
-			.attr("action", location.protocol + "://"+ location.host +"/"+ board +"/createPostAjaxForm/")
+			.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
 			.submit(function() {
 				$("#comment_form input[type=submit]").attr("disabled", "disabled");
 			});
@@ -1815,7 +1815,7 @@
 		$("#comment_form_text")
 			.bind("keyup", function(e) {
 				if (!writing) {
-					$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
 					writing = true;
 				}
 
@@ -1827,7 +1827,7 @@
 				scrollEnable();
 			})
 			.bind("blur", function() {
-				$.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
 				writing = false;
 				scrollDisable();
 			})
@@ -1928,7 +1928,7 @@
                     .removeClass("g-hidden").click(function() {
 				        var comment_id = $("img", this).attr("alt"),
                             delall     = confirm('Удалить все ответы от автора?');
-				        $.getJSON(location.protocol + "://"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
+				        $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
 				        return false;
 			        });
 	        }
@@ -1950,7 +1950,7 @@
 			}
 		},
 		   reloadPage = function() {
-			$.getJSON(location.protocol + "://"+ location.host +"/live/", function(data, status) {
+			$.getJSON(location.protocol + "//"+ location.host +"/live/", function(data, status) {
 				if (status != "error") {
 					if (data.length == 0) {
 						$("#no_entries").removeClass("g-hidden");
@@ -1967,10 +1967,10 @@
 			});
 		}, filter = true;
 
-		$.getJSON(location.protocol + "://"+ location.host +"/live/set_filter/", function(data) {filter = data});
+		$.getJSON(location.protocol + "//"+ location.host +"/live/set_filter/", function(data) {filter = data});
 
 		$("#filter_link_form").submit(function() {
-			$.getJSON(location.protocol + "://"+ location.host +"/live/set_filter/?"+ $("#filter_link_form").serialize(), function(data) {
+			$.getJSON(location.protocol + "//"+ location.host +"/live/set_filter/?"+ $("#filter_link_form").serialize(), function(data) {
 				reloadPage();
 				filter = data;
 			});
@@ -1980,7 +1980,7 @@
 		$("#add_link_form input[type=submit]").click(function() {
 			$("#live_form_error").html("");
 			$.post(
-				location.protocol + "://"+ location.host +"/live/add/",
+				location.protocol + "//"+ location.host +"/live/add/",
 				{
 					"link": $("#add_link_form input[name=link]").val(),
 					"description": $("#add_link_form input[name=description]").val()
@@ -2013,7 +2013,7 @@
 		});
 
 		$(".js-open-right-panel").click(function() {
-            $.getJSON(location.protocol + "://"+ location.host +"/live/linksPanel/", {status: "on"}, function(data, status) {
+            $.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "on"}, function(data, status) {
                 location.reload();
             });
             return false;
@@ -2053,7 +2053,7 @@
 		    if (params) {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var link_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "://"+ location.host +"/mod/removeOnlineLink/"+ link_id +"/");
+				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removeOnlineLink/"+ link_id +"/");
 				    return false;
 			    });
 	        }
@@ -2082,7 +2082,7 @@
 					previewTimeout    = clearTimeout(previewTimeout);
 
 					var id = $(this).text().replace(/\D/g, ""), link_ = this;
-					$.getJSON(location.protocol + "://"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
+					$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 						if (status != "error" && data != false) {
 							var tip = $(template("template_comment", data))
 								       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -2123,7 +2123,7 @@
 		commentPreview(document);
 
 		x.subscribe("post_last_comments", "add_post_comment", function(data) {
-		    $.getJSON(location.protocol + "://"+ location.host +"/news/res/"+ data.post_id +"/getComment/"+ data.id, {"title" : 1}, function(data) {
+		    $.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ data.post_id +"/getComment/"+ data.id, {"title" : 1}, function(data) {
 			    var node = $(template("template_comment", data));
 			    $("#placeholder_comment").prepend(node);
 			    node.slideUp(0).slideDown(400);
@@ -2143,7 +2143,7 @@
 		    if (params) {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "://"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
+				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
 				    return false;
 			    });
 	        }
@@ -2171,7 +2171,7 @@
 					previewTimeout    = clearTimeout(previewTimeout);
 
 					var id = $(this).text().replace(/\D/g, ""), link_ = this;
-					$.getJSON(location.protocol + "://"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
+					$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 						if (status != "error" && data != false) {
 							var tip = $(template("template_comment", data))
 								       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
@@ -2218,7 +2218,7 @@
 	            });
 
 	            $.post(
-				    location.protocol + "://"+ location.host +"/chat/favorites/",
+				    location.protocol + "//"+ location.host +"/chat/favorites/",
 				    {
 					    "favorites": favorites.join(",")
 				    }
@@ -2248,7 +2248,7 @@
 	            favorites.push(matches[0]);
 
 	            $.post(
-				    location.protocol + "://"+ location.host +"/chat/favorites/",
+				    location.protocol + "//"+ location.host +"/chat/favorites/",
 				    {
 					    "favorites": favorites.join(",")
 				    },
@@ -2297,7 +2297,7 @@
 			$("#chat_form input, #chat_form textarea").removeClass("g-input-error");
 
 			$.post(
-				location.protocol + "://"+ location.host +"/chat/add/",
+				location.protocol + "//"+ location.host +"/chat/add/",
 				{
 					"title":       $("#chat_form [name=title]").val(),
 					"controlword": $("#chat_form [name=controlword]").val(),
@@ -2419,7 +2419,7 @@
 	                $("#placeholder_messages").append(template("template_message_password", {}));
 	                $("#password_form").submit(function() {
 	                    $.post(
-	                        location.protocol + "://"+ location.host +"/chat/"+ id +"/",
+	                        location.protocol + "//"+ location.host +"/chat/"+ id +"/",
 	                        {
 	                            "command":  "checkpassword",
 	                            "password": $(".js-room-password").val()
@@ -2446,7 +2446,7 @@
 
 	            },
 	            enterChat = function() {
-	                $.getJSON(location.protocol + "://"+ location.host +"/chat/"+ id +"/", {"command": "welcome"}, function(data, status) {
+	                $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "welcome"}, function(data, status) {
 	                    if (status !== "error")
 	                    {
 	                        addInfoMessage("Добро пожаловать в комнату <b>«"+ data.title +'»</b> (<a href="' + location.host + '://'+ location.host +'/chat/log/'+ id +'/">лог комнаты</a>). <br />Описание: '+ data.description +'<br /><a href="/help/rules/#chat">Правила раздела</a>, <a href="/help/markup/">разметка сообщений</a>.');
@@ -2501,7 +2501,7 @@
 		                    $("#message_form").submit(function() {
 		                        $(".js-message-submit").attr("disabled", "disabled");
 		                        $.post(
-	                                location.protocol + "://"+ location.host +"/chat/"+ id +"/",
+	                                location.protocol + "//"+ location.host +"/chat/"+ id +"/",
 	                                {
 	                                    "command":  "message",
 	                                    "password":  password || '',
@@ -2523,7 +2523,7 @@
 		                    });
 
 		                    setInterval(function() {
-		                        $.getJSON(location.protocol + "://"+ location.host +"/chat/"+ id +"/", {"command": "ping"});
+		                        $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "ping"});
 		                    }, 1000 * 30);
 	                    }
 	                });
@@ -2534,7 +2534,7 @@
 	                });
 	            };
 
-	        $.getJSON(location.protocol + "://"+ location.host +"/chat/"+ id +"/", {"command": "enter"}, function(data, status) {
+	        $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "enter"}, function(data, status) {
 	            if (status !== "error")
 	            {
 	                if (data == null)
@@ -2553,7 +2553,7 @@
 	x.addPageProcessor("*", function() {
 		var to = null,
 		    reloadOnlineLinks = function() {
-			$.getJSON(location.protocol + "://"+ location.host +"/live/?num=12", function(data, status) {
+			$.getJSON(location.protocol + "//"+ location.host +"/live/?num=12", function(data, status) {
 				if (status != "error") {
 					if (data.length == 0) {
 						$("#placeholder_link_panel .b-live-entry").remove();
@@ -2584,7 +2584,7 @@
 				$("#stats_block").stop(true, true).show(500);
 			})
 			.mouseenter(function() {
-				$.getJSON(location.protocol + "://"+ location.host +"/service/getGlobalStats/", {}, function(data, status) {
+				$.getJSON(location.protocol + "//"+ location.host +"/service/getGlobalStats/", {}, function(data, status) {
 				    $("#stats_online").html(data["global_online"]);
 			        $("#stats_hosts").html(data["global_unique"]);
 			        $("#stats_posts").html(data["global_posts"]);
@@ -2606,7 +2606,7 @@
 			});
 
 		$(".js-close-right-panel").click(function() {
-		    $.getJSON(location.protocol + "://"+ location.host +"/live/linksPanel/", {status: "off"}, function(data, status) {
+		    $.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "off"}, function(data, status) {
 		        $(".l-right-panel-wrap").remove();
 		    });
 		    return false;
@@ -2893,7 +2893,7 @@
 
 	window.authorize = function(key, hash)
 	{
-		$.post(location.protocol + "://"+ location.host +"/auth", {key: key, hash: hash || 0}, function(data, status) {
+		$.post(location.protocol + "//"+ location.host +"/auth", {key: key, hash: hash || 0}, function(data, status) {
 			if (status != "error") {
 				if (data.authorized == true) {
 					x.callPageProcessors(":moderator", !!hash);

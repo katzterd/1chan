@@ -389,14 +389,15 @@ class ControlModel
 	 */
 	public static function CheckLinkfilter($test_link)
 	{
-		$links = self::GetLinkfilter();
-
-		if($links && !is_empty($links)) {
-            foreach($links as $link)
-                if (preg_match('#^'.$link.'#i', urldecode($test_link)))
-                    return true;
-        }
-		
+		if(isset($test_link) && $test_link) {
+			$links = self::GetLinkfilter();
+			
+			if($links && !empty($links)) {
+				foreach($links as $link)
+					if ($link != '' && preg_match('#^'.$link.'#i', urldecode($test_link)))
+						return true;
+			}
+		}
 		return false;
 	}
 

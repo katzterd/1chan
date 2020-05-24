@@ -42,7 +42,7 @@ class Blog_BlogPostsModel
 			'title'      => $params['title'],
 			'text'       => $params['text'],
 			'text_full'  => $params['text_full'],
-			'rate'       => $params['rate']
+			'rate'       => isset($params['rate']) ? $params['rate'] : 0
 		);
 
 		if (HomeBoardHelper::existsBoard($params['homeboard']))

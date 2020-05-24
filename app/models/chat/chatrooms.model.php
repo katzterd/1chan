@@ -50,7 +50,7 @@ class Chat_ChatRoomsModel
             'title'       => 'Общая комната',
             'description' => 'Свободное общение',
             'password'    => '',
-            'controlword' => 'yaebusobak',
+            'controlword' => COMMON_ROOM_CONTROLWORD,
             'public'      => true
         );
 

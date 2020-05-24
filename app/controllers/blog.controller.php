@@ -306,7 +306,7 @@ class BlogController extends BaseController
 			if ($validator -> isValid())
 			{
 				$search = new SphinxClient();
-       			$search -> SetServer('localhost', 3312);
+       			$search -> SetServer(SPHINX_HOST, SPHINX_PORT);
 
        			switch($_POST['order'])
        			{

@@ -1,6 +1,5 @@
 /1chan.conf
-/app/config.php
-/app/models/chat/chatrooms.model.php
+/instance-config.php
 /scripts/cron.sh
 /www/uploads
 /app/views/static

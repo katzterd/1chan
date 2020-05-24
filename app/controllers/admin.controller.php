@@ -139,7 +139,7 @@ class AdminController extends Controller
 			else
 			{
 				$search = new SphinxClient();
-       			$search -> SetServer('localhost', 3312);
+       			$search -> SetServer(SPHINX_HOST, SPHINX_PORT);
         		$search -> SetSortMode(SPH_SORT_EXTENDED, '@relevance DESC, created_at DESC, @id DESC');
 				$search -> SetLimits(0, 60);
 				$search -> SetWeights ( array ('title' => 40, 'text' => 20, 'text_full' => 10 ) );

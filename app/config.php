@@ -2,10 +2,10 @@
 return array(
 	'database' => array(
 		'engine' => 'mysql',
-		'host'   => '127.0.0.1',
-		'name'   => '<DB_NAME>',
-		'user'   => '<DB_USER>',
-		'pass'   => '<DB_PASSWORD>'
+		'host'   => SQL_HOST,
+		'name'   => SQL_NAME,
+		'user'   => SQL_USER,
+		'pass'   => SQL_PASSWORD
 	),
 	'routes' => array(
 		'/admin' => array(
@@ -385,8 +385,8 @@ return array(
 	'captcha' => array(
 //		'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
 //		'allowed_symbols'  => '23456789abcdeghkmnpqsuvxyz',
-                'alphabet'         => '0123456789',
-                'allowed_symbols'  => '23456789',
+		'alphabet'         => '0123456789',
+		'allowed_symbols'  => '23456789',
 		'fontsdir'         => 'fonts',
 		'width'            => 160,
 		'height'           => 50,

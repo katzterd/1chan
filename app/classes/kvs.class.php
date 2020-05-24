@@ -29,7 +29,7 @@ class KVS
 	{
 		if (is_null($this -> connection)) {
 			$this -> connection = new Redis();
-			$this -> connection -> connect('127.0.0.1', 6379);
+			$this -> connection -> connect(REDIS_HOST, REDIS_PORT);
 		}
 
 		return $this -> connection;

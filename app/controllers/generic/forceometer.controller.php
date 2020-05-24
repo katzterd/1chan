@@ -12,7 +12,7 @@ class Generic_ForceometerController extends BaseController
             $query = $this['query'] = $_GET['query'];
             
             $search = new SphinxClient();
-       	    $search -> SetServer('localhost', 3312);
+       	    $search -> SetServer(SPHINX_HOST, SPHINX_PORT);
 
             $search -> SetGroupBy('created_at', SPH_GROUPBY_MONTH);
 

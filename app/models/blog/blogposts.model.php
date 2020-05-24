@@ -15,13 +15,20 @@ class Blog_BlogPostsModel
 		$text_original = $params['text'];
 
 		$params['title']     = TexyHelper::typo($params['title']);
-		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
-		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
+		if ($session->isAdminSession()) {
+			if (!PDOQuery::toTinyint($params['html'])) {
+				$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+				$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+			}
+		} else {
+			$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+			$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+		}
 
 		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
 		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
-		$params['rated']	= PDOQuery::toTinyint($params['rated']);
 		$params['closed']	= PDOQuery::toTinyint($params['closed']);
+		$params['rated']	= PDOQuery::toTinyint($params['rated']);
 		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
 		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
 
@@ -34,7 +41,8 @@ class Blog_BlogPostsModel
 			'link'       => htmlspecialchars($params['link']),
 			'title'      => $params['title'],
 			'text'       => $params['text'],
-			'text_full'  => $params['text_full']
+			'text_full'  => $params['text_full'],
+			'rate'       => $params['rate']
 		);
 
 		if (HomeBoardHelper::existsBoard($params['homeboard']))
@@ -264,8 +272,8 @@ class Blog_BlogPostsModel
 
 		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
 		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
-		$params['rated']	= PDOQuery::toTinyint($params['rated']);
 		$params['closed']	= PDOQuery::toTinyint($params['closed']);
+		$params['rated']	= PDOQuery::toTinyint($params['rated']);
 		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
 		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
 
@@ -274,17 +282,24 @@ class Blog_BlogPostsModel
 			'link'       => $params['link'],
 			'title'      => $params['title'],
 			'text'       => $params['text'],
-			'text_full'  => $params['text_full']
+			'text_full'  => $params['text_full'],
 		);
 
+		if ($params['rate'])
+		{
+			$record = array_merge($record, array(
+				'rate' => $params['rate']
+			));
+		}
+		
 		if (!$safeMode)
 		{
 			$record = array_merge($record, array(
 				'ip'              => $params['ip'],
 				'hidden'          => $params['hidden'],
 				'pinned'          => $params['pinned'],
-				'rated'           => $params['rated'],
 				'closed'          => $params['closed'],
+				'rated'           => $params['rated'],
 				'rateable'        => $params['rateable'],
 				'bumpable'        => $params['bumpable'],
 				'special_comment' => $params['special_comment']

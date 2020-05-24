@@ -26,6 +26,7 @@
 								<p><label><input type="checkbox" name="closed"<?php if($post['closed']): ?> checked="checked"<?php endif; ?>/> Закрыта</label></p>
 								<p><label><input type="checkbox" name="rateable"<?php if($post['rateable']): ?> checked="checked"<?php endif; ?> /> Оцениваема</label></p>
 								<p><label><input type="checkbox" name="bumpable"<?php if($post['bumpable']): ?> checked="checked"<?php endif; ?> /> Поднимаемая</label></p>
+								<p><label>Рейтинг:</label><input name="rate" type="number" class="text-small" value="<?php echo $post['rate']; ?>" /></p>
 								<p><label>Специальный комментарий:</label><input name="special_comment" type="text" class="text-long" value="<?php echo $post['special_comment']; ?>" /></p>
 							</fieldset>
 							<fieldset>

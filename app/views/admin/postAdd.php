@@ -24,9 +24,11 @@
 								<p><label><input type="checkbox" name="closed" /> Закрыта</label></p>
 								<p><label><input type="checkbox" name="rateable" checked="checked" /> Оцениваема</label></p>
 								<p><label><input type="checkbox" name="bumpable" checked="checked" /> Поднимаемая</label></p>
+								<p><label>Рейтинг:</label><input name="rate" type="number" class="text-small" value="0" /></p>
 								<p><label>Специальный комментарий:</label><input name="special_comment" type="text" class="text-long" /></p>
 							</fieldset>
 							<fieldset>
+								<p><label><input type="checkbox" name="html" checked="checked" /> Использовать чистый HTML</label></p>
 								<input type="submit" value="Добавить запись" />
 							</fieldset>
 						</form>

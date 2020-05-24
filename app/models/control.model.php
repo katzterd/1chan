@@ -317,6 +317,11 @@ class ControlModel
 			$cache    = KVS::getInstance();
 			$settings = unserialize($cache -> get(__CLASS__, null, 'settings'));
 		}
+		foreach ($settings as $name => &$value) {
+			if (preg_match('/(count|length|interval)/', $name)) {
+				$value = is_numeric($value) ? $value : 0;
+			}
+		}
 		return $settings;
 	}
 
@@ -325,6 +330,11 @@ class ControlModel
 	 */
 	public static function SetSettings($mods = array())
 	{
+		foreach ($mods as $name => &$value) {
+			if (preg_match('/(count|length|interval)/', $name)) {
+				$value = is_numeric($value) ? $value : 0;
+			}
+		}
 		$cache = KVS::getInstance();
 		return $cache -> set(__CLASS__, null, 'settings', serialize($mods));
 	}

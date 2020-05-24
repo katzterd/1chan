@@ -517,8 +517,8 @@
 									       .attr('id', '')
 									       .css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
-								if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html('<a href="' + location.host + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> (<em>открывающий пост</em>)')
-								else tip.find(".js-comment-id").prepend('<a href="' + location.host + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> ');
+								if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> (<em>открывающий пост</em>)')
+								else tip.find(".js-comment-id").prepend('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> ');
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -2449,7 +2449,7 @@
 	                $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "welcome"}, function(data, status) {
 	                    if (status !== "error")
 	                    {
-	                        addInfoMessage("Добро пожаловать в комнату <b>«"+ data.title +'»</b> (<a href="' + location.host + '//'+ location.host +'/chat/log/'+ id +'/">лог комнаты</a>). <br />Описание: '+ data.description +'<br /><a href="/help/rules/#chat">Правила раздела</a>, <a href="/help/markup/">разметка сообщений</a>.');
+	                        addInfoMessage("Добро пожаловать в комнату <b>«"+ data.title +'»</b> (<a href="' + location.protocol + '//'+ location.host +'/chat/log/'+ id +'/">лог комнаты</a>). <br />Описание: '+ data.description +'<br /><a href="/help/rules/#chat">Правила раздела</a>, <a href="/help/markup/">разметка сообщений</a>.');
 	                        if (data.info)
 	                            addInfoMessage(data.info);
 

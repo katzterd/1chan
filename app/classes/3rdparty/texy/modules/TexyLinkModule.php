@@ -245,13 +245,13 @@ final class TexyLinkModule extends TexyModule
 		$type = TexyLink::COMMON;
 
 		// [ref]
-		if (strlen($dest) > 1 && $dest{0} === '[' && $dest{1} !== '*') {
+		if (strlen($dest) > 1 && $dest[0] === '[' && $dest[1] !== '*') {
 			$type = TexyLink::BRACKET;
 			$dest = substr($dest, 1, -1);
 			$link = $this->getReference($dest);
 
 		// [* image *]
-		} elseif (strlen($dest) > 1 && $dest{0} === '[' && $dest{1} === '*') {
+		} elseif (strlen($dest) > 1 && $dest[0] === '[' && $dest[1] === '*') {
 			$type = TexyLink::IMAGE;
 			$dest = trim(substr($dest, 2, -2));
 			$image = $tx->imageModule->getReference($dest);

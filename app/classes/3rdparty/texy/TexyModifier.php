@@ -107,7 +107,7 @@ final class TexyModifier extends TexyObject
 				foreach (explode(' ', $s) as $value) {
 					if ($value === '') {
 						continue;
-					} elseif ($value{0} === '#') {
+					} elseif ($value[0] === '#') {
 						$this->id = substr($value, 1);
 					} else {
 						$this->classes[$value] = TRUE;

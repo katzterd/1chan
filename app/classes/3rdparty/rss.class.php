@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
 
-class rss {
+class RSS {
 
     var $rss;
     var $encoding;
@@ -54,8 +54,12 @@ class rss {
     var $path;
     var $filename;
 
-    function rss($encoding = ''){
+    public function __construct($encoding = ''){
         if(!empty($encoding)){ $this->encoding = $encoding; }
+    }
+    
+    public function rss($encoding = ''){
+        self::__construct($encoding = '');
     }
 
     function channel($title, $link, $description){

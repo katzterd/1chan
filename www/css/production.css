@@ -341,11 +341,8 @@ a.g-strike {
     width: 100%;
     padding: 15px 0;
 }
-.b-header-block.m-mascot-news {
-    background: url(/img/mascot.png) bottom center no-repeat;
-}
-.b-header-block.m-mascot-fav {
-    background: url(/img/mascot.png) top center no-repeat;
+.b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
+    background: url(/img/mascot_hazmat.png) bottom center no-repeat;
 }
 .b-header-block.m-mascot-alone {
     background: url(/img/mascot_keany.png) top center no-repeat;
@@ -353,6 +350,8 @@ a.g-strike {
 }
 .b-header-block.m-mascot-operate {
     background: url(/img/mascot_devarped.png) top center no-repeat;
+    padding: 13.5px 0;
+    margin-top: 1.5px;
 }
 .b-header-block .b-header-block_b-sharelink:link,
 .b-header-block .b-header-block_b-sharelink:visited,

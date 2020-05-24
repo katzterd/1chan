@@ -5,7 +5,7 @@
 // error_reporting(0);
 // ini_set('display_errors', 'On');
 // error_reporting(E_ALL | E_STRICT);
-error_reporting(E_WARNING);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 /**
  * Запускаем фреймворк:

@@ -31,7 +31,7 @@
 						</a>
 
 					</div>
-					<?php $postlength = substr_count($post['text'], "<p>") + substr_count($post['text'], "<br" + (substr_count($post['text'], "<h1>") * 2); ?>
+					<?php $postlength = substr_count($post['text'], "<p>") + substr_count($post['text'], "<br") + (substr_count($post['text'], "<h1>") * 2); ?>
 					<div class="b-blog-entry_b-body g-clearfix <?php if ($postlength > 10): ?>fold<?php endif; ?>">
 							<?php echo($post['text']); ?>
 						<?php if (strlen($post['text_full']) > 0): ?><p><a href="/news/res/<?php echo($post['id']); ?>/">Читать дальше</a></p><?php endif; ?>

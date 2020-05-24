@@ -16,7 +16,7 @@
 
 # See kcaptcha_config.php for customization
 
-class KCaptcha {
+class KCAPTCHA {
 
 	// generates keystring and image
 	public function __construct() {

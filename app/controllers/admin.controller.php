@@ -659,7 +659,7 @@ class AdminController extends Controller
 	/**
 	 * Выбор лейаута:
 	 */
-	public function process(Template $template)
+	public function process($template)
 	{
 		return $template -> render($this -> viewParams, 'admin_layout');
 	}

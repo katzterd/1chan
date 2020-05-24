@@ -6,7 +6,7 @@
                     	<table cellpadding="0" cellspacing="0">
 							<td>Нет категорий для отображения.</td>
                     	<?php else: ?>
-                    	<form action="/admin/postCategoryResort?id=<?php echo($cat['pos']); ?>" method="post">
+                    	<form action="/admin/postCategoryResort" method="post">
                     	<table cellpadding="0" cellspacing="0">
                     	<?php $i = 0; ?>
                     	<?php foreach($cats as $cat): ?>

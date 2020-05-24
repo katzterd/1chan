@@ -381,9 +381,11 @@ class ControlModel
 	{
 		$links = self::GetLinkfilter();
 
-		foreach($links as $link)
-			if (preg_match('#^'.$link.'#i', urldecode($test_link)))
-				return true;
+		if($links && !is_empty($links)) {
+            foreach($links as $link)
+                if (preg_match('#^'.$link.'#i', urldecode($test_link)))
+                    return true;
+        }
 		
 		return false;
 	}

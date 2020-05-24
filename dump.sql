@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `1chan_category`;
 CREATE TABLE `1chan_category` (
   `id` int(32) NOT NULL AUTO_INCREMENT,
   `public` tinyint(1) NOT NULL DEFAULT '0',
-  `pos` int(32) NOT NULL,
+  `pos` int(32) NOT NULL DEFAULT '1',
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `posts` int(32) NOT NULL,
+  `posts` int(32) NOT NULL DEFAULT '0',
   `code` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`(127)),

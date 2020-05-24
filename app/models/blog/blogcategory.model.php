@@ -14,7 +14,7 @@ class Blog_BlogCategoryModel
 			'title' => $params['title'],
 			'description' => $params['description'],
 			'code'  => $params['code'],
-			'public' => $params['public'] ? 1 : 0
+			'public' => PDOQuery::toTinyint($params['public'])
 		);
 
 		$dbh = PDOQuery::getInstance();
@@ -35,7 +35,7 @@ class Blog_BlogCategoryModel
 			'title' => $params['title'],
 			'description' => $params['description'],
 			'code'  => $params['code'],
-			'public' => $params['public'] ? 1 : 0
+			'public' => PDOQuery::toTinyint($params['public'])
 		);
 
 		$dbh = PDOQuery::getInstance();

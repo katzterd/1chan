@@ -18,14 +18,12 @@ class Blog_BlogPostsModel
 		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
 		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
 
-		// грязный хак для свежих MariaDB (?), не воспринимающих пустые поля как фолс
-		$params['ip']		= (@$params['ip'] ? "1" : "0");
-		$params['hidden']	= (@$params['hidden'] ? "1" : "0");
-		$params['pinned']	= (@$params['pinned'] ? "1" : "0");
-		$params['rated']	= (@$params['rated'] ? "1" : "0");
-		$params['closed']	= (@$params['closed'] ? "1" : "0");
-		$params['rateable']	= (@$params['rateable'] ? "1" : "0");
-		$params['bumpable']	= (@$params['bumpable'] ? "1" : "0");
+		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
+		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
+		$params['rated']	= PDOQuery::toTinyint($params['rated']);
+		$params['closed']	= PDOQuery::toTinyint($params['closed']);
+		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
+		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
 
 		$record = array(
 			'id'         => $id,
@@ -264,17 +262,12 @@ class Blog_BlogPostsModel
 			Blog_BlogCategoryModel::CountCategory($params['category'], true);
 		}
 
-		$params['title']     = TexyHelper::typo($params['title']);
-		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
-		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
-
-		$params['ip']		= ($params['ip'] ? "1" : "0");
-		$params['hidden']	= ($params['hidden'] ? "1" : "0");
-		$params['pinned']	= ($params['pinned'] ? "1" : "0");
-		$params['rated']	= ($params['rated'] ? "1" : "0");
-		$params['closed']	= ($params['closed'] ? "1" : "0");
-		$params['rateable']	= ($params['rateable'] ? "1" : "0");
-		$params['bumpable']	= ($params['bumpable'] ? "1" : "0");
+		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
+		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
+		$params['rated']	= PDOQuery::toTinyint($params['rated']);
+		$params['closed']	= PDOQuery::toTinyint($params['closed']);
+		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
+		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
 
 		$record = array(
 			'category'   => $params['category'],

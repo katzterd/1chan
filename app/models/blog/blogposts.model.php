@@ -16,7 +16,12 @@ class Blog_BlogPostsModel
 
 		$params['title']     = TexyHelper::typo($params['title']);
 		if ($session->isAdminSession()) {
-			if (!PDOQuery::toTinyint($params['html'])) {
+			if (isset($params['html'])) {
+				if (!PDOQuery::toTinyint($params['html'])) {
+					$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+					$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+				}
+			} else {
 				$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
 				$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
 			}
@@ -25,12 +30,10 @@ class Blog_BlogPostsModel
 			$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
 		}
 
-		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
-		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
-		$params['closed']	= PDOQuery::toTinyint($params['closed']);
-		$params['rated']	= PDOQuery::toTinyint($params['rated']);
-		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
-		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
+		$tinyints = array('hidden', 'pinned', 'closed', 'rated', 'rateable', 'bumpable');
+		foreach($tinyints as $tinyint) {
+			$params[$tinyint] = isset($params[$tinyint]) ? PDOQuery::toTinyint($params[$tinyint]) : 0;
+		}
 
 		$record = array(
 			'id'         => $id,
@@ -270,12 +273,10 @@ class Blog_BlogPostsModel
 			Blog_BlogCategoryModel::CountCategory($params['category'], true);
 		}
 
-		$params['hidden']	= PDOQuery::toTinyint($params['hidden']);
-		$params['pinned']	= PDOQuery::toTinyint($params['pinned']);
-		$params['closed']	= PDOQuery::toTinyint($params['closed']);
-		$params['rated']	= PDOQuery::toTinyint($params['rated']);
-		$params['rateable']	= PDOQuery::toTinyint($params['rateable']);
-		$params['bumpable']	= PDOQuery::toTinyint($params['bumpable']);
+		$tinyints = array('hidden', 'pinned', 'closed', 'rated', 'rateable', 'bumpable');
+		foreach($tinyints as $tinyint) {
+			$params[$tinyint] = PDOQuery::toTinyint($params[$tinyint]);
+		}
 
 		$record = array(
 			'category'   => $params['category'],

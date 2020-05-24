@@ -54,7 +54,7 @@ class PDOQuery
 	/**
 	 * Обработка булевых и прочих подобных POST-запросов:
 	 */
-	public function toTinyint($string) {
+	public static function toTinyint($string) {
 		if(!isset($string)) return 0;
 		switch($string) {
 			case 'off':

@@ -662,16 +662,16 @@ class BlogController extends BaseController
 				$id = Blog_BlogPostsModel::CreatePost($_POST, true);
 				if (ControlModel::checkModrights(Blog_BlogCategoryModel::GetCategoryIdByCode($_POST['category'])))
 				{
-					if ($_POST['rated'])
+					if (isset($_POST['rated']) && $_POST['rated'])
 						Blog_BlogPostsModel::RatedPost($id, true);
 
-					if ($_POST['pinned'])
+					if (isset($_POST['pinned']) && $_POST['rated'])
 						Blog_BlogPostsModel::PinPost($id, true);
 
-					if ($_POST['notrateable'])
+					if (isset($_POST['notrateable']) && $_POST['rated'])
 						Blog_BlogPostsModel::RateablePost($id, false);
 
-					if ($_POST['closed'])
+					if (isset($_POST['closed']) && $_POST['rated'])
 						Blog_BlogPostsModel::ClosePost($id, true);
 				}
 

@@ -4,6 +4,7 @@ chdir(dirname(__FILE__));
 /**
  * Проверка статуса доступности серверов:
  */
+require '../instance-config.php';
 require '../app/classes/kvs.class.php';
 
 $cache = KVS::getInstance();

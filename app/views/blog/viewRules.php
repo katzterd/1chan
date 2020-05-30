@@ -3,7 +3,7 @@
 				<div class="b-blog-form">
 					<div class="b-static m-justify">
 						<h1>Правила и советы для постеров Одинчана</h1>
-						<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/PfYnvDL0Qcw" frameborder="0" allowfullscreen></iframe>
+						<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zecnwqXe850" frameborder="0" allowfullscreen></iframe>
 						<?php if($this -> getParameter('confirm')): ?>
 						<form action="" method="post">
 							<p>

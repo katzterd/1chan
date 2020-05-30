@@ -611,6 +611,10 @@ a.g-strike {
     font-style: italic;
     color: #8766dd;
 }
+.b-blog-entry .b-blog-entry_b-body blockquote em,
+.b-blog-entry .b-blog-entry_b-body q em {
+    font-style: regular;
+}
 .b-blog-entry .b-blog-entry_b-body blockquote.reverse {
     color: #1F8D80;
     text-align: right;
@@ -747,6 +751,10 @@ a.g-strike {
 .b-comment .b-comment_b-body q {
     font-style: italic;
     color: #8766dd;
+}
+.b-comment .b-comment_b-body blockquote em,
+.b-comment .b-comment_b-body q em {
+    font-style: regular;
 }
 .b-post-statistics {
     width: 560px;

@@ -810,6 +810,7 @@ a.g-strike {
     padding: 0.4em 20px 0.7em 0;
     overflow: auto;
     max-height: 520px;
+	overflow-wrap: anywhere;
 }
 .b-comment .b-comment_b-body h1 {
     font-size: 1.3em;

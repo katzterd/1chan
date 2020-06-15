@@ -651,6 +651,7 @@ a.g-strike {
     font-size: 0.75em;
     line-height: 1.3em;
     width: 600px;
+	overflow-wrap: anywhere;
 }
 .b-blog-entry .b-blog-entry_b-body h1 {
     font-size: 1.3em;

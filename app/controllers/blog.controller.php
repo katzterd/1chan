@@ -675,6 +675,10 @@ class BlogController extends BaseController
 						Blog_BlogPostsModel::ClosePost($id, true);
 				}
 
+				if (isset($_POST['hidepost']) && $_POST['hidepost'] == 'on')
+					Blog_BlogPostsModel::HidePost($id, true);
+
+
 				if (ControlModel::isPostPremoderation()) {
 					Blog_BlogPostsModel::HidePost($id, true);
 			        Blog_BlogPostsModel::SetSpecialComment($id, 'Пост ожидает модерации');

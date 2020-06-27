@@ -32,7 +32,11 @@
 								<h2>Категория:</h2>
 								<p>Для отправки поста в категорию, необходимо выбрать её из выпадающего списка,<br />или ввести приватный ключ категории.</p>
 								<input type="text" name="category" value="<?php echo @$blog_form['category']; ?>"<?php if(array_key_exists('category', $form_errors)):?> class="g-input-error"<?php endif; ?> />
-							    <div><small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым.</small></div>
+							    <div>
+									<small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым и отметь галку снизу.</small>
+									<br>
+									<label><input type="checkbox" name="hidepost"> Отправить новость в &laquo;Скрытые&raquo;</label>
+							    </div>
                             </div>
 							<div class="b-blog-form_b-form_b-field">
 								<h2>Заголовок:</h2>

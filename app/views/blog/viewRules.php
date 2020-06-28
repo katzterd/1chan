@@ -2,8 +2,10 @@
 
 				<div class="b-blog-form">
 					<div class="b-static m-justify">
-						<h1>Правила и советы для постеров Одинчана</h1>
-						<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zecnwqXe850" frameborder="0" allowfullscreen></iframe>
+						<h1>Раздел в процессе заполнения</h1>
+						<p>
+							В скором времени данный раздел сайта будет доступен.
+						</p>
 						<?php if($this -> getParameter('confirm')): ?>
 						<form action="" method="post">
 							<p>

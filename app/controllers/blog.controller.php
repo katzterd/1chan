@@ -594,10 +594,10 @@ class BlogController extends BaseController
 		if ($session -> isJustCreated())
 			return false;
 
-		if (!$session -> persistenceGet('rules_accepted'))
+		/* if (!$session -> persistenceGet('rules_accepted'))
 			$template -> headerSeeOther(
 				'/help/news/?confirm'
-			);
+			); */
 
 		$this['form_errors'] = array();
 		$this['blog_form']   = array();

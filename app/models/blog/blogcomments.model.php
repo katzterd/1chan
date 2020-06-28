@@ -131,6 +131,20 @@ class Blog_BlogCommentsModel
 	}
 
 	/**
+	 * Проверка существования комментария с текстом:
+	 */
+	public static function CommentWithTextExists($text)
+	{
+		$dbh   = PDOQuery::getInstance();
+		$posts = $dbh -> select('1chan_comment', '*', 'text = '. $dbh -> q($text), null, 1);
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
+	}
+
+	/**
 	 * Редактирование комментария:
 	 */
 	public static function EditComment($id, $params, $safeMode = true)

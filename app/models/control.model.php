@@ -14,7 +14,7 @@ class ControlModel
 	}
 
 	/**
-	 * Промодерация сообщения:
+	 * Прeмодерация сообщения:
 	 */
 	public static function isPostPremoderation()
 	{
@@ -29,6 +29,33 @@ class ControlModel
 	{
 		$settings = self::GetSettings();
 		return @$settings['handapprove'];
+	}
+
+	/**
+	 * Фильтр флуда:
+	 */
+	public static function isFloodFilter()
+	{
+		$settings = self::GetSettings();
+		return @$settings['flood_filter'];
+	}
+
+	/**
+	 * Фильтр одинаковых постов:
+	 */
+	public static function isSamepostFilter()
+	{
+		$settings = self::GetSettings();
+		return @$settings['samepost_filter'];
+	}
+
+	/**
+	 * Фильтр одинаковых комментариев:
+	 */
+	public static function isSamecommFilter()
+	{
+		$settings = self::GetSettings();
+		return @$settings['samecomment_filter'];
 	}
 
 	/**
@@ -301,6 +328,127 @@ class ControlModel
 			if (preg_match('~('. implode('|', $words) .')~iu', $text)) {
 				return false;
 			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Проверка на флуд:
+	 */
+	public static function checkFlood($text)
+	{
+		$linefactor = 0.5;
+		$minlines = 3;
+		$maxlinks = 10;
+		$bracketfactor = 0.05;
+		$minbrackets = 4;
+		$wordfactor = $linefactor;
+		$minwords = 10;
+		$minletters = 200;
+		$wlengthfactor = 25;
+		$badlinefactor = 0.25;
+
+		// удаление разметки
+		$text = preg_replace('/%/', '', $text);
+		$text = preg_replace('/\*/', '', $text);
+		$text = preg_replace('/\=/', '', $text);
+		$text = preg_replace('/(?<!\S)\-(?!\s)/u', '', $text);
+		$text = preg_replace('/`/', '', $text);
+		// схожих букв
+		$cyr = array('А', 'а', 'В', 'Д', 'Е', 'е', 'К', 'к', 'М', 'м', 'Н', 'н', 'О', 'о', 'Р', 'р', 'С', 'с', 'Т', 'У', 'у', 'Х', 'х', 'Ь', 'ь');
+		$lat = array('A', 'a', 'B', 'D', 'E', 'e', 'K', 'k', 'M', 'm', 'H', 'H', 'O', 'o', 'P', 'p', 'C', 'c', 'T', 'Y', 'y', 'X', 'x', 'b', 'b');
+		$text = mb_strtolower(strip_tags(str_replace($cyr, $lat, $text)));
+		// и знаков препинания (кроме скобок, которые отдельно считаем)
+		$text = preg_replace('/((?!\(\))\pP)+/u', '', $text);
+
+		if(!strlen($text)) return true;
+
+		$msglines = array_filter(array_map('rtrim', explode("\n", str_replace("\r", '', $text))));
+
+		// вычисление коэффициента уникальных строк, игнор при недостаточном количестве всех строк
+		// проверка деления на ноль для предотвращения 500 ошибки в редких случаях
+		if (count($msglines) != 0) {
+			if ((count(array_unique($msglines)) / count($msglines) < $linefactor) && (count($msglines) > $minlines)) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+		$badlines = 0;
+		foreach($msglines as $msgline) {
+			// подсчёт ссылок (http) в одной строке
+			if (substr_count($msgline, 'http') > $maxlinks) {
+				return false;
+				break;
+			}
+
+			// отбрасываем скобкодебилов
+			if (substr_count($msgline, ')') / strlen($msgline) > $bracketfactor) {
+				if (substr_count($msgline, ')') < $minbrackets) {
+					if ((substr_count($msgline, ')') != substr_count($msgline, '(')) && (substr_count($msgline, ')') > 1)) {
+						return false;
+						break;
+					}
+				} else {
+					return false;
+					break;
+				}
+			}
+			if ((substr_count($msgline, ')') / strlen($msgline) > $bracketfactor) && (substr_count($msgline, ')') > $minbrackets)) {
+				if (substr_count($msgline, '(') < $minbrackets) {
+					if ((substr_count($msgline, ')') != substr_count($msgline, '(')) && (substr_count($msgline, ')') > 1)) {
+						return false;
+						break;
+					}
+				} else {
+					return false;
+					break;
+				}
+			}
+
+			// вычисление коэффициента уникальных слов, подобно коэффициенту строк
+			$linewords = explode(" ", $msgline);
+			if ((count(array_unique($linewords)) / count($linewords) < $wordfactor) && (count($linewords) > $minwords)) {
+				// подсчёт "плохих" строк с недостаточным коэффициентом
+				$badlines = ++$badlines;
+			}
+			// если среднее количество букв на слово слишком крупное для общей длины строки, также считаем её за "плохую"
+			if ((strlen($msgline) / count($linewords) > $wlengthfactor) && (strlen($msgline) > $minletters)) {
+				$badlines = ++$badlines;
+			}
+		}
+		if ($badlines / count($msglines) > $badlinefactor) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Проверка уникальности поста:
+	 */
+	public static function checkPostUnique($text)
+	{
+		$text = TexyHelper::markup($text);
+
+		if (Blog_BlogPostsModel::PostWithTextExists($text)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Проверка уникальности комментария:
+	 */
+	public static function checkCommUnique($text)
+	{
+		$text = TexyHelper::markup($text);
+
+		if (Blog_BlogCommentsModel::CommentWithTextExists($text)) {
+			return false;
 		}
 
 		return true;

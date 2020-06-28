@@ -607,6 +607,12 @@ class BlogController extends BaseController
 			$text_test      = ControlModel::checkContent($_POST['text']);
 			$text_full_test = ControlModel::checkContent($_POST['text_full']);
 
+			$text_flood      = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+			$text_full_flood = $_POST['text_full'] && ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text_full']) : true;
+
+			$text_unique      = ControlModel::isSamepostFilter() ? ControlModel::checkPostUnique($_POST['text']) : true;
+			$text_full_unique = $_POST['text_full'] && ControlModel::isSamepostFilter() ? ControlModel::checkPostUnique($_POST['text_full']) : true;
+
 			$validator = new ValidatorHelper($_POST);
 			if (ControlModel::isPostCaptcha())
 			{
@@ -618,9 +624,9 @@ class BlogController extends BaseController
 					);
 			}
 
-			$validator -> assertExists('title',           'Не введен заголовок');
+			$validator -> assertExists('title',           'Не введён заголовок');
 			$validator -> assertLength('title',     70,   'Заголовок слишком длинный');
-			$validator -> assertExists('text',            'Не введен вводный текст');
+			$validator -> assertExists('text',            'Не введён вводный текст');
 			$validator -> assertLength('text',      1024, 'Вводный текст слишком длинный');
 
 			if (!$session -> isModeratorSession())
@@ -628,20 +634,45 @@ class BlogController extends BaseController
 
 			$validator -> assertNotExists('email',        'Заполнено лишнее поле');
 
-			if ($validator -> fieldValid('title'))
-				$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
+			if (!isset($_POST['hidepost']) || $_POST['hidepost'] != 'on') {
+				if ($validator -> fieldValid('title'))
+					$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
 
-			if ($validator -> fieldValid('text'))
-				$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
+				if ($validator -> fieldValid('text'))
+					$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
 
-			if ($validator -> fieldValid('title'))
-				$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+				if ($validator -> fieldValid('title'))
+					// https://stackoverflow.com/questions/16733674/php-remove-symbols-from-string
+					$validator -> assertTrue('title', preg_replace('/[^\p{L}\p{N}\s]/u', '', str_replace(' ', '', $_POST['title'])) != '', 'Заголовок не несёт смысловой нагрузки');
 
+				if ($validator -> fieldValid('title'))
+					$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
 
-			$validator -> assertTrue(
-				'text', $text_test && $text_full_test,
-				'Запрещенное слово из вордфильтра'
-			);
+				if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
+					$validator -> assertTrue('title', $_POST['title'] != $_POST['text'], 'Заголовок совпадает с вводным текстом');
+
+				if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
+					$validator -> assertTrue('text', $_POST['text'] != $_POST['text_full'], 'Вводный текст совпадает с подробным текстом');
+
+				if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
+					$validator -> assertTrue('title', $_POST['title'] != $_POST['text_full'], 'Заголовок совпадает с подробным текстом');
+
+				$validator -> assertTrue(
+					'text', $text_test && $text_full_test,
+					'Запрещённое слово из вордфильтра'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_flood && $text_full_flood,
+					'Обнаружен флуд'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_unique && $text_full_unique,
+					'Новость или комментарий с таким текстом уже существует'
+				);
+			}
+
 
 			$validator -> assertTrue(
 				'timeout', ControlModel::getPostInterval() == 0,
@@ -741,14 +772,29 @@ class BlogController extends BaseController
 		if ($validator -> fieldValid('link'))
 			$validator -> assertTrue('link', ControlModel::CheckLinkfilter($_POST['link']) == false, 'Ссылка запрещена');
 
-		if ($validator -> fieldValid('title'))
-			$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
+		if (!isset($_POST['hidepost']) || $_POST['hidepost'] != 'on') {
+			if ($validator -> fieldValid('title'))
+				$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
 
-		if ($validator -> fieldValid('text'))
-			$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
+			if ($validator -> fieldValid('text'))
+				$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
 
-		if ($validator -> fieldValid('title'))
-			$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+			if ($validator -> fieldValid('title'))
+				// https://stackoverflow.com/questions/16733674/php-remove-symbols-from-string
+				$validator -> assertTrue('title', preg_replace('/[^\p{L}\p{N}\s]/u', '', str_replace(' ', '', $_POST['title'])) != '', 'Заголовок не несёт смысловой нагрузки');
+
+			if ($validator -> fieldValid('title'))
+				$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+
+			if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
+				$validator -> assertTrue('title', $_POST['title'] != $_POST['text'], 'Заголовок совпадает с вводным текстом');
+
+			if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
+				$validator -> assertTrue('text', $_POST['text'] != $_POST['text_full'], 'Вводный текст совпадает с подробным текстом');
+
+			if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
+				$validator -> assertTrue('title', $_POST['title'] != $_POST['text_full'], 'Заголовок совпадает с подробным текстом');
+		}
 
 		if ($_POST['category'] != '')
 			$validator -> assertTrue('category', Blog_BlogCategoryModel::CategoryExists($_POST['category']), 'Неверный ключ категории');
@@ -804,7 +850,9 @@ class BlogController extends BaseController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			$text_test = ControlModel::checkContent($_POST['text']);
+			$text_test   = ControlModel::checkContent($_POST['text']);
+			$text_flood  = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+			$text_unique = ControlModel::isSamecommFilter() ? ControlModel::checkCommUnique($_POST['text']) : true;
 
 			$validator = new ValidatorHelper($_POST);
 			if (ControlModel::isCommentCaptcha())
@@ -821,10 +869,24 @@ class BlogController extends BaseController
 			$validator -> assertLength('text', 2048, 'Текст комментария слишком длинный');
 			$validator -> assertNotExists('email',   'Заполнено лишнее поле');
 
-			$validator -> assertTrue(
-				'text', $text_test,
-				'Запрещенное слово из вордфильтра'
-			);
+			$post = Blog_BlogPostsModel::GetPost($_POST['post_id']);
+
+			if ($post["hidden"] == 0) {
+				$validator -> assertTrue(
+					'text', $text_flood,
+					'Обнаружен флуд'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_unique,
+					'Новость или комментарий с таким текстом уже существует'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_test,
+					'Запрещенное слово из вордфильтра'
+				);
+			}
 
 			$validator -> assertTrue(
 				'timeout', ControlModel::getPostCommentInterval() == 0,
@@ -886,12 +948,28 @@ class BlogController extends BaseController
 		$validator -> assertLength('text', 2048, 'Текст комментария слишком длинный');
 		$validator -> assertNotExists('email',   'Заполнено лишнее поле');
 
-		$text_test = ControlModel::checkContent($_POST['text']);
+		$text_test   = ControlModel::checkContent($_POST['text']);
+		$text_flood  = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+		$text_unique = ControlModel::isSamecommFilter() ? ControlModel::checkCommUnique($_POST['text']) : true;
 
-		$validator -> assertTrue(
-			'text', $text_test,
-			'Запрещенное слово из вордфильтра'
-		);
+		$post = Blog_BlogPostsModel::GetPost($_POST['post_id']);
+
+		if ($post["hidden"] == 0) {
+			$validator -> assertTrue(
+				'text', $text_flood,
+				'Обнаружен флуд'
+			);
+
+			$validator -> assertTrue(
+				'text', $text_unique,
+				'Новость или комментарий с таким текстом уже существует'
+			);
+
+			$validator -> assertTrue(
+				'text', $text_test,
+				'Запрещенное слово из вордфильтра'
+			);
+		}
 
 		$validator -> assertTrue(
 			'timeout', ControlModel::getPostCommentInterval() == 0,

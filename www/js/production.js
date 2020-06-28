@@ -42,7 +42,8 @@
 					"link":       $("#blog_form [name=link]").val(),
 					"title":      $("#blog_form [name=title]").val(),
 					"text":       $("#blog_form [name=text]").val(),
-					"text_full":  $("#blog_form [name=text_full]").val()
+					"text_full":  $("#blog_form [name=text_full]").val(),
+					"hidepost":   $("#blog_form [name=hidepost]:checked").val()
 				},
 				function(result, status) {
 					if (status != "error") {
@@ -76,7 +77,8 @@
 								"link":       $("#blog_form [name=link]").val(),
 								"title":      $("#blog_form [name=title]").val(),
 								"text":       $("#blog_form [name=text]").val(),
-								"text_full":  $("#blog_form [name=text_full]").val()
+								"text_full":  $("#blog_form [name=text_full]").val(),
+								"hidepost":   $("#blog_form [name=hidepost]:checked").val(),
 							},
 							function (result, status) {
 								if (status != "error") {

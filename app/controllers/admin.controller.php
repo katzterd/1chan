@@ -22,7 +22,7 @@ class AdminController extends Controller
 	{
 		unset($_SESSION['auth']);
 		$template -> headerSeeOther(
-			'/b/'
+			'/news/'
 		);
 		return false;
 	}

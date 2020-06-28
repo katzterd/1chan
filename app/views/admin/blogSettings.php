@@ -20,6 +20,9 @@
 							<p><label><input type="checkbox" name="post_rate_captcha" <?php if(@$settings['post_rate_captcha']): ?> checked="checked"<?php endif;?> /> Глобальная капча на оценку поста</label></p>
 							<p><label><input type="checkbox" name="live_captcha" <?php if(@$settings['live_captcha']): ?> checked="checked"<?php endif;?> /> Глобальная капча на добавление ссылки в ротатор</label></p>
 							<p><label><input type="checkbox" name="wordfilter_block" <?php if(@$settings['wordfilter_block']): ?> checked="checked"<?php endif;?> /> Запрет постинга со словами из вордфильтра</label></p>
+							<p><label><input type="checkbox" name="flood_filter" <?php if(@$settings['flood_filter']): ?> checked="checked"<?php endif;?> /> Проверка флуда при постинге</label></p>
+							<p><label><input type="checkbox" name="samepost_filter" <?php if(@$settings['samepost_filter']): ?> checked="checked"<?php endif;?> /> Фильтр одинаковых постов</label></p>
+							<p><label><input type="checkbox" name="samecomment_filter" <?php if(@$settings['samecomment_filter']): ?> checked="checked"<?php endif;?> /> Фильтр одинаковых комментариев</label></p>
 						</fieldset>
 						<fieldset>
 							<input type="submit" value="Обновить настройки" />

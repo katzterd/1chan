@@ -92,7 +92,25 @@ class Blog_BlogPostsModel
 	{
 		$dbh   = PDOQuery::getInstance();
 		$posts = $dbh -> select('1chan_post', '*', 'id = '. $dbh -> q($id), null, 1);
-		return (bool)$posts;
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Проверка существования поста по содержимому:
+	 */
+	public static function PostWithTextExists($text)
+	{
+		$dbh   = PDOQuery::getInstance();
+		$posts = $dbh -> select('1chan_post', '*', 'text = '. $dbh -> q($text) . ' OR text_full = '. $dbh -> q($text), null, 1);
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
 	}
 
 	/**

@@ -419,9 +419,11 @@ class TexyHelper
 	static function imgur($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
-		if ($GLOBALS['post_image_count']++) {
-			$parser -> again = false;
-			return '[i:'. $mContent .':]';
+		if (isset($GLOBALS['texy_test']) && $GLOBALS['texy_test']) {
+			if ($GLOBALS['post_image_count']++) {
+				$parser -> again = false;
+				return '[i:'. $mContent .':]';
+			}
 		}
 
 		$img = TexyHtml::el('img');
@@ -445,9 +447,11 @@ class TexyHelper
 	static function catbox($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
-		if ($GLOBALS['post_image_count']++) {
-			$parser -> again = false;
-			return '[c:'. $mContent .':]';
+		if (isset($GLOBALS['texy_test']) && $GLOBALS['texy_test']) {
+			if ($GLOBALS['post_image_count']++) {
+				$parser -> again = false;
+				return '[i:'. $mContent .':]';
+			}
 		}
 
 		$img = TexyHtml::el('img');
@@ -471,9 +475,11 @@ class TexyHelper
 	static function catboxvid($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
-		if ($GLOBALS['post_image_count']++) {
-			$parser -> again = false;
-			return '[c:'. $mContent .':]';
+		if (isset($GLOBALS['texy_test']) && $GLOBALS['texy_test']) {
+			if ($GLOBALS['post_image_count']++) {
+				$parser -> again = false;
+				return '[i:'. $mContent .':]';
+			}
 		}
 
 		$vid = TexyHtml::el('video');

@@ -431,7 +431,9 @@ class ControlModel
 	 */
 	public static function checkPostUnique($text)
 	{
+		$GLOBALS['text_test'] = true;
 		$text = TexyHelper::markup($text);
+		$GLOBALS['text_test'] = false;
 
 		if (Blog_BlogPostsModel::PostWithTextExists($text)) {
 			return false;
@@ -445,7 +447,9 @@ class ControlModel
 	 */
 	public static function checkCommUnique($text)
 	{
+		$GLOBALS['text_test'] = true;
 		$text = TexyHelper::markup($text);
+		$GLOBALS['text_test'] = false;
 
 		if (Blog_BlogCommentsModel::CommentWithTextExists($text)) {
 			return false;

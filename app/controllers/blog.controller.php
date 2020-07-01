@@ -649,13 +649,17 @@ class BlogController extends BaseController
 					$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
 
 				if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
-					$validator -> assertTrue('title', $_POST['title'] != $_POST['text'], 'Заголовок совпадает с вводным текстом');
+					$validator -> assertTrue('title', 
+											($_POST['title'] != $_POST['text']) && (TexyHelper::typo($_POST['title']) != $_POST['text']),
+											'Заголовок совпадает с вводным текстом');
 
 				if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
 					$validator -> assertTrue('text', $_POST['text'] != $_POST['text_full'], 'Вводный текст совпадает с подробным текстом');
 
 				if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
-					$validator -> assertTrue('title', $_POST['title'] != $_POST['text_full'], 'Заголовок совпадает с подробным текстом');
+					$validator -> assertTrue('title', 
+											($_POST['title'] != $_POST['text_full']) && (TexyHelper::typo($_POST['title']) != $_POST['text_full']),
+											'Заголовок совпадает с подробным текстом');
 
 				$validator -> assertTrue(
 					'text', $text_test && $text_full_test,
@@ -788,7 +792,7 @@ class BlogController extends BaseController
 
 			if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
 				$validator -> assertTrue('title', 
-										($_POST['title'] != $_POST['text']) && (TexyHelper::typo($_POST['title'] != $_POST['text']),
+										($_POST['title'] != $_POST['text']) && (TexyHelper::typo($_POST['title']) != $_POST['text']),
 										'Заголовок совпадает с вводным текстом');
 
 			if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
@@ -796,7 +800,7 @@ class BlogController extends BaseController
 
 			if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
 				$validator -> assertTrue('title', 
-										($_POST['title'] != $_POST['text_full']) && (TexyHelper::typo($_POST['title'] != $_POST['text_full']),
+										($_POST['title'] != $_POST['text_full']) && (TexyHelper::typo($_POST['title']) != $_POST['text_full']),
 										'Заголовок совпадает с подробным текстом');
 		}
 

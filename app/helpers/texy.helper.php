@@ -92,24 +92,6 @@ class TexyHelper
 		);
 
 		$texy->registerLinePattern(
-			array('TexyHelper', 'cat'),
-			'/:cat:/',
-			'TexyHelper_cat'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'c2m'),
-			'/:c2m:/',
-			'TexyHelper_c2m'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'c3b'),
-			'/:c3b:/',
-			'TexyHelper_c3b'
-		);
-
-		$texy->registerLinePattern(
 			array('TexyHelper', 'sheez'),
 			'/:sheez:/',
 			'TexyHelper_sheez'
@@ -146,30 +128,6 @@ class TexyHelper
 		);
 		
 		$texy->registerLinePattern(
-			array('TexyHelper', 'doge'),
-			'/:doge:/',
-			'TexyHelper_doge'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'spice'),
-			'/:spice:/',
-			'TexyHelper_spice'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'weed'),
-			'/:weed:/',
-			'TexyHelper_weed'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'hero'),
-			'/:hero:/',
-			'TexyHelper_hero'
-		);
-		
-		$texy->registerLinePattern(
 			array('TexyHelper', 'sosak'),
 			'/:sosak:/',
 			'TexyHelper_sosak'
@@ -182,36 +140,12 @@ class TexyHelper
 		);
 		
 		$texy->registerLinePattern(
-			array('TexyHelper', 'yajka'),
-			'/:yajka:/',
-			'TexyHelper_yajka'
-		);
-		
-		$texy->registerLinePattern(
 			array('TexyHelper', 'deb'),
 			'/:deb:/',
 			'TexyHelper_deb'
 		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'boyar'),
-			'/:boyar:/',
-			'TexyHelper_boyar'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'jackdaniels'),
-			'/:jackdaniels:/',
-			'TexyHelper_jackdaniels'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'nemiroff'),
-			'/:nemiroff:/',
-			'TexyHelper_nemiroff'
-		);
 
-	       	$texy->registerLinePattern(
+		$texy->registerLinePattern(
 			array('TexyHelper', 'projector'),
 			'/:projector:/',
 			'TexyHelper_projector'
@@ -222,61 +156,19 @@ class TexyHelper
 			'/:hazard:/',
 			'TexyHelper_hazard'
 		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'mic'),
-			'/:mic:/',
-			'TexyHelper_mic'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'monies'),
-			'/:monies:/',
-			'TexyHelper_monies'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'jlby'),
-			'/:Jlby:/',
-			'TexyHelper_jlby'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'jlbypride'),
-			'/:JlbyPride:/',
-			'TexyHelper_jlbypride'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'jlbyhd'),
-			'/:JlbyHD:/',
-			'TexyHelper_jlbyhd'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'sobaken'),
-			'/:sobaken:/',
-			'TexyHelper_sobaken'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'shutup'),
-			'/:shutup:/',
-			'TexyHelper_shutup'
-		);
 		
 		$texy->registerLinePattern(
 			array('TexyHelper', 'spoiler'),
 			'/%%(([^%]|%[^%])+)%%/',
 			'TexyHelper_spoiler'
 		);
-		
+		/*
 		$texy->registerLinePattern(
 			array('TexyHelper', 'tts'),
 			'/#%(([^%]|%[^%])+)%#/',
 			'TexyHelper_tts'
 		);
-		
+		*/
 		$texy->registerLinePattern(
 			array('TexyHelper', 'coincidence'),
 			'/\(\(\(([^\(\)]+)\)\)\)/',
@@ -717,54 +609,6 @@ class TexyHelper
 	}
 
 	/**
-	 * cat
-	 */
-	static function cat($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/cat.png';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '50';
-		$el -> attrs['height'] = '39';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * c2m
-	 */
-	static function c2m($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/c2m.png';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '50';
-		$el -> attrs['height'] = '39';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * c3b
-	 */
-	static function c3b($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/c3b.png';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '50';
-		$el -> attrs['height'] = '39';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
 	 * Собак:
 	 */
 	static function sobak($parser, $matches, $name) {
@@ -909,70 +753,6 @@ class TexyHelper
 	}
 	
 	/**
-	 * Пёсель:
-	 */
-	static function doge($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/doge.png';
-		$el -> attrs['width']  = '33';
-		$el -> attrs['height'] = '38';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Спайсы:
-	 */
-	static function spice($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/spice.png';
-		$el -> attrs['width']  = '40';
-		$el -> attrs['height'] = '45';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Травка:
-	 */
-	static function weed($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/weed.gif';
-		$el -> attrs['width']  = '40';
-		$el -> attrs['height'] = '40';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Геройское вещество:
-	 */
-	static function hero($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/hero.png';
-		$el -> attrs['width']  = '40';
-		$el -> attrs['height'] = '45';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
 	 * Сосак:
 	 */
 	static function sosak($parser, $matches, $name) {
@@ -1005,22 +785,6 @@ class TexyHelper
 	}
 	
 	/**
-	 * Яжка:
-	 */
-	static function yajka($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/yajka.png';
-		$el -> attrs['width']  = '18';
-		$el -> attrs['height'] = '45';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
 	 * Деб:
 	 */
 	static function deb($parser, $matches, $name) {
@@ -1037,54 +801,6 @@ class TexyHelper
 	}
 	
 	/**
-	 * Боярышник:
-	 */
-	static function boyar($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/boyar.png';
-		$el -> attrs['width']  = '18';
-		$el -> attrs['height'] = '45';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Джекдениэльс:
-	 */
-	static function jackdaniels($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/jackdaniels.png';
-		$el -> attrs['width']  = '19';
-		$el -> attrs['height'] = '50';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Немирофф:
-	 */
-	static function nemiroff($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/nemiroff.png';
-		$el -> attrs['width']  = '14';
-		$el -> attrs['height'] = '50';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-       	/**
 	 * Проектор:
 	 */
 	static function projector($parser, $matches, $name) {
@@ -1093,38 +809,6 @@ class TexyHelper
 		$el -> attrs['src']    = '/img/projector.png';
 		$el -> attrs['width']  = '50';
 		$el -> attrs['height'] = '33';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Бабосики:
-	 */
-	static function monies($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/monies.png';
-		$el -> attrs['width']  = '45';
-		$el -> attrs['height'] = '50';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Микрофон:
-	 */
-	static function mic($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/mic.png';
-		$el -> attrs['width']  = '50';
-		$el -> attrs['height'] = '50';
 		$el -> attrs['alt']    = '';
 
 		$parser->again = false;
@@ -1141,86 +825,6 @@ class TexyHelper
 		$el -> attrs['src']    = '/img/hazard.png';
 		$el -> attrs['width']  = '32';
 		$el -> attrs['height'] = '32';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Жилби:
-	 */
-	static function jlby($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/Jlby.png';
-		$el -> attrs['width']  = '26';
-		$el -> attrs['height'] = '36';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Жилбипрайд:
-	 */
-	static function jlbypride($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/JlbyPride.png';
-		$el -> attrs['width']  = '26';
-		$el -> attrs['height'] = '36';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Жилби-HD:
-	 */
-	static function jlbyhd($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/JlbyHD.png';
-		$el -> attrs['width']  = '26';
-		$el -> attrs['height'] = '36';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Собакен:
-	 */
-	static function sobaken($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/sobaken.gif';
-		$el -> attrs['width']  = '44';
-		$el -> attrs['height'] = '36';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Ну-ка молчи, школьник:
-	 */
-	static function shutup($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/shutup.png';
-		$el -> attrs['width']  = '211';
-		$el -> attrs['height'] = '57';
 		$el -> attrs['alt']    = '';
 
 		$parser->again = false;

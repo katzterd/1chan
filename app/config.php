@@ -33,7 +33,7 @@ return array(
 		    'url' => '/news/all/',
 		    'controller' => 'generic_redirect',
 		    'action' => 'redirect'
-		),
+		), /*
 		'/(operate|alone)' => array(
 			'board',
 			'controller' => 'board',
@@ -57,7 +57,7 @@ return array(
 		'/(operate|alone)/(create|createAjaxForm|createPost|createPostAjaxForm|get|remove|changeTitle)' => array(
 			'board', 'action',
 			'controller' => 'board'
-		),
+		), */
 		'/service/subscribeBoard/(operate|alone)' => array(
 			'board',
 			'controller' => 'board',

@@ -139,13 +139,13 @@
 			        </div>
 			          <div class="b-menu-panel_b-links">
 			            <ul>
-			            	<li<?php if($this -> getParameter('board_id') == 'd'): ?> class="m-active"<?php endif; ?>><a href="/operate/">/operate/ - 1chan Discussion</a></li>
+							<li>Нет активных разделов</li>
+			            	<?php /* <li<?php if($this -> getParameter('board_id') == 'operate'): ?> class="m-active"<?php endif; ?>><a href="/operate/">/operate/ - 1chan Discussion</a></li> */ ?>
 			            	<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="/fav/">Избранные треды</a></li>
 				        <li class="b-menu-panel_b-footer">
 				            <a href="/service/last_board_posts/">&larr; последние посты</a>
 				        </li>
 				    </ul>
-                                    <!-- div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb; text-align: center;">Telegram-конференция:<br><a style="color: #bbb;" href="https://t.me/jedenchan">@jedenchan</a></div -->
 				    </div>
 				</div>
 			</div>

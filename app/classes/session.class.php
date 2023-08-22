@@ -186,7 +186,7 @@ class Session
 	 */
 	public function persistenceGet($key, $default = false)
 	{
-		if (array_key_exists($key, $this -> persistenceSession))
+		if (@($this -> persistenceSession) && array_key_exists($key, $this -> persistenceSession))
 			return $this -> persistenceSession[$key];
 
 		return $default;

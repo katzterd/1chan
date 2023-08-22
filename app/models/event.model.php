@@ -29,14 +29,6 @@ class EventModel
 	}
 
 	/**
-	 * Конструктор:
-	 */
-	private function __construct()
-	{
-		$this -> connection = new Dklab_Realplexor(REALPLEXOR_HOST, REALPLEXOR_PORT, "1chan_");
-	}
-
-	/**
 	 * Подпись обработчика на событие:
 	 */
 	public function AddEventListener($event, $lambda)
@@ -77,19 +69,32 @@ class EventModel
 	/**
 	 * Сообщение о событии на клиенты:
 	 */
-	public function ClientBroadcast($channel, $event, $data = true, $ids = null)
+	public function ClientBroadcast($channel, $event, $data = null, $ids = null)
 	{
-		$this -> connection -> send($channel,
-			array(
-				'event' => $event,
-				'data'  => $data
-			),
-			$ids
-		);
-/**
-		$redis = new Redis();
-		$redis -> publish($channel, json_encode(array('event' => $event, 'data' => $data)));
-**/
+		$payload = [
+			'channel' => $channel,
+			'event' => $event,
+		];
+		if ($data) {
+			$payload['data'] = $data;
+		}
+		if ($ids) {
+			$payload['ids'] = $ids;
+		}
+		$data_json = json_encode($payload);
+		
+		$curl_session = curl_init(SOCKETIO_HOST . ':' . SOCKETIO_PORT . '/broadcast/');
+		curl_setopt($curl_session, CURLOPT_PROXY, "");
+		curl_setopt($curl_session, CURLOPT_POSTFIELDS, $data_json);
+		curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl_session, CURLOPT_HTTPHEADER, [
+			'Content-Type: application/json',
+			'Content-Length: ' . strlen($data_json)
+		]);
+		curl_exec($curl_session);
+		if (curl_errno($curl_session)) {
+			die('cURL error: ' . curl_error($curl_session));
+		}
 		return $this;
 	}
 }

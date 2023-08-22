@@ -3,7 +3,7 @@
  */
 (function(){
 	var x = {
-		socket:     new Dklab_Realplexor(location.protocol + "//pipe." + location.host + "/", "1chan_"),
+		socket: io(),
 		processors: [],
 		addPageProcessor: function(path, processor) {
 			path = path instanceof Array ? path : [path];
@@ -19,11 +19,26 @@
 					this.processors[i]["processor"].call(window, null, params);
 		},
 		subscribe: function(channel, event, callback) {
-			this.socket.subscribe(channel, function(message, id){
-				if (message.event == event)
-					callback(message.data);
-			});
-		}
+			if (!(channel in this.subscribedTo)) {
+				this.socket.emit('subscribe', 
+					(channel == 'global' && document.body.id)
+					? [channel, 'global:'+document.body.id]
+					: channel )
+				this.subscribedTo[channel] = []
+			}
+			if (!~this.subscribedTo[channel].indexOf(event)) {
+				this.socket.on(event, data => callback(data))
+				this.subscribedTo[channel].push(event)
+			}
+		},
+		unsubscribe: function(channel) {
+			this.socket.emit('unsubscribe', 
+				(channel == 'global' && document.body.id)
+				? [channel, 'global:'+document.body.id]
+				: channel )
+			delete this.subscribedTo[channel]
+		},
+		subscribedTo: {}
 	};
 
 	/**
@@ -130,8 +145,7 @@
 
 		$("#blog_form input[type=submit]").click(function() {
 			validatePost(function() {
-				x.socket.unsubscribe("new_posts");
-				x.socket.execute();
+				x.unsubscribe("new_posts");
 				$("#blog_form").submit();
 			});
 			return false;
@@ -2468,8 +2482,7 @@
 		                                break;
 		                        }
 		                    });
-		                    x.socket.setCursor("chat_" + channel_id, 0);
-		                    x.socket.execute();
+		                    // x.socket.setCursor("chat_" + channel_id, 0);
 
 		                    $(".js-message-textarea").attr("disabled", "")
 			                    .bind("keyup", function(e) {
@@ -2748,8 +2761,8 @@
 			return false;
 		}).html(poo_chan ? "Выключить каку" : "Включить каку");
 
-		x.socket.setCursor("page_"+ target_page, 0);
-		x.socket.subscribe("page_"+ target_page, function(data) {
+		// x.socket.setCursor("page_"+ target_page, 0);
+		x.subscribe("page_"+ target_page, function(data) {
 			var el = $("<img src='/img/poo_target.png' width='48' height='50' class='js-poo g-hidden' />");
 			el.css({
 				"position": "absolute",
@@ -2788,8 +2801,7 @@
 			}
 		})();
 
-		x.socket.subscribe(document.body.id, function() {});
-		x.socket.execute();
+		// x.subscribe(document.body.id, function() {});
 	});
 
 	/**

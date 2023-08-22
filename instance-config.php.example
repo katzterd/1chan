@@ -4,9 +4,10 @@ define('SQL_HOST', '127.0.0.1');
 define('SQL_NAME', '<dbname>');
 define('SQL_USER', '<username>');
 define('SQL_PASSWORD', '<password>');
-// настройки подключения к реалплексору
-define('REALPLEXOR_HOST', '127.0.0.1');
-define('REALPLEXOR_PORT', '10010');
+// настройки подключения к socket.io (должны совпадать со значениями в /scripts/pipe/.env)
+define('SOCKETIO_HOST', '127.0.0.1');
+define('SOCKETIO_PORT', '9393');
+define('SOCKETIO_SRV_TOKEN', '<any_random_shit>'); // 
 // настройки подключения к редису
 define('REDIS_HOST', '127.0.0.1');
 define('REDIS_PORT', '6379');

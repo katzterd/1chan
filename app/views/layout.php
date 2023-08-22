@@ -165,7 +165,7 @@
 				<div class="b-footer-imgboards">
 					<h2>Имиджборды:</h2>
 					<ul>
-					<?php foreach($_footer_links['imgboards'] as $link): ?>
+					<?php foreach((@$_footer_links['imgboards'] ? $_footer_links['imgboards'] : []) as $link): ?>
 
 						<li>
 						<?php if(@$link['offline']): ?>
@@ -187,7 +187,7 @@
 				<div class="b-footer-services">
 					<h2>Другие ссылки:</h2>
 					<ul>
-					<?php foreach($_footer_links['services'] as $link): ?>
+					<?php foreach((@$_footer_links['services'] ? $_footer_links['services'] : []) as $link): ?>
 
 						<li>
 						<?php if(@$link['offline']): ?>

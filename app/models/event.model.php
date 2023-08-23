@@ -74,6 +74,7 @@ class EventModel
 		$payload = [
 			'channel' => $channel,
 			'event' => $event,
+			'token' => SOCKETIO_SRV_TOKEN
 		];
 		if ($data) {
 			$payload['data'] = $data;

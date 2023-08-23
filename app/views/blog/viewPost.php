@@ -42,8 +42,9 @@
 							<span>|</span>
 
 						<?php if($post['rateable']): ?>
-							<a href="/news/res/<?php echo($post['id']); ?>/rate_post/down/" class="js-rate-down-button">
-								<img src="/ico/minus_grey.gif" width="9" height="11" alt="" />
+							<?php $rate_order = explode('|', RATE_BUTTON_ORDER); ?>
+							<a href="/news/res/<?php echo($post['id']); ?>/rate_post/<?= $rate_order[0] ?>/" class="js-rate-<?= $rate_order[0] ?>-button">
+								<img src="/ico/<?= $rate_order[0]=='up' ? 'plus' : 'minus' ?>_grey.gif" width="9" height="11" alt="" />
 							</a>
 						<?php if($post['rate'] >= 0): ?>
 
@@ -53,8 +54,8 @@
 							<strong class="g-red js-rate"><?php echo($post['rate']); ?></strong>
 						<?php endif; ?>
 
-							<a href="/news/res/<?php echo($post['id']); ?>/rate_post/up/" class="js-rate-up-button">
-								<img src="/ico/plus_grey.gif" width="9" height="11" alt="" />
+							<a href="/news/res/<?php echo($post['id']); ?>/rate_post/<?= $rate_order[1] ?>/" class="js-rate-<?= $rate_order[1] ?>-button">
+								<img src="/ico/<?= $rate_order[1]=='up' ? 'plus' : 'minus' ?>_grey.gif" width="9" height="11" alt="" />
 							</a>
 							<span>|</span>
 						<?php endif; ?>

@@ -16,3 +16,6 @@ define('SPHINX_HOST', '127.0.0.1');
 define('SPHINX_PORT', '3312');
 // настройки общей чат-комнаты
 define('COMMON_ROOM_CONTROLWORD', '<controlword>');
+
+// разное
+define('RATE_BUTTON_ORDER', 'down|up'); // or up|down

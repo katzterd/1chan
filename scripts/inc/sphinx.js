@@ -95,6 +95,17 @@ export async function checkDaemon(onlyCheck=false) {
 
 async function startDaemon() {
 	if (process.env.SEARCHD_START == 'true') {
+		// Indexer must run first before starting searchd
+		let indexesExist = true
+		for (let i of ['posts', 'forceometer']) {
+			if (! (await checkExistance(`${process.env.SPHINX_DATA_DIR}/${i}.sph`))) {
+				indexesExist = false
+				break
+			}
+		}
+		if (! indexesExist) {
+			await runIndexer(true)
+		}
 		runShell(`${process.env.SPHINX_BIN_DIR}/searchd --config ${process.cwd()}/1chan.generated.conf`)
 		await sleep(1000)
 		while (! ( await checkDaemon(true) ) ) {
@@ -107,8 +118,8 @@ async function startDaemon() {
 	}
 }
 
-export async function runIndexer() {
-	const exitCode = await runShell(`{process.env.SPHINX_BIN_DIR}/indexer --config ${process.cwd()}/1chan.generated.conf --all --rotate`)
+export async function runIndexer(silent=false) {
+	const exitCode = await runShell(`${process.env.SPHINX_BIN_DIR}/indexer --config ${process.cwd()}/1chan.generated.conf --all --rotate`)
 	/*	The exit codes are as follows:
 	0, everything went ok
 	1, there was a problem while indexing (and if --rotate was specified, it was skipped)

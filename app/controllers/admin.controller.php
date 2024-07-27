@@ -12,7 +12,7 @@ class AdminController extends Controller
 		$session = Session::getInstance();
 
 		if (!$session -> isAdminSession())
-			die($application -> go('errors_error403'));
+			die($application -> go('errors_error401'));
 	}
 
 	/**

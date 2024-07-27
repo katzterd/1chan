@@ -216,24 +216,6 @@ class Session
 	}
 
 	/**
-	 * Проверка на админство:
-	 */
-	public function isAdmin($key, $hash)
-	{
-		$moderators = ControlModel::GetModerators();
-
-		foreach($moderators as $mod)
-		{
-			if ($mod['key'] == $key .'%'. $hash)
-			{
-				$_SESSION['auth'] = $mod;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Проверка на админскую сессию:
 	 */
 	public function isAdminSession()
@@ -249,12 +231,12 @@ class Session
 	/**
 	 * Проверка на модераторство:
 	 */
-	public function isModerator($key)
+	public function isModerator($name, $key)
 	{
 		$moderators = ControlModel::GetModerators();
 		foreach($moderators as $mod)
 		{
-			if ($mod['key'] === $key)
+			if ($mod['name'] === $name && $mod['key'] === $key)
 			{
 				$_SESSION['auth'] = $mod;
 				return true;

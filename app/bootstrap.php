@@ -211,6 +211,18 @@ class Application
 
 				return true;
 			}
+
+			// For actions that do not require templating
+			if (method_exists($ctrl, $action .'SimpleFuckingAction'))
+			{
+				$this -> controller = $controller;
+				$this -> action     = $action;
+
+				call_user_func(array($ctrl, $action .'SimpleFuckingAction'), $this, $template);
+
+				return true;
+			}
+
 			throw new Exception('Controller '. $controller .' has no '. $action .' action!');
 		}
 		throw new Exception('Application has no '. $controller .' controller!');

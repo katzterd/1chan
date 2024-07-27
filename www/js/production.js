@@ -2904,15 +2904,4 @@
 				}
 			)
 	}
-
-	window.authorize = function(key, hash)
-	{
-		$.post(location.protocol + "//"+ location.host +"/auth", {key: key, hash: hash || 0}, function(data, status) {
-			if (status != "error") {
-				if (data.authorized == true) {
-					x.callPageProcessors(":moderator", !!hash);
-				}
-			}
-		}, "json");
-	}
 })();

@@ -312,7 +312,8 @@ class BlogController extends BaseController
        			{
        				default:
        				case 'relevance':
-       					$sort = $_POST['sort'] == 'desc' ? '@relevance DESC, created_at DESC, @id DESC' : '@relevance ASC, created_at ASC, @id ASC';
+       					// $sort = $_POST['sort'] == 'desc' ? '@weight DESC, created_at DESC, @id DESC' : '@weight ASC, created_at ASC, @id ASC';
+       					$sort = $_POST['sort'] == 'desc' ? '@weight DESC, created_at DESC, id DESC' : '@weight ASC, created_at ASC, id ASC';
        					$search -> SetSortMode(SPH_SORT_EXTENDED, $sort);
        					break;
 
@@ -337,7 +338,7 @@ class BlogController extends BaseController
 						break;
        			}
 
-				$search -> SetWeights (array('link' => 50, 'title' => 40, 'text' => 20, 'text_full' => 10));
+				$search -> SetFieldWeights (array('link' => 50, 'title' => 40, 'text' => 20, 'text_full' => 10));
 				$search -> SetLimits(0, 60);
 
 				if (isset($_POST['category']) && $_POST['category'] != 0)

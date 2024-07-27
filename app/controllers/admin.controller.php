@@ -142,7 +142,7 @@ class AdminController extends Controller
        			$search -> SetServer(SPHINX_HOST, SPHINX_PORT);
         		$search -> SetSortMode(SPH_SORT_EXTENDED, '@relevance DESC, created_at DESC, @id DESC');
 				$search -> SetLimits(0, 60);
-				$search -> SetWeights ( array ('title' => 40, 'text' => 20, 'text_full' => 10 ) );
+				$search -> SetFieldWeights ( array ('title' => 40, 'text' => 20, 'text_full' => 10 ) );
 
 				if (isset($_POST['category']))
 					$search -> SetFilter('category', $_POST['category']);

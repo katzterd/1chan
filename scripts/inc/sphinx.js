@@ -15,7 +15,6 @@ export async function indexerInit() {
 		"SPHINX_BIN_DIR",
 		"INDEXER_MEM_LIMIT",
 		"INDEXER_MAX_IOPS",
-		"SEARCHD_IP_PORT",
 		"SEARCHD_LOG_FILE",
 		"SEARCHD_READ_TIMEOUT",
 		"SEARCHD_MAX_CHILDREN",

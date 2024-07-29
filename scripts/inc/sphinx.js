@@ -11,6 +11,8 @@ export async function indexerInit() {
 		"SQL_PASSWORD",
 		"SQL_NAME",
 		"SQL_PORT",
+		"SPHINX_HOST",
+		"SPHINX_PORT",
 		"SPHINX_DATA_DIR",
 		"SPHINX_BIN_DIR",
 		"INDEXER_MEM_LIMIT",

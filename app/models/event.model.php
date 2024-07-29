@@ -74,7 +74,7 @@ class EventModel
 		$payload = [
 			'channel' => $channel,
 			'event' => $event,
-			'token' => SOCKETIO_SRV_TOKEN
+			'token' => SIO_TOKEN
 		];
 		if ($data) {
 			$payload['data'] = $data;
@@ -84,7 +84,7 @@ class EventModel
 		}
 		$data_json = json_encode($payload);
 		
-		$curl_session = curl_init(SOCKETIO_HOST . ':' . SOCKETIO_PORT . '/broadcast/');
+		$curl_session = curl_init(SIO_HOST . ':' . SIO_PORT . '/broadcast/');
 		curl_setopt($curl_session, CURLOPT_PROXY, "");
 		curl_setopt($curl_session, CURLOPT_POSTFIELDS, $data_json);
 		curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);

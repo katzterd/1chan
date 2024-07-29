@@ -3,6 +3,7 @@ return array(
 	'database' => array(
 		'engine' => 'mysql',
 		'host'   => SQL_HOST,
+		'port'   => SQL_PORT,
 		'name'   => SQL_NAME,
 		'user'   => SQL_USER,
 		'pass'   => SQL_PASSWORD

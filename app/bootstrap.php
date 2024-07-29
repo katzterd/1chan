@@ -14,6 +14,15 @@ define('CONFIG_PATH',     APPLICATION_DIR .'/config.php');
 define('UPLOAD_PATH',     WEB_DIR .'/uploads');
 
 /**
+ * Загрузка .env-файла:
+ */
+$env = parse_ini_file(APPLICATION_DIR . '/../.env');
+foreach($env as $k => $v) {
+	$v = explode('#', $v)[0]; // remove .env comments
+	define($k, $v);
+}
+
+/**
  * Подключение библиотек:
  */
 require_once(LIBS_DIR .'/kvs.class.php');

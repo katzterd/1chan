@@ -31,12 +31,13 @@ class PDOQuery
 
 		$engine   = $config['database']['engine'];
 		$host     = $config['database']['host'];
+		$port     = $config['database']['port'];
 		$database = $config['database']['name'];
 		$user     = $config['database']['user'];
 		$pass     = $config['database']['pass'];
 
 		$this -> connection = new PDO(
-			$engine.':dbname='.$database.';host='.$host, $user, $pass
+			$engine.':dbname='.$database.';host='.$host.';port='.$port, $user, $pass
 		);
 
 		$this -> connection

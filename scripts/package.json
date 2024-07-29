@@ -4,6 +4,7 @@
   "description": "1chan server-side utilities",
   "main": "index.js",
   "scripts": {
+    "daemon": "dotenvx run -f ../.env -- pm2 start ecosystem.config.cjs --env production",
     "start": "dotenvx run -f ../.env -- node index.js",
     "installation": "dotenvx run -f ../.env -- node installation.js"
   },
@@ -24,6 +25,7 @@
     "mysql-import": "^5.0.26",
     "mysql2": "^3.10.3",
     "php-serialize": "^5.0.1",
+    "pm2": "^5.4.2",
     "progress": "^2.0.3",
     "prompts": "^2.4.2",
     "redis": "^4.6.15",

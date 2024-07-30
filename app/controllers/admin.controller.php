@@ -711,7 +711,7 @@ class AdminController extends Controller
 				$this['success'] = "Доска /$title/ отредактирована";
 			}
 			else {
-				$board -> removeBoard();
+				$board -> removeBoard(true);
 				$this['success'] = "Доска /$title/ удалена";
 			}
 			// Обновление списка

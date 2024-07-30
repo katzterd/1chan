@@ -471,8 +471,8 @@ class Board_BoardModel
 
 		// Получаем список тредов и количество страниц:
 		$threads = $kvs -> sortedListGet(__CLASS__, $this -> board, 'timeline', $start, $end);
-		$length   = $kvs -> sortedListLength(__CLASS__, $this -> board, 'timeline');
-		$pages    = ceil($length / 30);
+		$length  = $kvs -> sortedListLength(__CLASS__, $this -> board, 'timeline');
+		$pages   = ceil($length / 30);
 
 		if ($length > 0)
 		{
@@ -564,15 +564,22 @@ class Board_BoardModel
 	/**
 	 * Удаление раздела:
 	 */
-	public function removeBoard()
+	public function removeBoard($permanent=false)
 	{
+		$kvs = KVS::getInstance();
+
 		do {
 			$threads = $this -> getThreads(0, $pages_full);
 
-			foreach($threads as $thread)
+			if ($threads) foreach($threads as $thread)
 				$this -> removeThread($thread['id']);
 		} 
-		while($pages_full !== 0);
+		while($pages_full != 0);
+
+		if ($permanent) {
+			$kvs -> listRemove(__CLASS__, null, 'boards', $this -> board);
+			$kvs -> remove(__CLASS__, $this -> board, null);
+		}
 
 		return true;
 	}
@@ -647,6 +654,47 @@ class Board_BoardModel
 	{
 		$kvs = KVS::getInstance();
 		return $kvs -> hashGetKeys('Board_Thread', 'Subscribers', $thread);
+	}
+
+	/**
+	 * Получить список досок (только директории)
+	 */
+	public static function getSimpleBoardList() {
+		$kvs = KVS::getInstance();
+		return $kvs -> listGet(__CLASS__, null, 'boards');
+	}
+
+	/**
+	 * Получить список досок
+	 */
+	public static function getBoardList() {
+		$kvs = KVS::getInstance();
+
+		$boards = self::getSimpleBoardList();
+		foreach($boards as &$board) {
+			$board = unserialize($kvs -> get(__CLASS__, $board));
+		}
+
+		return $boards;
+	}
+
+	/**
+	 * Создать доску
+	 */
+	public static function createBoard($title, $description, $hidden=false) {
+		$kvs = KVS::getInstance();
+		$boards = $kvs -> listGet(__CLASS__, null, 'boards');
+		if (in_array($title, $boards)) {
+			return "Доска /$title/ уже существует";
+		}
+		$board = [
+			"title" => $title,
+			"description" => $description,
+			"hidden" => $hidden ? 1 : 0
+		];
+		$kvs -> set(__CLASS__, $title, null, serialize($board));
+		$kvs -> listAdd(__CLASS__, null, 'boards', $title, true);
+		return false;
 	}
 }
 

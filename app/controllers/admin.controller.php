@@ -663,4 +663,104 @@ class AdminController extends Controller
 	{
 		return $template -> render($this -> viewParams, 'admin_layout');
 	}
+
+	/**
+	 * Список досок + редактирование и удаление досок
+	 */
+	public function boardsAction(Application $application, Template $template)
+	{
+		$template -> setParameter('menu', 'boards');
+		$template -> setParameter('submenu', 'board_list');
+
+		$this['boards'] = Board_BoardModel::getBoardList();
+
+		// Обработка действий
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$errors = [];
+			// Проверка действия
+			$action = isset($_POST['action']) ? $_POST['action'] : null;
+			if (is_null($action) || !in_array($action, ['edit', 'delete'])) {
+				$this['errors'] []= "Неверно указано действие";
+				return true;
+			}
+			// Валидация
+			if ($action == 'edit') {
+				list($title, $description, $hidden, $errors) = self::validateBoardSettings();
+			}
+			else {
+				list($title, $errors) = self::validateBoardSettings(true);
+			}
+			if (count($errors)) {
+				$this['errors'] = $errors;
+				return true;
+			}
+			// Проверка на существование
+			$existing = Board_BoardModel::getSimpleBoardList();
+			if (!in_array($title, $existing)) {
+				$this['errors'] []= "Директории /$title/ не существует!";
+				return true;
+			}
+			// Применение обновлений
+			$board = new Board_BoardModel($title);
+			if ($action == 'edit') {
+				$board -> SetSettings([
+					"title" => $title,
+					"description" => $description,
+					"hidden" => $hidden
+				]);
+				$this['success'] = "Доска /$title/ отредактирована";
+			}
+			else {
+				$board -> removeBoard();
+				$this['success'] = "Доска /$title/ удалена";
+			}
+			// Обновление списка
+			$this['boards'] = Board_BoardModel::getBoardList();
+		}
+
+		return true;
+	}
+
+	/**
+	 * Валидация свойств доски
+	 */
+	public function validateBoardSettings($only_title=false) {
+		$errors = [];
+		$title = isset($_POST['title']) ? strtolower($_POST['title']) : null;
+		if (is_null($title) || !preg_match("/[a-z_0-9]{1,10}/", $title)) {
+			$errors []= "Неправильно указана директория";
+		}
+		if ($only_title) return [$title, $errors];
+		$description = isset($_POST['description']) ? $_POST['description'] : null;
+		if (is_null($description) || !preg_match("/[\w ]{1,20}/u", $description)) {
+			$errors []= "Неправильно указано описание";
+		}
+		$hidden = isset($_POST['hidden']) && $_POST['hidden'] == '1';
+		return [$title, $description, $hidden, $errors];
+	}
+
+	/**
+	 * Добавление доски
+	 */
+	public function boardAddAction(Application $application, Template $template)
+	{
+		$template -> setParameter('menu', 'boards');
+		$template -> setParameter('submenu', 'board_add');
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			list($title, $description, $hidden, $errors) = self::validateBoardSettings();
+			if (! count($errors)) {
+				$add_error = Board_BoardModel::createBoard($title, $description, $hidden);
+				if ($add_error) {
+					$errors []= $add_error;
+				}
+				else {
+					$template -> setParameter('added_board', $title);
+				}
+			}
+		}
+		if (isset($errors)) $this['board_add_errors'] = $errors;
+		return true;
+	}
+
 }

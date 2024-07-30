@@ -44,6 +44,9 @@ class BaseController extends Controller
 			return $template -> render($this -> viewParams, $session -> persistenceGet('global_theme'));
 		}
 
+		$boards = Board_BoardModel::getBoardList();
+		$template -> setParameter('boards', $boards);
+
 		parent::process($template);
 	}
 }

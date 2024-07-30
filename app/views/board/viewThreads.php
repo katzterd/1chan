@@ -1,7 +1,7 @@
                 <?php $ENG = ($this -> getParameter('board_id') == 'int'); ?>
 				<div class="b-board-header">
 					<div class="b-board-header_name">
-						<h1><?php echo($this -> getParameter('title')); ?></h1>
+						<h1>/<?php echo($this -> getParameter('title')); ?>/ - <?php echo($this -> getParameter('description')); ?></h1>
 						<div class="b-board-header_desc">
 							<?php if (!$ENG): ?><label><input type="checkbox" name="subscribe" class="js-subscribe-checkbox" <?php if ($subscribed) echo('checked="checked"'); ?> /> <span>Оповещение о новых тредах</span></label><?php else: ?>
 							<?php echo($this -> getParameter('description')); ?><?php endif; ?>

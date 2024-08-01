@@ -616,15 +616,20 @@ class BoardController extends BaseController
 	 */
 	public function changeTitleAjaxAction(Application $application)
 	{
-		$session  = Session::getInstance();
-		if ($session -> isAdminSession())
-		{
-			$board = new Board_BoardModel($_GET['board']);
-			$board -> setSettings(array(
-				'title' => $_GET['title'],
-				'description' => $_GET['description']
-			));
-		}
+        try {
+            $session  = Session::getInstance();
+            if ($session -> isAdminSession())
+            {
+                $board = new Board_BoardModel($_GET['board']);
+                $board -> setSettings(array(
+                    'title' => $_GET['title'],
+                    'description' => $_GET['description']
+                ));
+            }
+        } catch (\Exception $e){
+            return $e->getMessage();
+        }
+
 		return false;
 	}
 

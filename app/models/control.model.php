@@ -586,14 +586,24 @@ class ControlModel
 	/**
 	 * Проверка прав модератора:
 	 */
-	public static function checkModrights($category_id)
+	public static function checkModrights($category_id, $log = false)
 	{
 		$session = Session::getInstance();
 		if ($session -> isModeratorSession())
 		{
-			if ($_SESSION['auth']['category'] == '*' || (int)$_SESSION['auth']['category'] == $category_id)
+            $isGlobal = $_SESSION['auth']['category'] == '*';
+            $canEditCategory = (int)$_SESSION['auth']['category'] == $category_id;
+            if (!$isGlobal) {
+                if ($log) echo "not global".PHP_EOL ;
+            }
+            if (!$canEditCategory) {
+                if ($log) echo "cannot edit category $category_id".PHP_EOL;
+            }
+			if ($isGlobal || $canEditCategory)
 				return true;
-		}
+		} else {
+            if ($log) echo "not moderator".PHP_EOL;
+        }
 		return false;
 	}
 

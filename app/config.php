@@ -1,4 +1,56 @@
 <?php
+$board_dirs = Board_BoardModel::getSimpleBoardList();
+if ($board_dirs) {
+	$board_dirs = implode('|', $board_dirs);
+	$board_routes = [
+		"/($board_dirs)" => array(
+			'board',
+			'controller' => 'board',
+			'action' => 'viewThreads'
+		),
+		"/($board_dirs)/(\d+)" => array(
+			'board', 'page',
+			'controller' => 'board',
+			'action' => 'viewThreads'
+		),
+		"/($board_dirs)/res/(\d+)" => array(
+			'board', 'thread_id',
+			'controller' => 'board',
+			'action' => 'viewThread'
+		),
+		"/($board_dirs)/res/(\d+)/stats" => array(
+			'board', 'thread_id',
+			'controller' => 'board',
+			'action' => 'postStats'
+		),
+		"/($board_dirs)/(create|createAjaxForm|createPost|createPostAjaxForm|get|remove|changeTitle)" => array(
+			'board', 'action',
+			'controller' => 'board'
+		),
+		"/service/subscribeBoard/($board_dirs)" => array(
+			'board',
+			'controller' => 'board',
+			'action' => 'subscribeBoard'
+		),
+		"/service/unsubscribeBoard/($board_dirs)" => array(
+			'board',
+			'controller' => 'board',
+			'action' => 'unsubscribeBoard'
+		),
+		"/service/notifyCheck/($board_dirs)/(\d+)" => array(
+			'board', 'id',
+			'controller' => 'board',
+			'action' => 'notifyCheck'
+		),
+		"/fav/toggle/($board_dirs)/(\d+)" => array(
+			'board', 'id',
+			'controller' => 'board',
+			'action' => 'toggleFavorite'
+		)
+	];
+}
+else $board_routes = [];
+
 return array(
 	'database' => array(
 		'engine' => 'mysql',
@@ -8,7 +60,7 @@ return array(
 		'user'   => SQL_USER,
 		'pass'   => SQL_PASSWORD
 	),
-	'routes' => array(
+	'routes' => array_merge($board_routes, array(
 		'/admin' => array(
 			'controller' => 'admin',
 			'action' => 'posts'
@@ -34,50 +86,10 @@ return array(
 		    'url' => '/news/all/',
 		    'controller' => 'generic_redirect',
 		    'action' => 'redirect'
-		), /*
-		'/(operate|alone)' => array(
-			'board',
-			'controller' => 'board',
-			'action' => 'viewThreads'
-		),
-		'/(operate|alone)/(\d+)' => array(
-			'board', 'page',
-			'controller' => 'board',
-			'action' => 'viewThreads'
-		),
-		'/(operate|alone)/res/(\d+)' => array(
-			'board', 'thread_id',
-			'controller' => 'board',
-			'action' => 'viewThread'
-		),
-		'/(operate|alone)/res/(\d+)/stats' => array(
-			'board', 'thread_id',
-			'controller' => 'board',
-			'action' => 'postStats'
-		),
-		'/(operate|alone)/(create|createAjaxForm|createPost|createPostAjaxForm|get|remove|changeTitle)' => array(
-			'board', 'action',
-			'controller' => 'board'
-		), */
-		'/service/subscribeBoard/(operate|alone)' => array(
-			'board',
-			'controller' => 'board',
-			'action' => 'subscribeBoard'
-		),
-		'/service/unsubscribeBoard/(operate|alone)' => array(
-			'board',
-			'controller' => 'board',
-			'action' => 'unsubscribeBoard'
-		),
-		'/service/notifyCheck/(operate|alone)/(\d+)' => array(
-			'board', 'id',
-			'controller' => 'board',
-			'action' => 'notifyCheck'
 		),
 		'/service/notifyGet' => array(
 			'controller' => 'board',
 			'action' => 'notifyGet'
-
 		),
 		'/service/last_board_posts' => array(
 			'controller' => 'board',
@@ -95,11 +107,6 @@ return array(
 		'/fav' => array(
 			'controller' => 'board',
 			'action' => 'viewFavorites'
-		),
-		'/fav/toggle/(operate|alone)/(\d+)' => array(
-			'board', 'id',
-			'controller' => 'board',
-			'action' => 'toggleFavorite'
 		),
 		'/help/markup'  => array(
 			'controller' => 'markup',
@@ -382,10 +389,10 @@ return array(
 			'controller' => 'static',
 			'action' => 'index'
 		)
-	),
+	)),
 	'captcha' => array(
-//		'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
-//		'allowed_symbols'  => '23456789abcdeghkmnpqsuvxyz',
+		//'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
+		//'allowed_symbols'  => '23456789abcdeghkmnpqsuvxyz',
 		'alphabet'         => '0123456789',
 		'allowed_symbols'  => '23456789',
 		'fontsdir'         => 'fonts',

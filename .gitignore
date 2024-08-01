@@ -7,3 +7,4 @@ node_modules
 package-lock.json
 1chan.generated.conf
 .env
+.osp

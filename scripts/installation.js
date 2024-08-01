@@ -24,8 +24,7 @@ else {
 
 console.log('\n')
 
-
-const admins = (await listAdmins()).filter(a => a.class=="0")
+const admins = (await listAdmins())?.filter(a => a.class=="0")
 if (admins) {
 	log.info('Найдены учетные записи админов:')
 	console.log(admins.map(a => {

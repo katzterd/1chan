@@ -49,8 +49,8 @@ class Board_StatisticsModel
 		$stats = unserialize($cache -> get(__CLASS__, $board.':'.$id, 'stats'));
 
 		return array(
-			'online'  => max(1, sizeof($stats['online']) == 3 ? 3.5 : sizeof($stats['online'])),
-			'writers' => sizeof($stats['writers'])
+			'online'  => max(1, sizeof($stats['online']??[]) == 3 ? 3.5 : sizeof($stats['online']??[])),
+			'writers' => sizeof($stats['writers']??[])
 		);
 	}
 }

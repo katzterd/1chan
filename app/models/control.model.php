@@ -469,6 +469,9 @@ class ControlModel
 			$cache    = KVS::getInstance();
 			$settings = unserialize($cache -> get(__CLASS__, null, 'settings'));
 		}
+        if (!is_array($settings)) {
+            $settings = [];
+        }
 		foreach ($settings as $name => &$value) {
 			if (preg_match('/(count|length|interval)/', $name)) {
 				$value = is_numeric($value) ? $value : 0;

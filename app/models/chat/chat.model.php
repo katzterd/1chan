@@ -16,6 +16,9 @@ class Chat_ChatModel
     {
 		$cache = KVS::getInstance();
 		$devoice_list = unserialize($cache -> get(__CLASS__, $id, 'devoiced'));
+        if(!is_array($devoice_list)) {
+            $devoice_list=[];
+        }
 		return !in_array($ip, $devoice_list);
     }
 
@@ -28,7 +31,9 @@ class Chat_ChatModel
         if (($ip = $cache -> get(__CLASS__, $id, $message_id .':ip')) !== false) {
             $devoice_list = unserialize($cache -> get(__CLASS__, $id, 'devoiced'));
             $key = md5(self::$SALT . $ip);
-
+            if(!is_array($devoice_list)) {
+                $devoice_list=[];
+            }
             if (!is_array($devoice_list))      $devoice_list = array();
             if (!in_array($ip, $devoice_list)) $devoice_list[md5(self::$SALT . $ip)] = $ip;
 
@@ -45,6 +50,9 @@ class Chat_ChatModel
     {
 		$cache = KVS::getInstance();
 		$devoice_list = unserialize($cache -> get(__CLASS__, $id, 'devoiced'));
+        if(!is_array($devoice_list)) {
+            $devoice_list=[];
+        }
 		unset($devoice_list[$key]);
         $cache -> set(__CLASS__, $id, 'devoiced', serialize($devoice_list));
 		return true;

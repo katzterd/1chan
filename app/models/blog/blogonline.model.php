@@ -61,7 +61,7 @@ class Blog_BlogOnlineModel
 				'category'    => $category,
 				'board'       => $category['board'],
 				'clicks'      => 0,
-				'visitors'    => array($_SERVER['REMOTE_ADDR'])
+				'visitors'    => array(md5($_SERVER['REMOTE_ADDR'].MD5_SALT))
 			);
 
 			$cache -> set(__CLASS__, 'links', $id, serialize($record));
@@ -154,9 +154,9 @@ class Blog_BlogOnlineModel
 		$cache = KVS::getInstance();
 		$link  = unserialize($cache -> get(__CLASS__, 'links', $id));
 
-		if (!in_array($_SERVER['REMOTE_ADDR'], $link['visitors']))
+		if (!in_array(md5($_SERVER['REMOTE_ADDR'].MD5_SALT), $link['visitors']))
 		{
-			$link['visitors'][] = $_SERVER['REMOTE_ADDR'];
+			$link['visitors'][] = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 			$link['clicks']++;
 
 			$ttl = $cache -> lifetime(__CLASS__, 'links', $id);

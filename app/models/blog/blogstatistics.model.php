@@ -9,7 +9,7 @@ class Blog_BlogStatisticsModel
 	 */
 	public static function updateGlobalVisitors()
 	{
-		$ip     = $_SERVER['REMOTE_ADDR'];
+		$ip     = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache  = KVS::getInstance();
 		$update = false;
 
@@ -60,7 +60,7 @@ class Blog_BlogStatisticsModel
 	 */
 	public static function updateGlobalPosting()
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 		$stats = unserialize($cache -> get(__CLASS__, null, 'global_stats'));
 
@@ -90,7 +90,7 @@ class Blog_BlogStatisticsModel
 	 */
 	public static function updatePostStats($id, $writing = false)
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		if ($cache -> exists(__CLASS__, $id, 'stats'))

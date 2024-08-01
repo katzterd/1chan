@@ -484,7 +484,7 @@ class ChatController extends BaseController
 				        
 				    if ($validator -> isValid()) 
 				    { 
-				        if (!Chat_ChatModel::hasVoice($_GET['id'], $_SERVER['REMOTE_ADDR']))
+				        if (!Chat_ChatModel::hasVoice($_GET['id'], md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
 				            return array('error' => true, 'errors' => 'Вам запрещено отправлять сообщения в этот чат.');
 				        
 					$blocked_words = Chat_ChatModel::getBlockList($_GET['id']);

@@ -7,7 +7,7 @@ class Chat_ChatModel
     /**
      * Соль генерации скрытых каналов:
      */
-    private static $SALT = 'salt1293921';
+    private static $SALT = CHANNEL_SALT;
 
     /**
      * Проверка блокировки в канале:
@@ -159,7 +159,7 @@ class Chat_ChatModel
         $message    = TexyHelper::markup($message, !$session -> isAdminSession(), false);
         $date       = time();
 
-        $cache -> set(__CLASS__, $id, $message_id .':ip', $_SERVER['REMOTE_ADDR']);
+        $cache -> set(__CLASS__, $id, $message_id .':ip', md5($_SERVER['REMOTE_ADDR'].MD5_SALT));
         $cache -> expire(__CLASS__, $id, $message_id .':ip', 60 * 5);
 
         EventModel::getInstance()

@@ -80,7 +80,7 @@ class Board_BoardModel
 		// Составляем запись:
 		$record = array(
 			'id'                => $id,
-			'ip'                => $_SERVER['REMOTE_ADDR'],
+			'ip'                => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 			'board_id'    => $this -> board,
 			'parent_id'   => null,
 			'created_at' => time(),
@@ -208,7 +208,7 @@ class Board_BoardModel
 			// Составляем запись:
 			$record = array(
 				'id'                => $id,
-				'ip'                => $_SERVER['REMOTE_ADDR'],
+				'ip'                => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 				'board_id'    => $this -> board,
 				'parent_id'   => $thread_id,
 				'created_at' => time(),

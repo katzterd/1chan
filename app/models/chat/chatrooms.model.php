@@ -260,7 +260,7 @@ class Chat_ChatRoomsModel
 	 */
 	public static function SetRoomOnline($id)
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		if ($cache -> exists(__CLASS__, $id, 'stats'))

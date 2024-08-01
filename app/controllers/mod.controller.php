@@ -317,7 +317,7 @@ class ModController extends BaseController
 		if ($validator -> isValid())
 		{
 			$key     = md5(strtolower($_GET['link']));
-			$ip      = md5($_SERVER['REMOTE_ADDR']);
+			$ip      = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 			$counter = $kvs -> get(__CLASS__, 'shared_links_ip', $ip);
 
 			if (!$kvs -> exists(__CLASS__, 'shared_links', $key) && !$kvs -> exists(__CLASS__, 'shared_links_ban', $ip))

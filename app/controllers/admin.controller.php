@@ -635,6 +635,9 @@ class AdminController extends Controller
 		$template -> setParameter('submenu', 'static_pages');
 
 		$pages = StaticModel::GetPages();
+		if (!is_array($pages)) {
+			$pages = [];
+		}
 		ksort($pages);
 		$this['pages'] = $pages;
 		return true;

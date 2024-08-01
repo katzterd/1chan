@@ -7,33 +7,47 @@ class PreviewHelper
     /**
      * Загрузка:
      */
-    public function upload($url) {
+    public static function upload($url) {
         $kvs = KVS::getInstance();
 		if ($kvs -> exists(__CLASS__, $url))
 		    return $kvs -> get(__CLASS__, $url);
 		
         $data = @get_headers($url, 1);
+		// Check if file size is larger than 10MB
+	    if (isset($data['Content-Length']) && $data['Content-Length'] > 3*10485760) {
+			return false; // File is too large
+		}
         if (in_array($data['Content-Type'], array('image/jpeg', 'image/jpg', 'image/png', 'image/gif'))) {
-            $tm  = tempnam('/tmp', 'img');
-            $nam = md5(uniqid('', true));
-            $dir = substr($nam, 0, 1);
-            
-            $im    = fopen($url, 'r');
-            $fp    = fopen($tm, 'w');
-            $start = time();
-            
-            while(!feof($im) && (time() - $start) < 5) {
-                fputs($fp, fgets($im, 24));
-            }
-            fclose($im);
-            fclose($fp);
-            
-            if ((time() - $start) > 5)
-                return false;
+			$tm = tempnam('/tmp', 'img');
+			$nam = md5(uniqid('', true));
+			$dir = substr($nam, 0, 1);
+
+			$im = fopen($url, 'r');
+			$fp = fopen($tm, 'w');
+			$start = time();
+			$maxSize = 3*10485760; // 30MB in bytes
+	        $downloadedSize = 0;
+
+			while(!feof($im) && (time() - $start) < 5) {
+				$buffer = fgets($im, 4096);
+				$downloadedSize += strlen($buffer);
+				if ($downloadedSize > $maxSize) {
+					fclose($im);
+					fclose($fp);
+					@unlink($tm);
+					return false; // File is too large
+				}
+	            fputs($fp, $buffer);
+			}
+	        fclose($im);
+			fclose($fp);
+
+			if ((time() - $start) > 5)
+				return false;
             
             self::createThumbnail($tm, UPLOAD_PATH .'/news/'. $dir .'/'. $nam .'.png');
             $p = '/uploads/news/'. $dir .'/'. $nam .'.png';
-            @unlink(tm);
+            @unlink($tm);
             $kvs -> set(__CLASS__, $url, null, '/uploads/news/'. $dir .'/'. $nam .'.png');
             $kvs -> expire(__CLASS__, $url, null, 60 * 60 * 24 * 30);
             

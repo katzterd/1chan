@@ -546,7 +546,7 @@ class BlogController extends BaseController
 	 */
 	public function ratePostAjaxAction(Application $application)
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		$raters = (array)unserialize($cache -> get('Blog_BlogPostsModel', $_GET['id'], 'raters'));

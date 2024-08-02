@@ -220,10 +220,10 @@ class BlogController extends BaseController
 			{
 				$rss = new rss('utf-8');
 
-				$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+				$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', RSS_CHANNEL_DESCRIPTION);
 				$rss->language('ru-ru');
-				$rss->copyright('Все права пренадлежат вам © 2010');
-				$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+				$rss->copyright(COPYRIGHT_MSG . date("Y"));
+				$rss->managingEditor(RSS_MANAGING_EDITOR);
 				$rss->category('Посты из категории «'. $category['title'] .'»');
 
 				$rss->startRSS();
@@ -823,7 +823,7 @@ class BlogController extends BaseController
 		$preview['title']     = TexyHelper::typo(@$_POST['title']);
 		$preview['text']      = TexyHelper::markup(@$_POST['text'], true);
 		$preview['text_full'] = TexyHelper::markup(@$_POST['text_full'], true);
-		$preview['icon']      = @$_POST['link'] ? TemplateHelper::getIcon(@$_POST['link']) : '/ico/favicons/1chan.pl.png';
+		$preview['icon']      = @$_POST['link'] ? TemplateHelper::getIcon(@$_POST['link']) : '/ico/favicons/'.HOME_FAVICON.ICONS_VERSION;
 
 		if (array_key_exists('category', $_POST) && !empty($_POST['category']))
 		{
@@ -1010,10 +1010,10 @@ class BlogController extends BaseController
 		{
 			$rss = new rss('utf-8');
 
-			$rss->channel('Первый канал - Одобренные', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+			$rss->channel('Первый канал - Одобренные', 'http://'. TemplateHelper::getSiteUrl() .'/', RSS_CHANNEL_DESCRIPTION);
 			$rss->language('ru-ru');
-			$rss->copyright('Все права пренадлежат вам © 2010');
-			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+			$rss->copyright(COPYRIGHT_MSG . date("Y"));
+			$rss->managingEditor(RSS_MANAGING_EDITOR);
 			$rss->category('Одобренные');
 
 			$rss->startRSS();
@@ -1054,10 +1054,10 @@ class BlogController extends BaseController
 		{
 			$rss = new rss('utf-8');
 
-			$rss->channel('Первый канал - Все', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+			$rss->channel('Первый канал - Все', 'http://'. TemplateHelper::getSiteUrl() .'/', RSS_CHANNEL_DESCRIPTION);
 			$rss->language('ru-ru');
-			$rss->copyright('Все права пренадлежат вам © 2010');
-			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+			$rss->copyright(COPYRIGHT_MSG . date("Y"));
+			$rss->managingEditor(RSS_MANAGING_EDITOR);
 			$rss->category('Все');
 
 			$rss->startRSS();
@@ -1099,10 +1099,10 @@ class BlogController extends BaseController
 		{
 			$rss = new rss('utf-8');
 
-			$rss->channel('Первый канал - Скрытые', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+			$rss->channel('Первый канал - Скрытые', 'http://'. TemplateHelper::getSiteUrl() .'/', RSS_CHANNEL_DESCRIPTION);
 			$rss->language('ru-ru');
-			$rss->copyright('Все права пренадлежат вам © 2010');
-			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+			$rss->copyright(COPYRIGHT_MSG . date("Y"));
+			$rss->managingEditor(RSS_MANAGING_EDITOR);
 			$rss->category('Все');
 
 			$rss->startRSS();

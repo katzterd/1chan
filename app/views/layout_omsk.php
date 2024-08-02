@@ -2,18 +2,19 @@
 <html lang="ru">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="Первый канал интернетов" />
-		<meta name="keywords" content="крокодил, залупа, сыр" />
-
+		<meta name="description" content="<?php echo META_DESCRIPTION ?>" />
+		<meta name="keywords" content="<?php echo META_KEYWORDS ?>" />
+		<meta name="viewport" content="width=device-width">
 		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
 
-		<link rel="icon"       type="image/png" href="/ico/favicon.png" />
-		<link rel="stylesheet" type="text/css"     href="/css/production-omsk.css?23" media="all" />
+		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php ICONS_VERSION ?>" />
+		<link rel="stylesheet" type="text/css"     href="/css/production-omsk.css<?php CSS_VERSION ?>" media="all" />
+		<link rel="stylesheet" type="text/css"     href="/css/snow.css<?php CSS_VERSION ?>" media="all" />
 		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 
 		<script type="text/javascript" src="/js/jquery.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="/js/production.js"></script>
+		<script type="text/javascript" src="/js/production.js<?php JS_VERSION ?>"></script>
 		<script type="text/javascript" src="/js/youtube.js"></script>
 	</head>
 
@@ -22,11 +23,11 @@
 
 	<div class="b-mod-toolbar g-hidden">
 	    <a href="#" id="mod_category" title="Категория"><img src="/ico/settings2.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_pinned"   title="Прикреплена"><img src="/ico/pinned.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_rated"    title="Одобрена"><img src="/ico/tick.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_pinned" title="Прикреплена"><img src="/ico/pinned.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_rated" title="Одобрена"><img src="/ico/<?php echo APPROVED_ICON.ICONS_VERSION ?>" width="16" height="16" alt="" /></a>
 		<a href="#" id="mod_rateable" title="Оцениваема"><img src="/ico/rate_on.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_closed"   title="Закрыта"><img src="/ico/block.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_remove"   title="Удалить"><img src="/ico/remove.gif" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_closed" title="Закрыта"><img src="/ico/block.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_remove" title="Удалить"><img src="/ico/remove.gif" width="16" height="16" alt="" /></a>
 	</div>
 	<?php if ($message = ControlModel::isGlobalMessage()): ?>
 		<div class="b-global-message-panel">
@@ -61,9 +62,18 @@
 					<li>
 						<a href="/chat/">Анонимные чаты</a>
 					</li>
-
+                    <li>|</li>
+                    <li>
+                        <a href="/service/theme/normal/">Светлая тема</a>
+                    </li>
+                    <li>|</li>
+                    <li>
+                        <a href="/service/force-o-meter/">Форсометр</a>
+                    </li>
 					<li class="b-top-panel_m-right">
-						<a href="http://kolchpl6sf4t7yjf57an3gxyprqqtjm2gtvatzkcsx27uu3psssnmyad.onion">Tor-зеркало</a>
+					<?php if (defined("MIRROR_LINK") && defined("MIRROR_LINK_NAME") && MIRROR_LINK && MIRROR_LINK_NAME): ?>
+						<a href="<?php echo MIRROR_LINK ?>"><?php echo MIRROR_LINK_NAME ?></a>
+					<?php endif; ?>
 					</li>
 				</ul>
 			</div>
@@ -71,7 +81,7 @@
 			<div class="b-header-block m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
-						<img src="/img/ogol.png" width="250" height="80" alt="1chan.pl" />
+						<img src="/img/<?php echo LOGO_OMSK_IMG ?>.png" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />
 					</a>
 				</div>
 				<div class="b-header-block_b-stats" id="stats_block">

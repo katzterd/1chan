@@ -39,8 +39,8 @@ class ModController extends BaseController
 
 	 		$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
 	 		$rss->language('ru-ru');
-	 		$rss->copyright('Все права пренадлежат вам © 2010');
-	 		$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+	 		$rss->copyright(COPYRIGHT_MSG . date("Y"));
+	 		$rss->managingEditor(RSS_MANAGING_EDITOR);
 	 		$rss->category('Лог модераторских действий');
 
 	 		$rss->startRSS();

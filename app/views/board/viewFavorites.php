@@ -89,7 +89,7 @@
 
 					<div class="b-blog-entry" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>">
 						<div class="b-blog-entry_b-header">
-							<img src="/ico/favicons/1chan.pl.png" width="16" height="16" alt="" />
+							<img src="/ico/favicons/<?php echo HOME_FAVICON.ICONS_VERSION ?>" width="16" height="16" alt="" />
 
 							<a href="/<?php echo($post['board_id']); ?>/" class="b-blog-entry_b-header_m-category">
 								<?php echo($post['board_title']); ?></a>

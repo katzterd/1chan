@@ -7,14 +7,14 @@
 		<meta name="viewport" content="width=device-width">
 		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
 
-		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php ICONS_VERSION ?>" />
-		<link rel="stylesheet" type="text/css"     href="/css/production.css<?php CSS_VERSION ?>" media="all" />
-		<link rel="stylesheet" type="text/css"     href="/css/snow.css<?php CSS_VERSION ?>" media="all" />
+		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php echo ICONS_VERSION ?>" />
+		<link rel="stylesheet" type="text/css"     href="/css/production.css<?php echo CSS_VERSION ?>" media="all" />
+		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
 		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 
 		<script type="text/javascript" src="/js/jquery.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="/js/production.js<?php JS_VERSION ?>"></script>
+		<script type="text/javascript" src="/js/production.js<?php echo JS_VERSION ?>"></script>
 		<script type="text/javascript" src="/js/youtube.js"></script>
 	</head>
 
@@ -80,7 +80,7 @@
 			<div class="b-header-block m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
-						<img src="/img/<?php echo LOGO_IMG ?>.png" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />
+						<img src="/img/<?php echo LOGO_IMG ?>" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />
 					</a>
 				</div>
 				<div class="b-header-block_b-stats" id="stats_block">

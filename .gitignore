@@ -9,3 +9,4 @@ package-lock.json
 .env
 .osp
 /www/smilies.json
+/Nginx_*_vhost.conf

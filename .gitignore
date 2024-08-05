@@ -10,3 +10,4 @@ package-lock.json
 .osp
 /www/smilies.json
 /Nginx_*_vhost.conf
+.DS_Store

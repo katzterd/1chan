@@ -579,9 +579,27 @@ class Board_BoardModel
 		if ($permanent) {
 			$kvs -> listRemove(__CLASS__, null, 'boards', $this -> board);
 			$kvs -> remove(__CLASS__, $this -> board, null);
+			self::deleteDirectory(WEB_DIR . '/upload/' . ($this -> board));
 		}
 
 		return true;
+	}
+
+	private static function deleteDirectory($dirPath) {
+		if (is_dir($dirPath)) {
+			$files = scandir($dirPath);
+			foreach ($files as $file) {
+				if ($file !== '.' && $file !== '..') {
+					$filePath = $dirPath . '/' . $file;
+					if (is_dir($filePath)) {
+						self::deleteDirectory($filePath);
+					} else {
+						unlink($filePath);
+					}
+				}
+		  }
+		  rmdir($dirPath);
+	   }
 	}
 
 	/**

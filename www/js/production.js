@@ -1179,777 +1179,780 @@
 	});
 
 	var post_filters = [];
-	x.addPageProcessor(/^(operate|alone)\/?(\d+)?$/, function(match) {
-		var board = match[1], postloader = {}, updateMode = false, updateThread = null;
-		var writing, waiting, writingTimeout = null, _title = document.title;
-		$(".js-update-post-button").removeClass("g-hidden");
 
-		window['board_callback'] = function(data) {
-			$("#board_form_error").html("");
-			$("#board_form input, #board_form textarea").removeClass("g-input-error");
-			$("#board_form input[type=submit]").attr("disabled", "");
+	if (IS_BOARD) {
+		x.addPageProcessor(/^(\w+)\/?(\d+)?$/, function(match) {
+				var board = match[1], postloader = {}, updateMode = false, updateThread = null;
+				var writing, waiting, writingTimeout = null, _title = document.title;
+				$(".js-update-post-button").removeClass("g-hidden");
 
-			if (data["success"] == false)
-			{
-				var error_strings = [];
-				for (var field in data["errors"])
-				if (data["errors"].hasOwnProperty(field))
-				{
-					error_strings.push(data["errors"][field]);
-					$("#board_form [name="+ field +"]").addClass("g-input-error");
-				}
+				window['board_callback'] = function(data) {
+					$("#board_form_error").html("");
+					$("#board_form input, #board_form textarea").removeClass("g-input-error");
+					$("#board_form input[type=submit]").attr("disabled", "");
 
-				$("#board_form [name=captcha]").val("");
-				$("#board_form_error").html(error_strings.join(", "));
-				return false;
-			}
+					if (data["success"] == false)
+					{
+						var error_strings = [];
+						for (var field in data["errors"])
+						if (data["errors"].hasOwnProperty(field))
+						{
+							error_strings.push(data["errors"][field]);
+							$("#board_form [name="+ field +"]").addClass("g-input-error");
+						}
 
-			$("#board_form").get(0).reset();
-			location.href = location.protocol + "//"+ location.host +"/"+ board +"/res/"+ data.id +"/";
-			throw void(0);
-		};
-
-		window['comment_callback'] = function(data) {
-			$("#comment_form_error").html("");
-			$("#comment_form [name=captcha]").val("");
-			$("#comment_form input[type=submit]").attr("disabled", "");
-
-			if (data["success"] == false) {
-				var error_strings = [];
-				for (var field in data["errors"])
-					if (data["errors"].hasOwnProperty(field))
-						error_strings.push(data["errors"][field]);
-
-				if ("captcha" in data["errors"])
-					$("#board_comment_captcha").dialog("open");
-
-				$("#comment_form_error").html(error_strings.join(", "));
-				return false;
-			}
-			$("#comment_form").get(0).reset();
-		};
-
-		$(window)
-			.bind("blur", function() {
-				$(".b-comment.m-new").removeClass("m-new");
-				waiting = true;
-			})
-			.bind("focus", function() {
-				waiting = false;
-				document.title = _title;
-			});
-
-		$(".js-delete-button").click(function() {
-			var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
-
-			if (password.length)
-				$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
-
-			return false;
-		});
-
-		$(".js-favorite-button").click(function() {
-			var img = $("img", this);
-			$.getJSON(this.href, function(data, status) {
-				if (data.favorite == true)
-					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
-				else
-					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
-			});
-			return false;
-		});
-
-		$(".js-subscribe-checkbox").bind("change", function() {
-			if ($(this).is(":checked")) {
-				$.getJSON(location.protocol + "//"+ location.host +"/service/subscribeBoard/"+ board +"/");
-				console.log("subscibed");
-			} else {
- 				$.getJSON(location.protocol + "//"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
-			}
-		});
-
-		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
-			clone = clone || false;
-			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
-
-					if (!clone && previewActiveLink) {
-						$(".b-comment.m-tip").remove();
-						$(previewActiveLink).data("preview_open", false);
-						previewActiveLink = this;
-					} else if (!previewActiveLink)
-						previewActiveLink = this;
-
-					previewActive     = true;
-					previewTimeout    = clearTimeout(previewTimeout);
-
-					var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
-
-					if ($(this).attr("name") != board +"/"+ id)
-						return;
-
-					if (el.length != 0) {
-						var tip = $(el).clone()
-						               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-						               .addClass("m-tip")
-							       	   .attr('id', '')
-						               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
-						$(document.body).append(tip);
-						tip.slideUp(0).slideDown(300);
-						$(this).data("preview_open", true);
-						commentPreview(tip, true);
-					} else {
-						var link_ = this;
-						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
-							if (status != "error" && data != false) {
-								var tip = $(template("template_comment", data))
-									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-									       .addClass("m-tip")
-									       .attr('id', '')
-									       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
-
-								$(document.body).append(tip);
-								tip.slideUp(0).slideDown(300);
-								$(link_).data("preview_open", true);
-								commentPreview(tip, true);
-							}
-						});
+						$("#board_form [name=captcha]").val("");
+						$("#board_form_error").html(error_strings.join(", "));
+						return false;
 					}
-				}
-				e.stopPropagation();
-			});
-		};
-		$(document.body).mouseover(function(e) {
-			if (!previewTimeout && previewActive) {
-				previewTimeout = setTimeout(function() {
-					$(".b-comment.m-tip").remove();
-					$(previewActiveLink).data("preview_open", false);
-					previewActiveLink = null;
-					previewActive = false;
-				}, 400);
-			}
-		});
-		commentPreview(document);
 
-		$(".js-postload-link").click(function() {
-			var nm = $(this).attr("name");
+					$("#board_form").get(0).reset();
+					location.href = location.protocol + "//"+ location.host +"/"+ board +"/res/"+ data.id +"/";
+					throw void(0);
+				};
 
-			if (postloader[nm] && postloader[nm].length)
-			{
-				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
-					for(var i in data) {
-						var node = $(template("template_comment", data[i]));
-				    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
-				    	node.slideUp(0).slideDown(300);
-				    	commentPreview(node);
+				window['comment_callback'] = function(data) {
+					$("#comment_form_error").html("");
+					$("#comment_form [name=captcha]").val("");
+					$("#comment_form input[type=submit]").attr("disabled", "");
+
+					if (data["success"] == false) {
+						var error_strings = [];
+						for (var field in data["errors"])
+							if (data["errors"].hasOwnProperty(field))
+								error_strings.push(data["errors"][field]);
+
+						if ("captcha" in data["errors"])
+							$("#board_comment_captcha").dialog("open");
+
+						$("#comment_form_error").html(error_strings.join(", "));
+						return false;
 					}
-					postloader[nm] = [];
-					$("#board_"+ board +"_"+ nm +"_postload").hide();
-					$("#post_"+ nm +"_info .js-comments").removeClass("g-bold")
-				});
-			}
-		});
+					$("#comment_form").get(0).reset();
+				};
 
-		$(".js-thread-load").click(function() {
-			var nm = $(this).attr("name");
-
-			$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
-				$("#placeholder_comment_"+ board +"_"+ nm).html("");				
-				for(var i in data) {
-					var node = $(template("template_comment", data[i]));
-				    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
-				    	commentPreview(node);
-				}
-				postloader[nm] = [];
-				$("#board_"+ board +"_"+ nm +"_postload").hide();
-				$("#board_"+ board +"_"+ nm +"_thread_load").hide();
-				$("#post_"+ nm +"_info .js-comments").removeClass("g-bold");
-			});
-		});
-		
-		
-		
-		var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
-			imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
-			img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
-
-		$(".b-image-link").live("click", function() { 
-		   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
-			   x = size[1], y = size[2], 
-			   max_x = document.documentElement.clientWidth,
-			   max_y = document.documentElement.clientHeight;
-
-		   if (x >= max_x - 100 || y >= max_y - 50) return true;
-	
-		   img
-			  .attr("src", $(this).attr("href"))
-			  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
-		   
-		   backtile.css("position", "fixed").show("fade", 500);
-		   
-		   return false;
-		});
-
-		x.subscribe("board_"+ board, "add_post", function(data) {
-			$("#post_notify").show("fade");
-		});
-
-		x.subscribe("board_"+ board, "add_post_comment", function(data) {
-				if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
-					return false;
-
-				$.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
-				post_filters.push(data.id);
-			    	if (waiting)
-				    document.title = " ★ " + _title + " ★ ";
-
-				if (updateMode && data.parent_id == updateThread) {
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
-						var node = $(template("template_comment", data));
-						$("#placeholder_comment_"+ board +"_"+ data.parent_id).append(node);
-						node.slideUp(0).slideDown(300);
-						commentPreview(node);
+				$(window)
+					.bind("blur", function() {
+						$(".b-comment.m-new").removeClass("m-new");
+						waiting = true;
+					})
+					.bind("focus", function() {
+						waiting = false;
+						document.title = _title;
 					});
-					$("#post_"+ data.parent_id +"_info .js-comments").html(data.count);
+
+				$(".js-delete-button").click(function() {
+					var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
+
+					if (password.length)
+						$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
+
 					return false;
-				}
-				postloader[data.parent_id] ?
-					postloader[data.parent_id].push(data.id) :
-					postloader[data.parent_id] = [data.id];
+				});
 
-                if (board != "int")
-				    $("#board_"+ board +"_"+ data.parent_id +"_postload")
-					    .show().find(".js-postload-num").html(
-						    ending(postloader[data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
-					    );
-		        else
-				    $("#board_"+ board +"_"+ data.parent_id +"_postload")
-					    .show().find(".js-postload-num").html(postloader[data.parent_id].length);
-	
-				$("#post_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
-		});
-
-		$("#board_captcha").dialog({
-	            autoOpen: false,
-		    modal: true,
-	            resizable: false,
-	            width: 250,
-		    open: function() {
-			var img = $("img", this).get(0);
-			img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
-
-		        $("input", this).focus().val("");
-		    },
-		    buttons: {
-			    "Cancel": function() {
-				    $(this).dialog("close");
-		            },
-			    "OK": function() {
-				    $("input[name=captcha]").val($("input", this).val());
-				    $("#board_form").submit();
-				    $(this).dialog("close");
-		            }
-		    },
-	            show: 'fade', hide: 'fade'
-		});
-
-		$("#board_captcha, #board_comment_captcha").keyup(function(e){
-			if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-				$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
-				return false;
-			}
-             	});
-
-		$("#board_form")
-			.attr("target", "board_form_iframe")
-			.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createAjaxForm/")
-			.submit(function() {
-				if ($("input[name=captcha]").val().length == 0) {
-					$("#board_captcha").dialog("open");
+				$(".js-favorite-button").click(function() {
+					var img = $("img", this);
+					$.getJSON(this.href, function(data, status) {
+						if (data.favorite == true)
+							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
+						else
+							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
+					});
 					return false;
-				}
-				$("#board_form input[type=submit]").attr("disabled", "disabled");
-			});
-
-		$(".js-post-id-link").click(function() {
-			if (updateMode) {
-				insertText(">>" + id);
-				return false;
-			}
-		});
-
-		$(".js-paste-link").live("click", function() {
-			if (updateMode) {
-				insertText(">>" + $(this).attr("name"));
-				return false;
-			}
-		});
-
-		$("#board_comment_captcha").dialog({
-	            autoOpen: false,
-		    modal: true,
-	            resizable: false,
-	            width: 250,
-		    open: function() {
-			var img = $("img", this).get(0);
-			img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
-
-		        $("input", this).focus().val("");
-		    },
-		    buttons: {
-			    "Cancel": function() {
-				    $(this).dialog("close");
-		            },
-			    "OK": function() {
-				    $("#comment_form input[name=captcha]").val($("input", this).val());
-				    $("#comment_form").submit();
-				    $(this).dialog("close");
-		            }
-		    },
-	            show: 'fade', hide: 'fade'
-		});
-
-		$(".js-update-post-button").click(function(e) {
-			e.stopPropagation();
-			if (updateMode == true) {
-				$("#comment_form").remove();
-				if (updateThread == $(this).attr("name")) {
-					updateMode = false;
-					updateThread = null;
-					return;
-				}		
-			}
-
-			updateMode = true;
-			updateThread = $(this).attr("name");
-
-			if (postloader[updateThread] && postloader[updateThread].length)
-			{
-				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
-					for(var i in data) {
-						var node = $(template("template_comment", data[i]));
-					    	$("#placeholder_comment_"+ board +"_"+ updateThread).append(node);
-					    	node.slideUp(0).slideDown(300);
-					    	commentPreview(node);
-					}
-					postloader[updateThread] = [];
-					$("#board_"+ board +"_"+ updateThread +"_postload").hide();
-					$("#post_"+ updateThread +"_info .js-comments").removeClass("g-bold")
-				});
-			}
-
-			$("#placeholder_form_comment_"+ board +"_"+ updateThread)
-				.html(template("template_form_comment", {"id": updateThread, "textarea": "</textarea>"}));
-			
-			$("#comment_form")
-				.attr("target", "board_form_iframe")
-				.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
-				.submit(function() {
-					$("#comment_form input[type=submit]").attr("disabled", "disabled");
 				});
 
-			var statusReading = function(id) {
-				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
-				writing = false;
-			};
-
-			$("#comment_form_text")
-				.bind("keyup", function(e) {
-					if (!writing) {
-						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
-						writing = true;
-					}
-
-					if (writingTimeout) clearTimeout(writingTimeout);
-					writingTimeout = setTimeout(statusReading, 5000);
-					e.stopPropagation();
-				})
-				.bind("blur", function() {
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
-					writing = false;
-				})
-				.bind("keyup", function(e) {
-					if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
-						$("#comment_form").submit();
-					}
-				});
-
-			$("#comment_form .js-homeboard-link").click(function() {
-				$("#comment_form .js-homeboard-select").toggle();
-			});
-
-			$("#comment_form .js-homeboard-select").bind("mouseup", function(e) {
-				e.stopPropagation();
-			});
-		
-			$("#comment_form .js-homeboard-select-link").click(function(e) {
-				var board = $(this).attr("name");
-				$("input[name=homeboard]").val(board);
-				$.cookie("homeboard", board, {expires: 356, path: "/"});
-
-				$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
-				$(".js-homeboard-select").hide();
-			});
-		
-			(function() {
-				var board = $.cookie("homeboard");
-				if (board) {
-					var el = $("#comment_form .js-homeboard-select a[name="+ board +"]");
-					if (el.length) {
-						$("input[name=homeboard]").val(board);
-						$(".js-homeboard-icon").attr("src", $("img", el).attr("src"));
-					}
-				}
-			})();
-		});
-
-		$("#board_form .js-homeboard-link").click(function() {
-			$("#board_form .js-homeboard-select").toggle();
-		});
-
-		$(document.body).bind("mouseup", function() {
-			$(".js-homeboard-select").hide();
-		});
-
-		$("#board_form .js-homeboard-select").bind("mouseup", function(e) {
-			e.stopPropagation();
-		});
-		
-		$("#board_form .js-homeboard-select-link").click(function(e) {
-			var board = $(this).attr("name");
-			$("input[name=homeboard]").val(board);
-			$.cookie("homeboard", board, {expires: 356, path: "/"});
-
-			$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
-			$(".js-homeboard-select").hide();
-		});
-
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params) {
-			    var link = $('<a href="javascript://"><sup>Изменить название</sup></a>');
-			    link.click(function() {
-				    var title       = prompt("title", $(".b-board-header_name h1").text());
-				    var description = prompt("description", $(".b-board-header_desc").text());
-				    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
-			    });
-			    $(".b-board-header_options").append(link);
-	        }
-		});
-	});
-
-	x.addPageProcessor(/^(operate|alone)\/res\/(\d+)/, function(match) {
-		var board = match[1], id = match[2];
-
-		window['comment_callback'] = function(data) {
-			$("#comment_form_error").html("");
-			$("#comment_form [name=captcha]").val("");
-			$("#comment_form input[type=submit]").attr("disabled", "");
-
-			if (data["success"] == false) {
-				var error_strings = [];
-				for (var field in data["errors"])
-					if (data["errors"].hasOwnProperty(field))
-						error_strings.push(data["errors"][field]);
-
-				if ("captcha" in data["errors"])
-					$("#board_comment_captcha").dialog("open");
-
-				$("#comment_form_error").html(error_strings.join(", "));
-				return false;
-			}
-			$("#comment_form").get(0).reset();
-		};
-
-		var writing, waiting, writingTimeout = null, _title = document.title,
-		   statusReading = function() {
-			$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
-			writing = false;
-		};
-		var scrollingInterval = null,
-		    scrollEnable = function() {
-			if (scrollingInterval) clearInterval(scrollingInterval);
-			var cacheOffsetHeight = parseInt(document.body.offsetHeight);
-			scrollingInterval = setInterval(function() {
-				if (parseInt(document.body.offsetHeight) != cacheOffsetHeight)
-					window.scrollBy(0, parseInt(document.body.offsetHeight) - cacheOffsetHeight);
-
-				cacheOffsetHeight = parseInt(document.body.offsetHeight);
-			}, 15);
-		    },
-		    scrollDisable = function() {
-			if (scrollingInterval) clearInterval(scrollingInterval);
-		    };
-		var hash = "";
-		setInterval(function() {
-			if (window.location.hash != hash) {
-				hash = window.location.hash;
-				$(".b-comment").removeClass("m-selected");
-				$("#comment_"+hash.substring(1)).addClass("m-selected");
-			}
-		}, 100);
-		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
-			clone = clone || false;
-			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
-
-					if (!clone && previewActiveLink) {
-						$(".b-comment.m-tip").remove();
-						$(previewActiveLink).data("preview_open", false);
-						previewActiveLink = this;
-					} else if (!previewActiveLink)
-						previewActiveLink = this;
-
-					previewActive     = true;
-					previewTimeout    = clearTimeout(previewTimeout);
-
-					var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
-
-					if ($(this).attr("name") != board +"/"+ id)
-						return;
-
-					if (el.length != 0) {
-						var tip = $(el).clone()
-						               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-						               .addClass("m-tip")
-							       	   .attr('id', '')
-						               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
-						$(document.body).append(tip);
-						tip.slideUp(0).slideDown(300);
-						$(this).data("preview_open", true);
-						commentPreview(tip, true);
+				$(".js-subscribe-checkbox").bind("change", function() {
+					if ($(this).is(":checked")) {
+						$.getJSON(location.protocol + "//"+ location.host +"/service/subscribeBoard/"+ board +"/");
+						console.log("subscibed");
 					} else {
-						var link_ = this;
-						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
-							if (status != "error" && data != false) {
-								var tip = $(template("template_comment", data))
-									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-									       .addClass("m-tip")
-									       .attr('id', '')
-									       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+		 				$.getJSON(location.protocol + "//"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
+					}
+				});
 
+				var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
+					clone = clone || false;
+					$(".js-cross-link", node).mouseover(function(e) {
+						if (!$(this).data("preview_open"))
+						{
+
+							if (!clone && previewActiveLink) {
+								$(".b-comment.m-tip").remove();
+								$(previewActiveLink).data("preview_open", false);
+								previewActiveLink = this;
+							} else if (!previewActiveLink)
+								previewActiveLink = this;
+
+							previewActive     = true;
+							previewTimeout    = clearTimeout(previewTimeout);
+
+							var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
+
+							if ($(this).attr("name") != board +"/"+ id)
+								return;
+
+							if (el.length != 0) {
+								var tip = $(el).clone()
+								               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+								               .addClass("m-tip")
+									       	   .attr('id', '')
+								               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
-								$(link_).data("preview_open", true);
+								$(this).data("preview_open", true);
 								commentPreview(tip, true);
+							} else {
+								var link_ = this;
+								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+									if (status != "error" && data != false) {
+										var tip = $(template("template_comment", data))
+											       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+											       .addClass("m-tip")
+											       .attr('id', '')
+											       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+
+										$(document.body).append(tip);
+										tip.slideUp(0).slideDown(300);
+										$(link_).data("preview_open", true);
+										commentPreview(tip, true);
+									}
+								});
 							}
+						}
+						e.stopPropagation();
+					});
+				};
+				$(document.body).mouseover(function(e) {
+					if (!previewTimeout && previewActive) {
+						previewTimeout = setTimeout(function() {
+							$(".b-comment.m-tip").remove();
+							$(previewActiveLink).data("preview_open", false);
+							previewActiveLink = null;
+							previewActive = false;
+						}, 400);
+					}
+				});
+				commentPreview(document);
+
+				$(".js-postload-link").click(function() {
+					var nm = $(this).attr("name");
+
+					if (postloader[nm] && postloader[nm].length)
+					{
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
+							for(var i in data) {
+								var node = $(template("template_comment", data[i]));
+						    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
+						    	node.slideUp(0).slideDown(300);
+						    	commentPreview(node);
+							}
+							postloader[nm] = [];
+							$("#board_"+ board +"_"+ nm +"_postload").hide();
+							$("#post_"+ nm +"_info .js-comments").removeClass("g-bold")
 						});
 					}
-				}
-				e.stopPropagation();
-			});
-		};
-		$(document.body).mouseover(function(e) {
-			if (!previewTimeout && previewActive) {
-				previewTimeout = setTimeout(function() {
-					$(".b-comment.m-tip").remove();
-					$(previewActiveLink).data("preview_open", false);
-					previewActiveLink = null;
-					previewActive = false;
-				}, 400);
-			}
+				});
+
+				$(".js-thread-load").click(function() {
+					var nm = $(this).attr("name");
+
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
+						$("#placeholder_comment_"+ board +"_"+ nm).html("");				
+						for(var i in data) {
+							var node = $(template("template_comment", data[i]));
+						    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
+						    	commentPreview(node);
+						}
+						postloader[nm] = [];
+						$("#board_"+ board +"_"+ nm +"_postload").hide();
+						$("#board_"+ board +"_"+ nm +"_thread_load").hide();
+						$("#post_"+ nm +"_info .js-comments").removeClass("g-bold");
+					});
+				});
+				
+				
+				
+				var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
+					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
+					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
+
+				$(".b-image-link").live("click", function() { 
+				   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
+					   x = size[1], y = size[2], 
+					   max_x = document.documentElement.clientWidth,
+					   max_y = document.documentElement.clientHeight;
+
+				   if (x >= max_x - 100 || y >= max_y - 50) return true;
+			
+				   img
+					  .attr("src", $(this).attr("href"))
+					  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
+				   
+				   backtile.css("position", "fixed").show("fade", 500);
+				   
+				   return false;
+				});
+
+				x.subscribe("board_"+ board, "add_post", function(data) {
+					$("#post_notify").show("fade");
+				});
+
+				x.subscribe("board_"+ board, "add_post_comment", function(data) {
+						if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
+							return false;
+
+						$.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
+						post_filters.push(data.id);
+					    	if (waiting)
+						    document.title = " ★ " + _title + " ★ ";
+
+						if (updateMode && data.parent_id == updateThread) {
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
+								var node = $(template("template_comment", data));
+								$("#placeholder_comment_"+ board +"_"+ data.parent_id).append(node);
+								node.slideUp(0).slideDown(300);
+								commentPreview(node);
+							});
+							$("#post_"+ data.parent_id +"_info .js-comments").html(data.count);
+							return false;
+						}
+						postloader[data.parent_id] ?
+							postloader[data.parent_id].push(data.id) :
+							postloader[data.parent_id] = [data.id];
+
+		                if (board != "int")
+						    $("#board_"+ board +"_"+ data.parent_id +"_postload")
+							    .show().find(".js-postload-num").html(
+								    ending(postloader[data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
+							    );
+				        else
+						    $("#board_"+ board +"_"+ data.parent_id +"_postload")
+							    .show().find(".js-postload-num").html(postloader[data.parent_id].length);
+			
+						$("#post_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
+				});
+
+				$("#board_captcha").dialog({
+			            autoOpen: false,
+				    modal: true,
+			            resizable: false,
+			            width: 250,
+				    open: function() {
+					var img = $("img", this).get(0);
+					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+
+				        $("input", this).focus().val("");
+				    },
+				    buttons: {
+					    "Cancel": function() {
+						    $(this).dialog("close");
+				            },
+					    "OK": function() {
+						    $("input[name=captcha]").val($("input", this).val());
+						    $("#board_form").submit();
+						    $(this).dialog("close");
+				            }
+				    },
+			            show: 'fade', hide: 'fade'
+				});
+
+				$("#board_captcha, #board_comment_captcha").keyup(function(e){
+					if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+						$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
+						return false;
+					}
+		             	});
+
+				$("#board_form")
+					.attr("target", "board_form_iframe")
+					.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createAjaxForm/")
+					.submit(function() {
+						if ($("input[name=captcha]").val().length == 0) {
+							$("#board_captcha").dialog("open");
+							return false;
+						}
+						$("#board_form input[type=submit]").attr("disabled", "disabled");
+					});
+
+				$(".js-post-id-link").click(function() {
+					if (updateMode) {
+						insertText(">>" + id);
+						return false;
+					}
+				});
+
+				$(".js-paste-link").live("click", function() {
+					if (updateMode) {
+						insertText(">>" + $(this).attr("name"));
+						return false;
+					}
+				});
+
+				$("#board_comment_captcha").dialog({
+			            autoOpen: false,
+				    modal: true,
+			            resizable: false,
+			            width: 250,
+				    open: function() {
+					var img = $("img", this).get(0);
+					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+
+				        $("input", this).focus().val("");
+				    },
+				    buttons: {
+					    "Cancel": function() {
+						    $(this).dialog("close");
+				            },
+					    "OK": function() {
+						    $("#comment_form input[name=captcha]").val($("input", this).val());
+						    $("#comment_form").submit();
+						    $(this).dialog("close");
+				            }
+				    },
+			            show: 'fade', hide: 'fade'
+				});
+
+				$(".js-update-post-button").click(function(e) {
+					e.stopPropagation();
+					if (updateMode == true) {
+						$("#comment_form").remove();
+						if (updateThread == $(this).attr("name")) {
+							updateMode = false;
+							updateThread = null;
+							return;
+						}		
+					}
+
+					updateMode = true;
+					updateThread = $(this).attr("name");
+
+					if (postloader[updateThread] && postloader[updateThread].length)
+					{
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
+							for(var i in data) {
+								var node = $(template("template_comment", data[i]));
+							    	$("#placeholder_comment_"+ board +"_"+ updateThread).append(node);
+							    	node.slideUp(0).slideDown(300);
+							    	commentPreview(node);
+							}
+							postloader[updateThread] = [];
+							$("#board_"+ board +"_"+ updateThread +"_postload").hide();
+							$("#post_"+ updateThread +"_info .js-comments").removeClass("g-bold")
+						});
+					}
+
+					$("#placeholder_form_comment_"+ board +"_"+ updateThread)
+						.html(template("template_form_comment", {"id": updateThread, "textarea": "</textarea>"}));
+					
+					$("#comment_form")
+						.attr("target", "board_form_iframe")
+						.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
+						.submit(function() {
+							$("#comment_form input[type=submit]").attr("disabled", "disabled");
+						});
+
+					var statusReading = function(id) {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
+						writing = false;
+					};
+
+					$("#comment_form_text")
+						.bind("keyup", function(e) {
+							if (!writing) {
+								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
+								writing = true;
+							}
+
+							if (writingTimeout) clearTimeout(writingTimeout);
+							writingTimeout = setTimeout(statusReading, 5000);
+							e.stopPropagation();
+						})
+						.bind("blur", function() {
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
+							writing = false;
+						})
+						.bind("keyup", function(e) {
+							if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
+								$("#comment_form").submit();
+							}
+						});
+
+					$("#comment_form .js-homeboard-link").click(function() {
+						$("#comment_form .js-homeboard-select").toggle();
+					});
+
+					$("#comment_form .js-homeboard-select").bind("mouseup", function(e) {
+						e.stopPropagation();
+					});
+				
+					$("#comment_form .js-homeboard-select-link").click(function(e) {
+						var board = $(this).attr("name");
+						$("input[name=homeboard]").val(board);
+						$.cookie("homeboard", board, {expires: 356, path: "/"});
+
+						$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
+						$(".js-homeboard-select").hide();
+					});
+				
+					(function() {
+						var board = $.cookie("homeboard");
+						if (board) {
+							var el = $("#comment_form .js-homeboard-select a[name="+ board +"]");
+							if (el.length) {
+								$("input[name=homeboard]").val(board);
+								$(".js-homeboard-icon").attr("src", $("img", el).attr("src"));
+							}
+						}
+					})();
+				});
+
+				$("#board_form .js-homeboard-link").click(function() {
+					$("#board_form .js-homeboard-select").toggle();
+				});
+
+				$(document.body).bind("mouseup", function() {
+					$(".js-homeboard-select").hide();
+				});
+
+				$("#board_form .js-homeboard-select").bind("mouseup", function(e) {
+					e.stopPropagation();
+				});
+				
+				$("#board_form .js-homeboard-select-link").click(function(e) {
+					var board = $(this).attr("name");
+					$("input[name=homeboard]").val(board);
+					$.cookie("homeboard", board, {expires: 356, path: "/"});
+
+					$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
+					$(".js-homeboard-select").hide();
+				});
+
+				x.addPageProcessor(":moderator", function(path, params) {
+				    if (params) {
+					    var link = $('<a href="javascript://"><sup>Изменить название</sup></a>');
+					    link.click(function() {
+						    var title       = prompt("title", $(".b-board-header_name h1").text());
+						    var description = prompt("description", $(".b-board-header_desc").text());
+						    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
+					    });
+					    $(".b-board-header_options").append(link);
+			        }
+				});
 		});
 
-		var contentBottom = function() {
-			var el = $(".b-blog-entry"), offset = el.offset(), outHeight = el.outerHeight(true);
-			return offset.top + outHeight;
-		}();
+		x.addPageProcessor(/^(\w+)\/res\/(\d+)/, function(match) {
+				var board = match[1], id = match[2];
 
-		$(".b-comment-form_b-uplink a").click(function() {
-			$(window).scrollTo(0, 0);
+				window['comment_callback'] = function(data) {
+					$("#comment_form_error").html("");
+					$("#comment_form [name=captcha]").val("");
+					$("#comment_form input[type=submit]").attr("disabled", "");
+
+					if (data["success"] == false) {
+						var error_strings = [];
+						for (var field in data["errors"])
+							if (data["errors"].hasOwnProperty(field))
+								error_strings.push(data["errors"][field]);
+
+						if ("captcha" in data["errors"])
+							$("#board_comment_captcha").dialog("open");
+
+						$("#comment_form_error").html(error_strings.join(", "));
+						return false;
+					}
+					$("#comment_form").get(0).reset();
+				};
+
+				var writing, waiting, writingTimeout = null, _title = document.title,
+				   statusReading = function() {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+					writing = false;
+				};
+				var scrollingInterval = null,
+				    scrollEnable = function() {
+					if (scrollingInterval) clearInterval(scrollingInterval);
+					var cacheOffsetHeight = parseInt(document.body.offsetHeight);
+					scrollingInterval = setInterval(function() {
+						if (parseInt(document.body.offsetHeight) != cacheOffsetHeight)
+							window.scrollBy(0, parseInt(document.body.offsetHeight) - cacheOffsetHeight);
+
+						cacheOffsetHeight = parseInt(document.body.offsetHeight);
+					}, 15);
+				    },
+				    scrollDisable = function() {
+					if (scrollingInterval) clearInterval(scrollingInterval);
+				    };
+				var hash = "";
+				setInterval(function() {
+					if (window.location.hash != hash) {
+						hash = window.location.hash;
+						$(".b-comment").removeClass("m-selected");
+						$("#comment_"+hash.substring(1)).addClass("m-selected");
+					}
+				}, 100);
+				var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
+					clone = clone || false;
+					$(".js-cross-link", node).mouseover(function(e) {
+						if (!$(this).data("preview_open"))
+						{
+
+							if (!clone && previewActiveLink) {
+								$(".b-comment.m-tip").remove();
+								$(previewActiveLink).data("preview_open", false);
+								previewActiveLink = this;
+							} else if (!previewActiveLink)
+								previewActiveLink = this;
+
+							previewActive     = true;
+							previewTimeout    = clearTimeout(previewTimeout);
+
+							var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
+
+							if ($(this).attr("name") != board +"/"+ id)
+								return;
+
+							if (el.length != 0) {
+								var tip = $(el).clone()
+								               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+								               .addClass("m-tip")
+									       	   .attr('id', '')
+								               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								$(document.body).append(tip);
+								tip.slideUp(0).slideDown(300);
+								$(this).data("preview_open", true);
+								commentPreview(tip, true);
+							} else {
+								var link_ = this;
+								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+									if (status != "error" && data != false) {
+										var tip = $(template("template_comment", data))
+											       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+											       .addClass("m-tip")
+											       .attr('id', '')
+											       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+
+										$(document.body).append(tip);
+										tip.slideUp(0).slideDown(300);
+										$(link_).data("preview_open", true);
+										commentPreview(tip, true);
+									}
+								});
+							}
+						}
+						e.stopPropagation();
+					});
+				};
+				$(document.body).mouseover(function(e) {
+					if (!previewTimeout && previewActive) {
+						previewTimeout = setTimeout(function() {
+							$(".b-comment.m-tip").remove();
+							$(previewActiveLink).data("preview_open", false);
+							previewActiveLink = null;
+							previewActive = false;
+						}, 400);
+					}
+				});
+
+				var contentBottom = function() {
+					var el = $(".b-blog-entry"), offset = el.offset(), outHeight = el.outerHeight(true);
+					return offset.top + outHeight;
+				}();
+
+				$(".b-comment-form_b-uplink a").click(function() {
+					$(window).scrollTo(0, 0);
+				});
+
+				$(".js-post-id-link").click(function() {
+					insertText(">>" + id);
+					return false;
+				});
+
+				$(".js-paste-link").live("click", function() {
+					insertText(">>" + $(this).attr("name"));
+					return false;
+				});
+
+				$(".js-favorite-button").click(function() {
+					var img = $("img", this);
+					$.getJSON(this.href, function(data, status) {
+						if (data.favorite == true)
+							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
+						else
+							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
+					});
+					return false;
+				});
+
+				$(".js-delete-button").click(function() {
+					var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
+
+					if (password.length)
+						$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
+
+					return false;
+				});
+				
+				$("#board_comment_captcha").dialog({
+			            autoOpen: false,
+				    modal: true,
+			            resizable: false,
+			            width: 250,
+				    open: function() {
+					var img = $("img", this).get(0);
+					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+
+				        $("input", this).focus().val("");
+				    },
+				    buttons: {
+					    "Cancel": function() {
+						    $(this).dialog("close");
+				            },
+					    "OK": function() {
+						    $("#comment_form input[name=captcha]").val($("input", this).val());
+						    $("#comment_form").submit();
+						    $(this).dialog("close");
+				            }
+				    },
+			            show: 'fade', hide: 'fade'
+				});
+
+				$("#board_comment_captcha").keyup(function(e){
+					if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+						$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
+						return false;
+					}
+		             	});
+
+				$("#comment_form")
+					.attr("target", "comment_form_iframe")
+					.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
+					.submit(function() {
+						$("#comment_form input[type=submit]").attr("disabled", "disabled");
+					});
+
+				$("#comment_form_text")
+					.bind("keyup", function(e) {
+						if (!writing) {
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
+							writing = true;
+						}
+
+						if (writingTimeout) clearTimeout(writingTimeout);
+						writingTimeout = setTimeout(statusReading, 5000);
+						e.stopPropagation();
+					})
+					.bind("focus", function() {
+						scrollEnable();
+					})
+					.bind("blur", function() {
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
+						writing = false;
+						scrollDisable();
+					})
+					.bind("keyup", function(e) {
+						if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
+								$("#comment_form").submit();
+						}
+					});
+				
+				$(".js-homeboard-link").click(function() {
+					$(".js-homeboard-select").toggle();
+				});
+
+				$(document.body).bind("mouseup", function() {
+					$(".js-homeboard-select").hide();
+				});
+
+				$(".js-homeboard-select").bind("mouseup", function(e) {
+					e.stopPropagation();
+				});
+				
+				$(".js-homeboard-select-link").click(function(e) {
+					var board = $(this).attr("name");
+					$("input[name=homeboard]").val(board);
+					$.cookie("homeboard", board, {expires: 356, path: "/"});
+
+					$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
+					$(".js-homeboard-select").hide();
+				});
+
+				$(window)
+					.bind("blur", function() {
+						$(".b-comment.m-new").removeClass("m-new");
+						waiting = true;
+					})
+					.bind("focus", function() {
+						waiting = false;
+						document.title = _title;
+					});
+				
+				
+				
+				var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
+					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
+					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
+
+				$(".b-image-link").live("click", function() { 
+				   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
+					   x = size[1], y = size[2], 
+					   max_x = document.documentElement.clientWidth,
+					   max_y = document.documentElement.clientHeight;
+
+				   if (x >= max_x - 100 || y >= max_y - 50) return true;
+			
+				   img
+					  .attr("src", $(this).attr("href"))
+					  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
+				   
+				   backtile.css("position", "fixed").show("fade", 500);
+				   
+				   return false;
+				});
+
+				x.subscribe("boardpost_"+ board +"_"+ id, "stats_updated", function(data) {
+					$("#post_stats_reading").html(data.online);
+					$("#post_stats_writing").html(data.writers);
+
+				});
+				x.subscribe("boardpost_"+ board +"_"+ id, "remove_post", function(data) {
+					location.reload();
+				});
+				x.subscribe("boardpost_"+ board +"_"+ id, "add_post_comment", function(data) {
+					    $.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
+				            post_filters.push(data.id);
+
+					    var node = $(template("template_comment", data));
+					    $("#placeholder_comment").append(node);
+					    node.slideUp(0).slideDown(300);
+
+					    if (waiting)
+						    document.title = " ★ " + _title + " ★ ";
+
+					    if ($("#new_comments_link").hasClass("g-disabled")) {
+						    $("#new_comments_link").removeClass("g-disabled").click(function() {
+							    location.hash = data.id;
+						    });
+					    }
+					    commentPreview(node);
+				});
+				x.subscribe("boardpost_"+ board +"_"+ id, "remove_post_comment", function(data) {
+					$("#comment_" + board +"_"+ data.id).slideUp(500);
+				});
+
+				commentPreview(document);
+				x.addPageProcessor(":moderator", function(path, params) {
+				    if (params) {
+					    $(".js-remove-button")
+		                    .removeClass("g-hidden").click(function() {
+						        var comment_id = $("img", this).attr("alt"),
+		                            delall     = confirm('Удалить все ответы от автора?');
+						        $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
+						        return false;
+					        });
+			        }
+				});
 		});
-
-		$(".js-post-id-link").click(function() {
-			insertText(">>" + id);
-			return false;
-		});
-
-		$(".js-paste-link").live("click", function() {
-			insertText(">>" + $(this).attr("name"));
-			return false;
-		});
-
-		$(".js-favorite-button").click(function() {
-			var img = $("img", this);
-			$.getJSON(this.href, function(data, status) {
-				if (data.favorite == true)
-					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
-				else
-					$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
-			});
-			return false;
-		});
-
-		$(".js-delete-button").click(function() {
-			var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
-
-			if (password.length)
-				$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
-
-			return false;
-		});
-		
-		$("#board_comment_captcha").dialog({
-	            autoOpen: false,
-		    modal: true,
-	            resizable: false,
-	            width: 250,
-		    open: function() {
-			var img = $("img", this).get(0);
-			img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
-
-		        $("input", this).focus().val("");
-		    },
-		    buttons: {
-			    "Cancel": function() {
-				    $(this).dialog("close");
-		            },
-			    "OK": function() {
-				    $("#comment_form input[name=captcha]").val($("input", this).val());
-				    $("#comment_form").submit();
-				    $(this).dialog("close");
-		            }
-		    },
-	            show: 'fade', hide: 'fade'
-		});
-
-		$("#board_comment_captcha").keyup(function(e){
-			if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-				$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
-				return false;
-			}
-             	});
-
-		$("#comment_form")
-			.attr("target", "comment_form_iframe")
-			.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
-			.submit(function() {
-				$("#comment_form input[type=submit]").attr("disabled", "disabled");
-			});
-
-		$("#comment_form_text")
-			.bind("keyup", function(e) {
-				if (!writing) {
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=1");
-					writing = true;
-				}
-
-				if (writingTimeout) clearTimeout(writingTimeout);
-				writingTimeout = setTimeout(statusReading, 5000);
-				e.stopPropagation();
-			})
-			.bind("focus", function() {
-				scrollEnable();
-			})
-			.bind("blur", function() {
-				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
-				writing = false;
-				scrollDisable();
-			})
-			.bind("keyup", function(e) {
-				if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
-						$("#comment_form").submit();
-				}
-			});
-		
-		$(".js-homeboard-link").click(function() {
-			$(".js-homeboard-select").toggle();
-		});
-
-		$(document.body).bind("mouseup", function() {
-			$(".js-homeboard-select").hide();
-		});
-
-		$(".js-homeboard-select").bind("mouseup", function(e) {
-			e.stopPropagation();
-		});
-		
-		$(".js-homeboard-select-link").click(function(e) {
-			var board = $(this).attr("name");
-			$("input[name=homeboard]").val(board);
-			$.cookie("homeboard", board, {expires: 356, path: "/"});
-
-			$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
-			$(".js-homeboard-select").hide();
-		});
-
-		$(window)
-			.bind("blur", function() {
-				$(".b-comment.m-new").removeClass("m-new");
-				waiting = true;
-			})
-			.bind("focus", function() {
-				waiting = false;
-				document.title = _title;
-			});
-		
-		
-		
-		var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
-			imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
-			img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
-
-		$(".b-image-link").live("click", function() { 
-		   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
-			   x = size[1], y = size[2], 
-			   max_x = document.documentElement.clientWidth,
-			   max_y = document.documentElement.clientHeight;
-
-		   if (x >= max_x - 100 || y >= max_y - 50) return true;
-	
-		   img
-			  .attr("src", $(this).attr("href"))
-			  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
-		   
-		   backtile.css("position", "fixed").show("fade", 500);
-		   
-		   return false;
-		});
-
-		x.subscribe("boardpost_"+ board +"_"+ id, "stats_updated", function(data) {
-			$("#post_stats_reading").html(data.online);
-			$("#post_stats_writing").html(data.writers);
-
-		});
-		x.subscribe("boardpost_"+ board +"_"+ id, "remove_post", function(data) {
-			location.reload();
-		});
-		x.subscribe("boardpost_"+ board +"_"+ id, "add_post_comment", function(data) {
-			    $.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
-		            post_filters.push(data.id);
-
-			    var node = $(template("template_comment", data));
-			    $("#placeholder_comment").append(node);
-			    node.slideUp(0).slideDown(300);
-
-			    if (waiting)
-				    document.title = " ★ " + _title + " ★ ";
-
-			    if ($("#new_comments_link").hasClass("g-disabled")) {
-				    $("#new_comments_link").removeClass("g-disabled").click(function() {
-					    location.hash = data.id;
-				    });
-			    }
-			    commentPreview(node);
-		});
-		x.subscribe("boardpost_"+ board +"_"+ id, "remove_post_comment", function(data) {
-			$("#comment_" + board +"_"+ data.id).slideUp(500);
-		});
-
-		commentPreview(document);
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params) {
-			    $(".js-remove-button")
-                    .removeClass("g-hidden").click(function() {
-				        var comment_id = $("img", this).attr("alt"),
-                            delall     = confirm('Удалить все ответы от автора?');
-				        $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
-				        return false;
-			        });
-	        }
-		});
-	});
+	}
 
 	x.addPageProcessor("live", function() {
 		var resetFileds = function(reset) {

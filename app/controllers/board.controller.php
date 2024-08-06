@@ -529,6 +529,7 @@ class BoardController extends BaseController
 		$settings = $board -> getSettings();
 		$key = $session -> getKey();
 
+		$template -> setParameter('is_board', true);
 		$template -> setParameter('title',             $settings['title']);
 		$template -> setParameter('description', $settings['description']);
 		$template -> setParameter('board_id',      $board -> getId());
@@ -563,6 +564,7 @@ class BoardController extends BaseController
 		$session  = Session::getInstance();
 		$settings = $board -> getSettings();
 
+		$template -> setParameter('is_board', true);
 		$template -> setParameter('title', isset($settings) ? $settings['title'] : '');
 		$template -> setParameter('description', isset($settings) ? $settings['description'] : '');
 		$template -> setParameter('board_id', $board -> getId());
@@ -598,6 +600,8 @@ class BoardController extends BaseController
 	public function viewFavoritesAction(Application $application, Template $template)
 	{
 		$session  = Session::getInstance();
+		
+		$template -> setParameter('is_board', true);
 		$template -> setParameter('title', 'Избранные треды');
 		$template -> setParameter('description', 'Список постов, отмеченных вами');
 		$template -> setParameter('board_id', 'fav');

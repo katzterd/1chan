@@ -768,6 +768,7 @@ class AdminController extends Controller
 
 		// Обработка действий
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
 			$errors = [];
 			// Проверка действия
 			$action = isset($_POST['action']) ? $_POST['action'] : null;
@@ -844,6 +845,7 @@ class AdminController extends Controller
 		$template -> setParameter('submenu', 'board_add');
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
 			list($title, $description, $hidden, $errors) = self::validateBoardSettings();
 			if (! count($errors)) {
 				$add_error = Board_BoardModel::createBoard($title, $description, $hidden);

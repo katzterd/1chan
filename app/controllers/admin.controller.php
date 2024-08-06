@@ -859,4 +859,88 @@ class AdminController extends Controller
 		return true;
 	}
 
+	/**
+	 * Иконки принадлежности
+	 */
+	public function homeBoardsAction(Application $application, Template $template) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		$template -> setParameter('menu', 'posts');
+		$template -> setParameter('submenu', 'homeboards');
+
+		$this['homeboards'] = HomeBoardHelper::getBoards();
+		$this['icon_files'] = HomeBoardHelper::listFiles();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
+			$errors = [];
+			list($action, $old_domain, $new_domain, $icon, $name) = [@$_POST['action'], @$_POST['new-domain'], @$_POST['old-domain'], @$_POST['icon'], @$_POST['name']];
+			if (!in_array($action, ['add', 'edit', 'delete'])) {
+				$errors []= "Неверно указано действие";
+				return true;
+			}
+			// Валидация
+			else {
+				if ((!$old_domain && $action != 'add') || (!$new_domain && $action != 'delete')) {
+					$errors []= "Не указан домен";
+				}
+				else {
+					if ($action != 'add' && !HomeBoardHelper::existsBoard($old_domain)) {
+						$errors []= "Домена «{$old_domain}» не существует";
+					}
+					if (
+						$action != 'delete' 
+						&& 
+						HomeBoardHelper::existsBoard($new_domain) 
+						&& !(
+							$action == 'edit' 
+							&& 
+							$new_domain == $old_domain
+						)
+					) {
+						$errors []= "Домен «{$new_domain}» уже существует";
+					}
+				}
+				if ($action == 'edit' && $old_domain == 'anonymous' && $new_domain != $old_domain) {
+					$errors []= "Эту принадлежность нельзя редактировать";
+				}
+				if ($action != 'delete') {
+					if (!$icon) {
+						$errors []= "Не указана иконка";
+					}
+					elseif (!in_array($icon, $this['icon_files'])) {
+						$errors []= "Иконки «{$icon}» не существует";
+					}
+					if (!$name) {
+						$errors []= "Не указано имя";
+					}
+				}
+				elseif ($old_domain == 'anonymous') {
+					$errors []= "Эту принадлежность нельзя удалять";
+				}
+			}
+			// Применение обновлений
+			if (count($errors)) {
+				$this['errors'] = $errors;
+				return true;
+			}
+			if ($action == 'delete') {
+				HomeBoardHelper::deleteBoard($old_domain);
+			}
+			else {
+				HomeBoardHelper::saveBoard($old_domain, $new_domain, $icon, $name);
+			}
+			$this['success'] = "Принадлежность «{$name}» " . ([
+				"add" => "добавлена",
+				"edit" => "отредактирована",
+				"delete" => "удалена"
+			][$action]);
+			// Обновление списка
+			$this['homeboards'] = HomeBoardHelper::getBoards();
+		}
+
+		return true;
+	}
+
 }

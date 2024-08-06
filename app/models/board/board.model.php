@@ -694,6 +694,7 @@ class Board_BoardModel
 		];
 		$kvs -> set(__CLASS__, $title, null, serialize($board));
 		$kvs -> listAdd(__CLASS__, null, 'boards', $title, true);
+		mkdir(WEB_DIR . '/upload/' . $title, 0777, true);
 		return false;
 	}
 }

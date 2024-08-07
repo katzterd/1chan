@@ -1,0 +1,537 @@
+/**
+ * 1chan Omsk theme, teh anonymous.
+ */
+
+html {
+    background: #000;
+}
+body {
+    background: #000 url(/img/kcab.gif);
+    color: #bfbab4;
+}
+a:link,
+a:visited {
+    color: #cc9933;
+}
+a:hover {
+    color: #00a5ff;
+}
+input,
+textarea {
+    background: #000;
+    color: #fff;
+}
+
+/**
+ * g:
+ */
+a.g-dynamic:link,
+a.g-dynamic:visited {
+    border-bottom: 1px dashed #cc9933;
+}
+a.g-dynamic.m-current:link,
+a.g-dynamic.m-current:visited {
+    border-bottom: 1px dashed #000;
+    background: #cc9933;
+    color: #000;
+}
+a.g-dynamic.m-current:hover {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+.g-disabled,
+.g-disabled:link,
+.g-disabled:visited,
+.g-disabled:hover {
+    color: #555 !important;
+}
+.g-green {
+    color: #ff66ff;
+}
+.g-red {
+    color: #66ffff;
+}
+.g-input-error {
+    background: #038;
+    color: #000;
+}
+
+/**
+ * ui:
+ */
+.b-notifier {
+    background: #000;
+    color: #eee;
+    border: 1px solid #555;
+    box-shadow: 1px 1px 4px #222;
+}
+.b-notifier a {
+    color: #ADDFFF;
+}
+
+/**
+ * l:
+ */
+.l-content-wrap {
+    background: #000;
+    border: 1px solid #222;
+}
+.l-comments-wrap {
+    border-top: 1px dotted #333;
+}
+.l-footer-wrap {
+    background: url(/img/dne_tocsam.png) top center no-repeat;
+}
+
+/**
+ * b, m:
+ */
+.b-ajax-loader {
+    background: #222;
+    color: #000;
+}
+.b-ajax-loader-error {
+    background: #0055aa;
+    color: #000;
+}
+.b-spoiler-text {
+    background: #222;
+    color: #222 !important;
+}
+.b-spoiler-text:hover {
+    color: #bfbab4 !important;
+}
+.b-global-message-panel {
+    background: #010101;
+    border-bottom: 1px solid #222;
+}
+.b-top-panel {
+    background: #150b00;
+    text-shadow: 1px 1px 2px #222;
+    border-left: 1px solid #222;
+    border-right: 1px solid #222;
+    border-bottom: 1px solid #222;
+}
+.b-header-block {
+    background: url(/img/tocsam.png) top center no-repeat;
+}
+.b-header-block .b-header-block_b-sharelink:link,
+.b-header-block .b-header-block_b-sharelink:visited,
+.b-header-block .b-header-block_b-sharelink:hover {
+    background: #FFB975;
+    color: white;
+}
+
+.b-header-block .b-header-block_b-stats {
+    background: #000;
+    border: 1px solid #444;
+}
+.b-header-block .b-header-block_b-stats p {
+    color: #FF00FF;
+}
+.b-menu-panel .b-menu-panel_b-title {
+    border-bottom: 1px solid #444;
+}
+.b-menu-panel .b-menu-panel_b-title h2 {
+    color: #666;
+}
+.b-menu-panel .b-menu-panel_b-links ul li:hover {
+    background: rgba(0, 0, 0, .8);
+}
+.b-menu-panel .b-menu-panel_b-links ul li.m-active {
+    background: #000;
+}
+.b-links-panel {
+    background: transparent;
+    border: none;
+}
+.b-links-panel:hover {
+    background: rgba(0, 0, 0, .5);
+}
+.b-links-panel .b-links-panel_b-title {
+    border-bottom: 1px solid #444;
+}
+.b-links-panel .b-links-panel_b-title h2 {
+    color: #666;
+}
+.b-blog-panel ul li span {
+    text-decoration: underline;
+    color: #666;
+}
+.b-blog-panel ul li a.g-dynamic:link,
+.b-blog-panel ul li a.g-dynamic:visited {
+    border-bottom: 1px dashed #666;
+}
+.b-blog-panel ul li.b-blog-panel_b-add-entry,
+.b-blog-panel ul li.b-blog-panel_b-favorites,
+.b-blog-panel ul li.b-blog-panel_b-approved,
+.b-blog-panel ul li.b-blog-panel_b-all {
+    background: #001a38;
+}
+.b-blog-panel ul li.b-blog-panel_m-active {
+    background: #113f5f;
+}
+.b-blog-panel ul li.b-blog-panel_m-active span {
+    color: #aaa;
+}
+.b-blog-panel ul li.b-blog-panel_m-active a:link,
+.b-blog-panel ul li.b-blog-panel_m-active a:visited,
+.b-blog-panel ul li.b-blog-panel_m-active a:hover {
+    color: #40454b;
+}
+.b-blog-panel ul li.b-blog-panel_m-active a.g-dynamic:link,
+.b-blog-panel ul li.b-blog-panel_m-active a.g-dynamic:visited {
+    border-bottom: 1px solid transparent;
+}
+.b-blog-panel ul li.b-blog-panel_b-add-entry.b-blog-panel_m-active {
+    background: #113f5f;
+}
+
+.b-blog-panel .b-blog-panel_b-searchmenu a:link,
+.b-blog-panel .b-blog-panel_b-searchmenu a:visited,
+.b-blog-panel .b-blog-panel_b-searchmenu a:hover {
+    color: #666;
+}
+.b-blog-panel .b-blog-panel_b-submenu {
+    background: #555;
+}
+.b-blog-panel .b-blog-panel_b-submenu .g-disabled {
+    color: #888 !important;
+}
+.b-blog-entry .b-blog-entry_b-header.m-floating {
+    background: #ffffff;
+}
+.b-blog-entry .b-blog-entry_b-header a:link,
+.b-blog-entry .b-blog-entry_b-header a:visited {
+    color: #00a5ff;
+}
+.b-blog-entry .b-blog-entry_b-header a.b-blog-entry_b-header_m-category {
+    color: #cc9933;
+}
+.b-blog-entry .b-blog-entry_b-body blockquote,
+.b-blog-entry .b-blog-entry_b-body q {
+    color: #8766dd;
+}
+.b-blog-entry .b-blog-entry_b-body blockquote.reverse {
+    color: #1F8D80;
+}
+.b-blog-entry .b-blog-entry_b-info {
+    border: 1px solid #222;
+    color: #555;
+}
+b-blog-entry.m-hide .b-blog-entry_b-header a:link,
+.b-blog-entry.m-hide .b-blog-entry_b-header a:visited,
+.b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
+    color: #444;
+}
+.b-post-added-notify {
+    text-shadow: 0px 0px 1px #bbb;
+    color: #000;
+}
+.b-post-added-notify a:link,
+.b-post-added-notify a:visited,
+.b-post-added-notify a:hover {
+    color: #000;
+}
+.b-comment {
+    background: #150b00;
+}
+.b-comment.m-selected {
+    border: 1px solid #444;
+}
+.b-comment.m-new {
+    background: #1c1201;
+}
+.b-comment.m-tip {
+    background: #1c1201;
+    box-shadow: 0 0 10px #999;
+}
+.b-comment.m-post-preview {
+    background: #000;
+}
+.b-comment .b-comment_b-body blockquote,
+.b-comment .b-comment_b-body q {
+    color: #8766dd;
+}
+.b-post-statistics {
+    background: #001a38;
+    color: #777;
+}
+.b-search-statistics {
+    background: #001a38;
+    color: #777;
+}
+.b-homeboard-form .b-homeboard-form_select {
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: black;
+    box-shadow: 0 0 5px #555;
+}
+.b-homeboard-form .b-homeboard-form_select a:link,
+.b-homeboard-form .b-homeboard-form_select a:visited,
+.b-homeboard-form .b-homeboard-form_select a:hover {
+    background: #000;
+}
+.b-homeboard-form .b-homeboard-form_select a:link img,
+.b-homeboard-form .b-homeboard-form_select a:visited img {
+    border: 1px solid #000;
+}
+.b-homeboard-form .b-homeboard-form_select a:hover img {
+    border: 1px solid #555;
+}
+.b-comment-form {
+    border: 1px solid #333;
+}
+.b-comment-form textarea {
+    border: 1px solid #666;
+}
+.b-comment-form .b-comment-form_b-captcha input {
+    border: 1px solid #666;
+}
+.b-paginator {
+    text-shadow: 1px 1px 2px #222;
+    border: 1px solid #222;
+}
+.b-paginator ul li u {
+    color: #00a5ff;
+}
+.b-blog-form .b-blog-form_b-error {
+    background: #0055aa;
+    text-shadow: 0px 0px 1px #bbb;
+    color: #000;
+}
+.b-blog-form .b-blog-form_b-info {
+    background: #555;
+    text-shadow: 0px 0px 1px #bbb;
+    color: #000;
+}
+.b-blog-form .b-blog-form_b-form {
+    border: 1px solid #222;
+}
+.b-blog-form .b-blog-form_b-form_b-field textarea {
+    border: 1px solid #666;
+}
+.b-board-header {
+    border-bottom: 1px solid #111;
+}
+.b-board-header .b-board-header_name h1 {
+    color: #999;
+}
+.b-board-form {
+    border: 1px solid #222;
+    box-shadow: 0px 0px 5px #444;
+}
+.b-board-form .b-board-form_b-error {
+    background: #00468a;
+    color: #000;
+}
+.b-board-form .b-board-form_title label {
+    color: #999;
+}
+.b-board-form .b-board-form_title input {
+    border: 1px solid #333;
+}
+
+
+
+
+
+.b-board-form .b-board-form_image label,
+.b-board-form .b-board-form_body label {
+    color: #999;
+}
+.b-board-form .b-board-form_body textarea,
+.b-board-form .b-board-form_password input[type=password] {
+    border: 1px solid #333;
+}
+.b-board-post-added-notify {
+    background: #00468a;
+    color: #000;
+}
+.b-board-post-added-notify a:link,
+.b-board-post-added-notify a:visited,
+.b-board-post-added-notify a:hover {
+    color: #000;
+}
+.b-board {
+    border-top: 1px solid #111;
+}
+.b-board .b-comment-form_b-upload {
+    background: #111;
+}
+.b-board .l-comments-wrap .b-comments-load span {
+    background: #000;
+}
+.b-board .l-comments-wrap .b-comments-load,
+.b-board .l-comments-wrap .b-comments-load span a:link,
+.b-board .l-comments-wrap .b-comments-load span a:visited,
+.b-board .l-comments-wrap .b-comments-load span a:hover {
+    color: #777;
+}
+.b-live-panel ul li {
+    text-shadow: 1px 1px 2px #222;
+}
+.b-live-panel ul li a:link,
+.b-live-panel ul li a:visited,
+.b-live-panel ul li a:hover {
+    color: #666;
+}
+.b-live-panel ul li a.g-dynamic:link,
+.b-live-panel ul li a.g-dynamic:visited {
+    border-bottom: 1px dashed #666;
+}
+.b-live-panel ul li.b-live-panel_b-link {
+    background: #113f5f;
+}
+.b-live-panel ul li.b-live-panel_b-link input {
+    border: 1px solid #222;
+    color: #ddd;
+}
+.b-live-panel ul li.b-live-panel_b-description {
+    background: #113f5f;
+}
+.b-live-panel ul li.b-live-panel_b-description input[type=text] {
+    border: 1px solid #222;
+    color: #ddd;
+}
+.b-live-panel .b-live-panel_b-submenu {
+    background: #111;
+}
+.b-live_b-error {
+    background: #0055aa;
+    text-shadow: 0px 0px 1px #bbb;
+    color: #000;
+}
+.b-live-entry a.b-live-entry_b-description:link,
+.b-live-entry a.b-live-entry_b-description:visited {
+    color: #00a5ff;
+}
+.b-live-entry a.b-live-entry_b-description:visited {
+    color: #555;
+}
+.b-live-entry a.b-live-entry_b-category:link,
+.b-live-entry a.b-live-entry_b-category:visited {
+    color: #cc9933;
+}
+.b-live-entry .b-live-entry_b-clicks {
+    color: #222;
+}
+.b-chat-panel ul li {
+    text-shadow: 1px 1px 2px #222;
+}
+.b-chat-panel ul li a:link,
+.b-chat-panel ul li a:visited,
+.b-chat-panel ul li a:hover {
+    color: #666;
+}
+.b-chat-panel ul li a.g-dynamic:link,
+.b-chat-panel ul li a.g-dynamic:visited {
+    border-bottom: 1px dashed #666;
+}
+.b-chat-panel ul li.b-chat-panel_b-add-room {
+    background: #001a38;
+}
+.b-chat-panel ul li.b-chat-panel_b-all {
+    background: #150b00;
+}
+.b-chat-panel ul li.b-chat-panel_b-common {
+    background: #150b00;
+}
+.b-chat-panel ul li.b-chat-panel_m-active {
+    background: #1e1301;
+    text-shadow: 1px 1px 1px #444;
+}
+.b-chat-panel ul li.b-chat-panel_m-active a:link,
+.b-chat-panel ul li.b-chat-panel_m-active a:visited,
+.b-chat-panel ul li.b-chat-panel_m-active a:hover {
+    color: #bfbab4;
+}
+.b-chat-panel ul li.b-chat-panel_m-active a.g-dynamic:link,
+.b-chat-panel ul li.b-chat-panel_m-active a.g-dynamic:visited {
+    border-bottom: 1px solid transparent;
+}
+.b-chat-panel ul li.b-chat-panel_b-add-room.b-chat-panel_m-active {
+    background: #00316a;
+}
+.b-chat-added-notify {
+    background: #0055aa;
+    text-shadow: 0px 0px 1px #bbb;
+    color: #000;
+}
+.b-chat-added-notify a:link,
+.b-chat-added-notify a:visited,
+.b-chat-added-notify a:hover {
+    color: #000;
+}
+.b-chat-rooms_b-chat-group {
+    border-bottom: 1px solid #222;
+}
+.b-chat-rooms_b-room {
+    background: #000;
+    border: 1px solid transparent;
+}
+.b-chat-rooms_b-room:hover {
+    background: #110700;
+    border: 1px solid #222;
+}
+.b-chat-rooms_b-room.ui-sortable-helper {
+    background: #110700;
+    border: 1px solid #440;
+}
+.b-chat-rooms_b-room_b-header a:link,
+.b-chat-rooms_b-room_b-header a:visited,
+.b-chat-rooms_b-room_b-header a:hover {
+    color: #00a5ff;
+}
+.b-chat-rooms_b-room_b-info {
+    color: #999;
+}
+.b-chat-rooms_b-room_b-description {
+    font-size: 0.8em;
+}
+.b-chat {
+    border: 1px solid #222;
+}
+.b-chat_b-messages {
+    border: 1px solid #222;
+}
+.b-chat_b-message_b-date {
+    color: #555;
+}
+.b-chat_b-message_b-body blockquote,
+.b-chat_b-message_b-body q {
+    color: #8766dd;
+}
+.b-chat_b-message.m-info {
+    background: #111;
+    border: 1px solid #222;
+}
+.b-chat_b-message.m-error {
+    background: #001a38;
+    border: 1px solid #222;
+}
+.b-chat_b-form textarea {
+    border: 1px solid #222;
+}
+.b-underlinks a:link,
+.b-underlinks a:visited,
+.b-underlinks a:hover,
+.b-footer-imgboards h2,
+.b-footer-imgboards ul a:link,
+.b-footer-imgboards ul a:visited,
+.b-footer-imgboards ul a:hover,
+.b-footer-services h2,
+.b-footer-services ul a:link,
+.b-footer-services ul a:visited,
+.b-footer-services ul a:hover,
+.b-footer-copyrights,
+.b-footer-copyrights a:link,
+.b-footer-copyrights a:visited,
+.b-footer-copyrights a:hover {
+    color: #666;
+}
+.b-mod-toolbar {
+    background: #000;
+    border: 1px solid #222;
+    box-shadow: 0 0 10px #999;
+}

@@ -8,7 +8,8 @@
 		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
 
 		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php echo ICONS_VERSION ?>" />
-		<link rel="stylesheet" type="text/css"     href="/css/production.css<?php echo CSS_VERSION ?>" media="all" />
+		<link rel="stylesheet" type="text/css"  href="/css/common.css<?php echo CSS_VERSION ?>" media="all" />
+		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.css<?php echo CSS_VERSION ?>" media="all" />
 		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
 		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 

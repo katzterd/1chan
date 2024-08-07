@@ -155,14 +155,17 @@
 			        </div>
 			          <div class="b-menu-panel_b-links">
 			            <ul>
-			            	<?php if (empty($this -> getParameter('boards'))): ?><li>Нет активных разделов</li><?php endif; ?>
-										<?php foreach($this -> getParameter('boards') as $board): ?>
-											<?php if (!@$board['hidden']): ?>
-											<li <?= $this -> getParameter('board_id') == $board['title'] ? 'class="m-active"' : '' ?>>
-												<a href="/<?= $board['title'] ?>/">/<?= $board['title'] ?>/ - <?= $board['description'] ?></a>
-											</li>
-											<?php endif; ?>
-										<?php endforeach; ?>
+			            	<?php if (empty($this -> getParameter('boards'))): ?>
+			            		<li>Нет активных разделов</li>
+										<?php else: ?>
+											<?php foreach($this -> getParameter('boards') as $board): ?>
+												<?php if (!@$board['hidden']): ?>
+												<li <?= $this -> getParameter('board_id') == $board['title'] ? 'class="m-active"' : '' ?>>
+													<a href="/<?= $board['title'] ?>/">/<?= $board['title'] ?>/ - <?= $board['description'] ?></a>
+												</li>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										<?php endif; ?>
 			            	<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="/fav/">Избранные треды</a></li>
 				        <li class="b-menu-panel_b-footer">
 				            <a href="/service/last_board_posts/">&larr; последние посты</a>

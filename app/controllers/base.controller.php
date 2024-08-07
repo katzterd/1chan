@@ -27,25 +27,25 @@ class BaseController extends Controller
 		
 		$links_on = $session -> persistenceGet('show_links_panel', true);
 		if ($links_on) {
-		    $filter   = $session -> persistenceGet('live_filter', true);
-		    $links    = Blog_BlogOnlineModel::GetLinks($filter);
+		  $filter   = $session -> persistenceGet('live_filter', true);
+		  $links    = Blog_BlogOnlineModel::GetLinks($filter);
 		
-		    $template -> setParameter('online_links', array_slice($links, 0, 12));
-		    $template -> setParameter('right_panel', $links_on);
-        }
+		  $template -> setParameter('online_links', array_slice($links, 0, 12));
+		  $template -> setParameter('right_panel', $links_on);
+    }
+
+    $boards = Board_BoardModel::getBoardList();
+		$template -> setParameter('boards', $boards);
 
 		$template -> setParameter('global_unique',          $stats['unique']);
 		$template -> setParameter('global_online',          $stats['online']);
 		$template -> setParameter('global_posts',           $stats['posts']);
 		$template -> setParameter('global_unique_posters',  $stats['unique_posters']);
 		$template -> setParameter('global_speed',           $stats['speed']);
-
+		
 		if ($session -> persistenceGet('global_theme', false)) {
 			return $template -> render($this -> viewParams, $session -> persistenceGet('global_theme'));
 		}
-
-		$boards = Board_BoardModel::getBoardList();
-		$template -> setParameter('boards', $boards);
 
 		parent::process($template);
 	}

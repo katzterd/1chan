@@ -46,13 +46,13 @@ class Chat_ChatRoomsModel
 		$id = substr(md5('common') . md5('common'), 0, 45);
 
 		$record = array(
-		    'room_id'     => $id,
-            'title'       => 'Общая комната',
-            'description' => 'Свободное общение',
-            'password'    => '',
-            'controlword' => COMMON_ROOM_CONTROLWORD,
-            'public'      => true
-        );
+				'room_id'     => $id,
+						'title'       => 'Общая комната',
+						'description' => 'Свободное общение',
+						'password'    => '',
+						'controlword' => COMMON_ROOM_CONTROLWORD,
+						'public'      => true
+				);
 
 		$cache -> set(__CLASS__, $id, 'room', serialize($record));
 		$cache -> set(__CLASS__, $id, 'update', time());
@@ -244,15 +244,13 @@ class Chat_ChatRoomsModel
 		$cache = KVS::getInstance();
 		$stats = unserialize($cache -> get(__CLASS__, $id, 'stats'));
 
-        foreach($stats['visitors'] as $ip => $time)
-		{
-		    if ((time() - $time) > 60 * 4)
-			{
+		if (isset($stats['visitors'])) foreach($stats['visitors'] as $ip => $time)	{
+			if ((time() - $time) > 60 * 4) {
 				$stats['online']--;
 			}
 		}
 
-		return $stats['online'];
+		return @$stats['online'] ?? 0;
 	}
 
 	/**
@@ -260,7 +258,7 @@ class Chat_ChatRoomsModel
 	 */
 	public static function SetRoomOnline($id)
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		if ($cache -> exists(__CLASS__, $id, 'stats'))
@@ -268,7 +266,7 @@ class Chat_ChatRoomsModel
 		else
 			$stats = array('online' => 0, 'visitors' => array());
 
-	    $online_cache = $stats['online'];
+			$online_cache = $stats['online'];
 
 		foreach($stats['visitors'] as $is => $time)
 		{
@@ -287,36 +285,36 @@ class Chat_ChatRoomsModel
 
 		$cache -> set(__CLASS__, $id, 'stats', serialize($stats));
 
-        if ($stats['online'] != $online_cache)
-		    EventModel::getInstance()
-			    -> Broadcast('room_stats_updated', array('room_id' => $id, 'stats' => $stats));
+				if ($stats['online'] != $online_cache)
+				EventModel::getInstance()
+					-> Broadcast('room_stats_updated', array('room_id' => $id, 'stats' => $stats));
 
 		return true;
 	}
 
 	
 
-    /**
-     * Установка "инфорации" канала:
-     */
-    public static function SetInfo($id, $message)
-    {
+		/**
+		 * Установка "инфорации" канала:
+		 */
+		public static function SetInfo($id, $message)
+		{
 		$cache   = KVS::getInstance();
-        $message = TexyHelper::markup($message, true, false);
+				$message = TexyHelper::markup($message, true, false);
 
-        $cache -> set(__CLASS__, $id, 'info', $message);
+				$cache -> set(__CLASS__, $id, 'info', $message);
 
-        return $message;
-    }
+				return $message;
+		}
 
-    /**
-     * Получение "информации" канала:
-     */
-    public static function GetInfo($id)
-    {
+		/**
+		 * Получение "информации" канала:
+		 */
+		public static function GetInfo($id)
+		{
 		$cache   = KVS::getInstance();
 		return $cache -> get(__CLASS__, $id, 'info');
-    }
+		}
 }
 
 /**
@@ -327,45 +325,45 @@ EventModel::getInstance()
 	 * Добавление комнаты:
 	 */
 	-> AddEventListener('add_room', function($data) {
-	    if ($data['public'] == true)
-	        EventModel::getInstance()
-			    -> ClientBroadcast(
-				    'chats', 'add_room'
-			    );
+			if ($data['public'] == true)
+					EventModel::getInstance()
+					-> ClientBroadcast(
+						'chats', 'add_room'
+					);
 	})
 	-> AddEventListener('edit_room', function($data) {
-	    EventModel::getInstance()
+			EventModel::getInstance()
 			-> ClientBroadcast(
-		       'chat_'. $data['room_id'], 'edit_room', array(
-		            'room_id'     => $data['room_id'],
-		            'title'       => $data['title'],
-		            'description' => $data['description'],
-		            'public'      => $data['public'],
-		            'password'    => (bool)$data['password']
-		        )
-	        )
+					 'chat_'. $data['room_id'], 'edit_room', array(
+								'room_id'     => $data['room_id'],
+								'title'       => $data['title'],
+								'description' => $data['description'],
+								'public'      => $data['public'],
+								'password'    => (bool)$data['password']
+						)
+					)
 			-> ClientBroadcast(
-		       'chats', 'edit_room', array(
-		            'room_id'     => $data['room_id'],
-		            'title'       => $data['title'],
-		            'description' => $data['description'],
-		            'public'      => $data['public'],
-		            'password'    => (bool)$data['password']
-		        )
-	        );
+					 'chats', 'edit_room', array(
+								'room_id'     => $data['room_id'],
+								'title'       => $data['title'],
+								'description' => $data['description'],
+								'public'      => $data['public'],
+								'password'    => (bool)$data['password']
+						)
+					);
 	})
 	-> AddEventListener('room_stats_updated', function($data) {
-	    EventModel::getInstance()
+			EventModel::getInstance()
 			-> ClientBroadcast(
-		       'chat_'. $data['room_id'], 'stats_updated', array(
-		            'room_id' => $data['room_id'],
-		            'online'  => $data['stats']['online']
-		        )
-	        )
+					 'chat_'. $data['room_id'], 'stats_updated', array(
+								'room_id' => $data['room_id'],
+								'online'  => $data['stats']['online']
+						)
+					)
 			-> ClientBroadcast(
-		       'chats', 'stats_updated_room', array(
-		            'room_id' => $data['room_id'],
-		            'online'  => $data['stats']['online']
-		        )
-	        );
+					 'chats', 'stats_updated_room', array(
+								'room_id' => $data['room_id'],
+								'online'  => $data['stats']['online']
+						)
+					);
 	});

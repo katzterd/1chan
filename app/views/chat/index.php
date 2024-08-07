@@ -1,14 +1,14 @@
 				<div class="b-chat-panel g-clearfix">
 					<ul>
-						<li class="b-chat-panel_b-add-room<?php if ($this -> getParameter('section') == 'add'): ?> b-chat-panel_m-active<?php endif; ?>">
+						<li onclick="window.location='/chat/add/'" class="b-chat-panel_b-add-room<?php if ($this -> getParameter('section') == 'add'): ?> b-chat-panel_m-active<?php endif; ?>">
 							<img src="/ico/add-chat.png" width="16" height="16" alt="" />
 							<a href="/chat/add/">Добавить комнату</a>
 						</li>
-						<li class="b-chat-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-chat-panel_m-active<?php endif; ?>">
+						<li onclick="window.location='/chat/'" class="b-chat-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-chat-panel_m-active<?php endif; ?>">
 							<img src="/ico/chat-rooms.png" width="16" height="16" alt="" />
 							<a href="/chat/">Тематические чаты</a>
 						</li>
-						<li class="b-chat-panel_b-common<?php if ($this -> getParameter('section') == 'common'): ?> b-chat-panel_m-active<?php endif; ?>">
+						<li onclick="window.location='/chat/common/'" class="b-chat-panel_b-common<?php if ($this -> getParameter('section') == 'common'): ?> b-chat-panel_m-active<?php endif; ?>">
 							<img src="/ico/chat-common.png" width="16" height="16" alt="" />
 							<a href="/chat/common/">Общий чат</a>
 						</li>

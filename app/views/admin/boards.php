@@ -82,3 +82,8 @@
 		$(this).parents('tr').toggleClass('options-reveal')
 	})
 </script>
+<?php if (@$form_submitted) : ?><script>
+	if ( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href )
+	}
+</script><?php endif; ?>

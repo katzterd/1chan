@@ -69,9 +69,9 @@ class ControlModel
 
 		$session  = Session::getInstance();
 
-		if (@$_SESSION['open_from'] != $_SERVER['REMOTE_ADDR']) {
+		if (@$_SESSION['open_from'] != md5($_SERVER['REMOTE_ADDR'].MD5_SALT)) {
 			$session -> persistenceSet('captcha_mode', true);
-			$_SESSION['open_from'] = $_SERVER['REMOTE_ADDR'];
+			$_SESSION['open_from'] = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		}
 
 		if ($session -> persistenceGet('captcha_mode', true))
@@ -90,14 +90,14 @@ class ControlModel
 		if(@$settings['post_comment_captcha'])
 			return true;
 
-		if ($kvs -> exists('ControlModel', 'timeblock', $_SERVER['REMOTE_ADDR']))
+		if ($kvs -> exists('ControlModel', 'timeblock', md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
 			return true;
 
 		$session  = Session::getInstance();
 
-		if (@$_SESSION['open_from'] != $_SERVER['REMOTE_ADDR']) {
+		if (@$_SESSION['open_from'] != md5($_SERVER['REMOTE_ADDR'].MD5_SALT)) {
 			$session -> persistenceSet('captcha_mode', true);
-			$_SESSION['open_from'] = $_SERVER['REMOTE_ADDR'];
+			$_SESSION['open_from'] = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		}
 
 		if ($session -> persistenceGet('captcha_mode', true))
@@ -118,9 +118,9 @@ class ControlModel
 
 		$session  = Session::getInstance();
 
-		if (@$_SESSION['open_from'] != $_SERVER['REMOTE_ADDR']) {
+		if (@$_SESSION['open_from'] != md5($_SERVER['REMOTE_ADDR'].MD5_SALT)) {
 			$session -> persistenceSet('captcha_mode', true);
-			$_SESSION['open_from'] = $_SERVER['REMOTE_ADDR'];
+			$_SESSION['open_from'] = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		}
 
 		if ($session -> persistenceGet('captcha_mode', true))
@@ -140,14 +140,14 @@ class ControlModel
 		if(@$settings['live_captcha'])
 			return true;
 
-		if ($kvs -> exists('ControlModel', 'timeblock', $_SERVER['REMOTE_ADDR']))
+		if ($kvs -> exists('ControlModel', 'timeblock', md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
 			return true;
 
 		$session  = Session::getInstance();
 
-		if (@$_SESSION['open_from'] != $_SERVER['REMOTE_ADDR']) {
+		if (@$_SESSION['open_from'] != md5($_SERVER['REMOTE_ADDR'].MD5_SALT)) {
 			$session -> persistenceSet('captcha_mode', true);
-			$_SESSION['open_from'] = $_SERVER['REMOTE_ADDR'];
+			$_SESSION['open_from'] = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		}
 
 		if ($session -> persistenceGet('captcha_mode', true))
@@ -162,8 +162,8 @@ class ControlModel
 	public static function getPostInterval()
 	{
 		$kvs = KVS::getInstance();
-		if ($kvs -> exists('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']))
-			return $kvs -> lifetime('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']);
+		if ($kvs -> exists('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
+			return $kvs -> lifetime('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT));
 		
 		$time      = time();
 		$session   = Session::getInstance();
@@ -187,8 +187,8 @@ class ControlModel
 
 		$kvs = KVS::getInstance();
 
-		if ($kvs -> exists('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']))
-			return $kvs -> lifetime('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']);
+		if ($kvs -> exists('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
+			return $kvs -> lifetime('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT));
 
 		$last_post = $session -> persistenceGet('last_comment_date', time());
 		$interval = time() - $last_post;
@@ -207,8 +207,8 @@ class ControlModel
 		$session  = Session::getInstance();
 
 		$kvs = KVS::getInstance();
-		if ($kvs -> exists('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']))
-			return $kvs -> lifetime('ControlModel', 'timeban', $_SERVER['REMOTE_ADDR']);
+		if ($kvs -> exists('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT)))
+			return $kvs -> lifetime('ControlModel', 'timeban', md5($_SERVER['REMOTE_ADDR'].MD5_SALT));
 
 		$last_post = $session -> persistenceGet('last_board_post_date', time());
 		$interval = time() - $last_post;
@@ -469,6 +469,9 @@ class ControlModel
 			$cache    = KVS::getInstance();
 			$settings = unserialize($cache -> get(__CLASS__, null, 'settings'));
 		}
+        if (!is_array($settings)) {
+            $settings = [];
+        }
 		foreach ($settings as $name => &$value) {
 			if (preg_match('/(count|length|interval)/', $name)) {
 				$value = is_numeric($value) ? $value : 0;
@@ -583,14 +586,24 @@ class ControlModel
 	/**
 	 * Проверка прав модератора:
 	 */
-	public static function checkModrights($category_id)
+	public static function checkModrights($category_id, $log = false)
 	{
 		$session = Session::getInstance();
 		if ($session -> isModeratorSession())
 		{
-			if ($_SESSION['auth']['category'] == '*' || (int)$_SESSION['auth']['category'] == $category_id)
+            $isGlobal = $_SESSION['auth']['category'] == '*';
+            $canEditCategory = (int)$_SESSION['auth']['category'] == $category_id;
+            if (!$isGlobal) {
+                if ($log) echo "not global".PHP_EOL ;
+            }
+            if (!$canEditCategory) {
+                if ($log) echo "cannot edit category $category_id".PHP_EOL;
+            }
+			if ($isGlobal || $canEditCategory)
 				return true;
-		}
+		} else {
+            if ($log) echo "not moderator".PHP_EOL;
+        }
 		return false;
 	}
 

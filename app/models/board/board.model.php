@@ -80,7 +80,7 @@ class Board_BoardModel
 		// Составляем запись:
 		$record = array(
 			'id'                => $id,
-			'ip'                => $_SERVER['REMOTE_ADDR'],
+			'ip'                => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 			'board_id'    => $this -> board,
 			'parent_id'   => null,
 			'created_at' => time(),
@@ -208,7 +208,7 @@ class Board_BoardModel
 			// Составляем запись:
 			$record = array(
 				'id'                => $id,
-				'ip'                => $_SERVER['REMOTE_ADDR'],
+				'ip'                => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 				'board_id'    => $this -> board,
 				'parent_id'   => $thread_id,
 				'created_at' => time(),
@@ -579,9 +579,27 @@ class Board_BoardModel
 		if ($permanent) {
 			$kvs -> listRemove(__CLASS__, null, 'boards', $this -> board);
 			$kvs -> remove(__CLASS__, $this -> board, null);
+			self::deleteDirectory(UPLOAD_PATH . '/' . ($this -> board));
 		}
 
 		return true;
+	}
+
+	private static function deleteDirectory($dirPath) {
+		if (is_dir($dirPath)) {
+			$files = scandir($dirPath);
+			foreach ($files as $file) {
+				if ($file !== '.' && $file !== '..') {
+					$filePath = $dirPath . '/' . $file;
+					if (is_dir($filePath)) {
+						self::deleteDirectory($filePath);
+					} else {
+						unlink($filePath);
+					}
+				}
+		  }
+		  rmdir($dirPath);
+	   }
 	}
 
 	/**
@@ -694,6 +712,7 @@ class Board_BoardModel
 		];
 		$kvs -> set(__CLASS__, $title, null, serialize($board));
 		$kvs -> listAdd(__CLASS__, null, 'boards', $title, true);
+		mkdir(UPLOAD_PATH . '/' . $title, 0777, true);
 		return false;
 	}
 }

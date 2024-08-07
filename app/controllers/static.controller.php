@@ -45,15 +45,15 @@ class StaticController extends BaseController
 	 */
 	public function pooAjaxAction(Application $application) {
 		$cache = KVS::getInstance();
-		if ($cache -> exists(__CLASS__, 'poo', $_SERVER['REMOTE_ADDR'])) {
+		if ($cache -> exists(__CLASS__, 'poo', md5($_SERVER['REMOTE_ADDR'].MD5_SALT))) {
 			return false;
 		}
 
 		EventModel::getInstance()
             -> ClientBroadcast('page_'. $_POST['target'], "poo", array('top' => $_POST['top'], 'left' => $_POST['left']));
 
-		$cache -> set(__CLASS__, 'poo', $_SERVER['REMOTE_ADDR'], 1);
-		$cache -> expire(__CLASS__, 'poo', $_SERVER['REMOTE_ADDR'], 1);
+		$cache -> set(__CLASS__, 'poo', md5($_SERVER['REMOTE_ADDR'].MD5_SALT), 1);
+		$cache -> expire(__CLASS__, 'poo', md5($_SERVER['REMOTE_ADDR'].MD5_SALT), 1);
 		return true;
 	}
 }

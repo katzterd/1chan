@@ -37,7 +37,7 @@ class Blog_BlogPostsModel
 
 		$record = array(
 			'id'         => $id,
-			'ip'         => $_SERVER['REMOTE_ADDR'],
+			'ip'         => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 			'category'   => 0,
 			'created_at' => time(),
 			'updated_at' => time(),
@@ -76,7 +76,7 @@ class Blog_BlogPostsModel
 
 		$dbh = PDOQuery::getInstance();
 		$dbh -> insert('1chan_post', $record);
-		$cache -> set(__CLASS__, $id, 'raters', serialize(array($_SERVER['REMOTE_ADDR'])));
+		$cache -> set(__CLASS__, $id, 'raters', serialize(array(md5($_SERVER['REMOTE_ADDR'].MD5_SALT))));
 
 		$record['text_original'] = $text_original;
 		EventModel::getInstance()
@@ -354,7 +354,7 @@ class Blog_BlogPostsModel
 	public static function RatePost($id, $increment = true)
 	{
 		$dbh   = PDOQuery::getInstance();
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		$post = Blog_BlogPostsModel::GetPost($id);

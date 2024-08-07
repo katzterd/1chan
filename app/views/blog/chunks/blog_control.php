@@ -8,18 +8,25 @@
 						</li>
 						<li class="b-blog-panel_b-favorites<?php if ($this -> getParameter('section') == 'favorite'): ?> b-blog-panel_m-active<?php endif; ?>">
 							<a href="/news/fav/">
-								<img src="/ico/favorites.png" width="16" height="16" alt="" />
+								<?php if (defined("FAVORITES_ICON") && FAVORITES_ICON): ?>
+									<img src="/ico/<?php echo FAVORITES_ICON.ICONS_VERSION ?>" width="16" height="16" alt="" />
+								<?php endif; ?>
 								<span>Избранные</span>
 							</a>
 						</li>
 						<li class="b-blog-panel_b-approved<?php if ($this -> getParameter('section') == 'rated'): ?> b-blog-panel_m-active<?php endif; ?>">
 							<a href="/news/">
-								<img src="/ico/tick.png" width="16" height="16" alt="" />
+								<?php if (defined("APPROVED_ICON") && APPROVED_ICON): ?>
+									<img src="/ico/<?php echo APPROVED_ICON.ICONS_VERSION ?>" width="16" height="16" alt="" />
+								<?php endif; ?>
 								<span>Одобренные</span>
 							</a>
 						</li>
 						<li class="b-blog-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-blog-panel_m-active<?php endif; ?>">
 							<a href="/news/all/">
+								<?php if (defined("ALL_ICON") && ALL_ICON): ?>
+									<img src="/ico/<?php echo ALL_ICON.ICONS_VERSION ?>" width="16" height="16" alt="" />
+								<?php endif; ?>
 								<span>Все</span>
 							</a>
 						</li>

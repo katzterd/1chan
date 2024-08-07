@@ -55,7 +55,7 @@ class Session
 	private function __construct()
 	{
 		session_start();
-		if (array_key_exists('session', $_SESSION))
+		if (is_array($_SESSION) && array_key_exists('session', $_SESSION))
 		{
 			$cache = KVS::getInstance();
 
@@ -186,7 +186,7 @@ class Session
 	 */
 	public function persistenceGet($key, $default = false)
 	{
-		if (@($this -> persistenceSession) && array_key_exists($key, $this -> persistenceSession))
+		if (is_array($this -> persistenceSession) && array_key_exists($key, $this -> persistenceSession))
 			return $this -> persistenceSession[$key];
 
 		return $default;

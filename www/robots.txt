@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /
+Disallow: /admin
 
 User-agent: archive.org_bot
 Disallow: 

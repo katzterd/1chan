@@ -9,7 +9,12 @@ class MarkupController extends BaseController
 	 */
 	public function indexAction(Application $application, Template $template)
 	{
+		$smilies = '';
+		foreach (TexyHelper::getSmilies() as $smile) {
+			$smilies.= ':'.$smile['name'].': ';
+		}
 		$template -> setParameter('title', 'Правила разметки');
+		$template -> setParameter('smilies', $smilies);
 
 		return true;
 	}

@@ -10,6 +10,23 @@ class TexyHelper
 	const YOUTUBE_REGEXP = 'https:\/\/(?:www\.|)youtube\.com\/watch\?v=([a-zA-Z0-9_\-]+)';
 
 	/**
+	 * Чтение списка смайликов:
+	 */
+	public static function getSmilies() {
+		static $smilies;
+		if ($smilies == null) {
+			$cache = KVS::getInstance();
+			if ($cache -> exists('Smilies', null, 'list')) {
+				$smilies = @unserialize($cache -> get('Smilies', null, 'list')) ?? [];
+			}
+			else {
+				$smilies = [];
+			}
+		}
+		return $smilies;
+	}
+
+	/**
 	 * Метод создания объекта Texy:
 	 */
 	private static function createTexyObject($post_link = true, $board = null)
@@ -19,168 +36,44 @@ class TexyHelper
 		$texy -> htmlOutputModule -> baseIndent  = 6;
 		$texy -> typographyModule -> locale = 'fr';
 
-		$texy->registerLinePattern(
-			array('TexyHelper', 'trollface'),
-			'/:trollface:/',
-			'TexyHelper_trollface'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'coolface'),
-			'/:coolface:/',
-			'TexyHelper_coolface'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'sobak'),
-			'/:sobak:/',
-			'TexyHelper_sobak'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'desu'),
-			'/:desu:/',
-			'TexyHelper_desu'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'rage'),
-			'/:rage:/',
-			'TexyHelper_rage'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'ffuu'),
-			'/:f+u+:/',
-			'TexyHelper_ffuu'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'okay'),
-			'/:okay:/',
-			'TexyHelper_okay'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'omsk'),
-			'/:omsk:/',
-			'TexyHelper_omsk'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'awesome'),
-			'/:awesome:/',
-			'TexyHelper_awesome'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'cancer'),
-			'/:cancer:/',
-			'TexyHelper_cancer'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'mrgreen'),
-			'/:mrgreen:/',
-			'TexyHelper_mrgreen'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'nyan'),
-			'/:nyan:/',
-			'TexyHelper_nyan'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'sheez'),
-			'/:sheez:/',
-			'TexyHelper_sheez'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'cheez'),
-			'/:cheez:/',
-			'TexyHelper_cheez'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'popka'),
-			'/:popka:/',
-			'TexyHelper_popka'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'popkatwo'),
-			'/:popka2:/',
-			'TexyHelper_popkatwo'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'slon'),
-			'/:slon:/',
-			'TexyHelper_slon'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'pauk'),
-			'/:pauk:/',
-			'TexyHelper_pauk'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'sosak'),
-			'/:sosak:/',
-			'TexyHelper_sosak'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'makak'),
-			'/:makak:/',
-			'TexyHelper_makak'
-		);
-		
-		$texy->registerLinePattern(
-			array('TexyHelper', 'deb'),
-			'/:deb:/',
-			'TexyHelper_deb'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'projector'),
-			'/:projector:/',
-			'TexyHelper_projector'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'hazard'),
-			'/:hazard:/',
-			'TexyHelper_hazard'
-		);
+		self::registerSmilies($texy);
 		
 		$texy->registerLinePattern(
 			array('TexyHelper', 'spoiler'),
 			'/%%(([^%]|%[^%])+)%%/',
 			'TexyHelper_spoiler'
 		);
-		/*
+
+		/*$texy->registerLinePattern(
+			array('TexyHelper', 'nog'),
+			'/Нагаторо ❤️/',
+			'TexyHelper_nog'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'nog3'),
+			'/Нагаторо/',
+			'TexyHelper_nog3'
+		);*/
+
 		$texy->registerLinePattern(
 			array('TexyHelper', 'tts'),
 			'/#%(([^%]|%[^%])+)%#/',
 			'TexyHelper_tts'
 		);
-		*/
+		
 		$texy->registerLinePattern(
 			array('TexyHelper', 'coincidence'),
 			'/\(\(\(([^\(\)]+)\)\)\)/',
 			'TexyHelper_coincidence'
 		);
-/*
-		$texy->registerLinePattern(
+
+		/*$texy->registerLinePattern(
 			array('TexyHelper', 'redline'),
 			'/\$\$(([^\$]|\$[^\$])+)\$\$/',
 			'TexyHelper_redline'
-		);
-*/
+		);*/
+
 		if ($board == null)
 		{
 			$texy->registerLinePattern(
@@ -200,52 +93,75 @@ class TexyHelper
 				'/\[c:(([^\]]+)\.((?i)webm|mp4)):\]/',
 				'TexyHelper_catboxvid'
 			);
-/*
-			$texy->registerLinePattern(
+
+			/*$texy->registerLinePattern(
 				array('TexyHelper', 'youtube'),
 				'/\[youtube:([^\]]+)\]/',
 				'TexyHelper__youtube'
-			);
-*/
-/*
+			);*/
+
 			$texy->registerLinePattern(
 				array('TexyHelper', 'images'),
 				'/\[([^\]]+)\]/',
 				'TexyHelper__images'
 			);
-*/
 
 			if ($post_link)
 			{
-			    $texy->registerLinePattern(
-				    array('TexyHelper', 'postlink'),
-				    '/>>(\d+)/',
-				    'TexyHelper_postlink'
-			    );
+				$texy->registerLinePattern(
+					array('TexyHelper', 'postlink'),
+					'/>>(\d+)/',
+					'TexyHelper_postlink'
+				);
 
-			    $texy->registerLinePattern(
-				    array('TexyHelper', 'boardpostlink2'),
-				    '/>>([^\/]+)\/(\d+)/',
-				    'boardlink'
-			    );
+				$texy->registerLinePattern(
+					array('TexyHelper', 'boardpostlink2'),
+					'/>>([^\/]+)\/(\d+)/',
+					'boardlink'
+				);
 			}
 		}
 		else
 		{
 				$texy->registerLinePattern(
-				    array('TexyHelper', 'boardpostlink'),
-				    '/>>(\d+)/',
-				    'boardlink_'. $board
-			    );
+					array('TexyHelper', 'boardpostlink'),
+					'/>>(\d+)/',
+					'boardlink_'. $board
+				);
 
-			    $texy->registerLinePattern(
-				    array('TexyHelper', 'boardpostlink2'),
-				    '/>>([^\/]+)\/(\d+)/',
-				    'boardlink'
-			    );
+				$texy->registerLinePattern(
+					array('TexyHelper', 'boardpostlink2'),
+					'/>>([^\/]+)\/(\d+)/',
+					'boardlink'
+				);
 		}
 
 		return $texy;
+	}
+
+	// Dynamically create methods for each smiley
+	public static function createSmileyMethod($smiley) {
+		return function($parser, $matches, $name) use ($smiley) {
+			$el = TexyHtml::el('img');
+			$el->attrs['src'] = '/img/smilies/' . $smiley['name'] . '.'. $smiley['ext'];
+			$el->attrs['class'] = 'smiley';
+			$el->attrs['width'] = $smiley['width'];
+			$el->attrs['height'] = $smiley['height'];
+			$el->attrs['alt'] = ':'.$smiley['name'].':';
+
+			$parser->again = false;
+
+			return $el;
+		};
+	}
+
+	// Register all smilies
+	public static function registerSmilies($texy) {
+		foreach (self::getSmilies() as $smiley) {
+			$pattern = '/:' . $smiley['name'] . ':/';
+			$method = self::createSmileyMethod($smiley);
+			$texy->registerLinePattern($method, $pattern, 'TexyHelper_' . $smiley['name']);
+		}
 	}
 
 	/**
@@ -275,35 +191,44 @@ class TexyHelper
 		return $texy -> process($text);
 	}
 
-    	/**
-	 * Вставка картинок:
-	 */
-/*
+	/**
+	* Вставка картинок:
+	*/
+
 	static function images($parser, $matches, $name) {
 		list(, $mContent) = $matches;
-        if (preg_match(self::URL_REGEXP, $mContent))
-        {
-            if ($GLOBALS['post_image_count']++) {
-		        $parser -> again = false;
-                return '['. $mContent .']';
-            }
-            if (($u = PreviewHelper::upload($mContent)) !== false) {   
-                $img = TexyHtml::el('img');
-		        $img -> attrs['src']    = $u;
-		        $img -> attrs['alt']    = '';
-		        $link = TexyHtml::el('a');
-		        $link -> attrs['target'] = '_blank';
-		        $link -> attrs['class']  = 'b-image-link';
-		        $link -> href($mContent);
-		        $link -> add($img);
-		        $parser -> again = false;
-		        $GLOBALS['post_image_count'] = true;
-		        return $link;
-		    }
-        }
-        return '['. $mContent .']';
+		if (!isset($GLOBALS['post_image_count'])) {
+			$GLOBALS['post_image_count']= 0;
+		}
+		if (preg_match(self::URL_REGEXP, $mContent))
+		{
+			if ($GLOBALS['post_image_count']++) {
+				$parser -> again = false;
+				return '['. $mContent .']';
+			}
+			try {
+				if (($u = PreviewHelper::upload($mContent)) !== false) {
+					$img = TexyHtml::el('img');
+					$img -> attrs['src']    = $u;
+					$img -> attrs['alt']    = '';
+					$link = TexyHtml::el('a');
+					$link -> attrs['target'] = '_blank';
+					$link -> attrs['class']  = 'b-image-link';
+					$link -> href($mContent);
+					$link -> add($img);
+					$parser -> again = false;
+					$GLOBALS['post_image_count'] = true;
+					return $link;
+				}
+			}catch (\Exception $exception)
+			{
+				return $exception->getMessage();
+			}
+
+		}
+		return '['. $mContent .']';
 	}
-*/
+
 
 	/**
 	 * Имгур:
@@ -420,7 +345,6 @@ class TexyHelper
 		return $spl;
 	}
 
-
 	/**
 	 * Розмовлялка:
 	 */
@@ -462,375 +386,12 @@ class TexyHelper
 		return $spl;
 	}
 
-	/**
-	 * Троллфейс:
-	 */
-	static function trollface($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/trollface.gif';
-		$el -> attrs['width']  = '30';
-		$el -> attrs['height'] = '25';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
+	/*static function nog($parser, $matches, $name) {
+		return 'Поркич 🐽';
 	}
-
-	/**
-	 * FFUU smile
-	 */
-	static function ffuu($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/ffuu.png';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '43';
-		$el -> attrs['height'] = '31';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * okay smile
-	 */
-	static function okay($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/okay.png';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '26';
-		$el -> attrs['height'] = '32';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-
-	/**
-	 * nyan smile
-	 */
-	static function nyan($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = '/img/nyan.gif';
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['width']  = '53';
-		$el -> attrs['height'] = '21';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-
-	/**
-	 * awesome smile
-	 */
-	static function awesome($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/awesome.png';
-		$el -> attrs['width']  = '20';
-		$el -> attrs['height'] = '20';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * rage smile
-	 */
-	static function rage($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/rage.png';
-		$el -> attrs['width']  = '28';
-		$el -> attrs['height'] = '30';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * cancer smile
-	 */
-	static function cancer($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/cancer.gif';
-		$el -> attrs['width']  = '31';
-		$el -> attrs['height'] = '29';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * mrgreen smile
-	 */
-	static function mrgreen($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/mrgreen.gif';
-		$el -> attrs['width']  = '32';
-		$el -> attrs['height'] = '32';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * omsk smile
-	 */
-	static function omsk($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/omsk.png';
-		$el -> attrs['width']  = '17';
-		$el -> attrs['height'] = '19';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Собак:
-	 */
-	static function sobak($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/sobak.gif';
-		$el -> attrs['width']  = '30';
-		$el -> attrs['height'] = '24';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Десу:
-	 */
-	static function desu($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/desu.gif';
-		$el -> attrs['width']  = '30';
-		$el -> attrs['height'] = '42';
-		$el -> attrs['alt']    = '';
-
-		$parser -> again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Кулфейс:
-	 */
-	static function coolface($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/coolface.gif';
-		$el -> attrs['width']  = '30';
-		$el -> attrs['height'] = '25';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Шизик:
-	 */
-	static function sheez($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/sheez.png';
-		$el -> attrs['width']  = '40';
-		$el -> attrs['height'] = '40';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Корка сыра:
-	 */
-	static function cheez($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/cheez.gif';
-		$el -> attrs['width']  = '51';
-		$el -> attrs['height'] = '40';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Попка:
-	 */
-	static function popka($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/popka.gif';
-		$el -> attrs['width']  = '45';
-		$el -> attrs['height'] = '35';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Попка-2:
-	 */
-	static function popkatwo($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/popka2.gif';
-		$el -> attrs['width']  = '35';
-		$el -> attrs['height'] = '25';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Слон:
-	 */
-	static function slon($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/slon.gif';
-		$el -> attrs['width']  = '33';
-		$el -> attrs['height'] = '46';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Паук:
-	 */
-	static function pauk($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/pauk.gif';
-		$el -> attrs['width']  = '37';
-		$el -> attrs['height'] = '35';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Сосак:
-	 */
-	static function sosak($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/sosak.gif';
-		$el -> attrs['width']  = '51';
-		$el -> attrs['height'] = '37';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Макак:
-	 */
-	static function makak($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/makak.gif';
-		$el -> attrs['width']  = '51';
-		$el -> attrs['height'] = '37';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Деб:
-	 */
-	static function deb($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/deb.png';
-		$el -> attrs['width']  = '32';
-		$el -> attrs['height'] = '32';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-	
-	/**
-	 * Проектор:
-	 */
-	static function projector($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/projector.png';
-		$el -> attrs['width']  = '50';
-		$el -> attrs['height'] = '33';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
-
-	/**
-	 * Хазард:
-	 */
-	static function hazard($parser, $matches, $name) {
-		$el = TexyHtml::el('img');
-		$el -> attrs['class']  = 'smiley';
-		$el -> attrs['src']    = '/img/hazard.png';
-		$el -> attrs['width']  = '32';
-		$el -> attrs['height'] = '32';
-		$el -> attrs['alt']    = '';
-
-		$parser->again = false;
-
-		return $el;
-	}
+	static function nog3($parser, $matches, $name) {
+		return 'Поркич';
+	}*/
 	
 	/**
 	 * Ссылка на пост (комментарий):
@@ -956,13 +517,13 @@ class TexyHelper
 		return false;
 	}
 
-    const URL_REGEXP = "{
+	const URL_REGEXP = "{
 			  ^
 			  (
-			    (https?)://[-\\w]+(\\.\\w[-\\w]*)+
+				(https?)://[-\\w]+(\\.\\w[-\\w]*)+
 			  |
-			    (?i: [a-z0-9] (?:[-a-z0-9]*[a-z0-9])? \\. )+
-			    (?-i: com\\b
+				(?i: [a-z0-9] (?:[-a-z0-9]*[a-z0-9])? \\. )+
+				(?-i: com\\b
 			| edu\\b
 			| biz\\b
 			| gov\\b
@@ -977,15 +538,15 @@ class TexyHelper
 			| onion\\b
 			| i2p\\b
 			| [a-z][a-z]\\.[a-z][a-z]\\b # two-letter country code
-			    )
+				)
 			  )
 			  ( : \\d+ )?
 			  (
-			    /
-			    [^.!,?;\"\\'<>()\[\]\{\}\s\x7F-\\xFF]*
-			    (
-			      [.!,?]+ [^.!,?;\"\\'<>()\\[\\]\{\\}\s\\x7F-\\xFF]+
-			    )*
+				/
+				[^.!,?;\"\\'<>()\[\]\{\}\s\x7F-\\xFF]*
+				(
+				  [.!,?]+ [^.!,?;\"\\'<>()\\[\\]\{\\}\s\\x7F-\\xFF]+
+				)*
 			  )?
 			}ix";
 }

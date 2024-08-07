@@ -4,15 +4,19 @@
  */
 class AdminController extends Controller
 {
+	protected $isMod = false;
+	protected $isAdmin = false;
 	/**
 	 * Конструктор (проверка авторизации):
 	 */
 	public function __construct(Application $application, Template $template)
 	{
 		$session = Session::getInstance();
-
-		if (!$session -> isAdminSession())
+		$this->isAdmin = $session->isAdminSession();
+		$this->isMod = $session->isModeratorSession();
+		if (!$this->isAdmin && !$this->isMod) {
 			die($application -> go('errors_error401'));
+		}
 	}
 
 	/**
@@ -32,6 +36,9 @@ class AdminController extends Controller
 	 */
 	public function postsAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'post_list');
 
@@ -66,6 +73,9 @@ class AdminController extends Controller
 	 */
 	public function postAddAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			$template -> setParameter('menu', 'posts');
@@ -89,6 +99,9 @@ class AdminController extends Controller
 	 */
 	public function postEditAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			$template -> setParameter('menu', 'posts');
@@ -111,6 +124,9 @@ class AdminController extends Controller
 	 */
 	public function postDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		Blog_BlogPostsModel::RemovePost($_GET['id']);
 		$template -> headerSeeOther(
 			$_SERVER['HTTP_REFERER']
@@ -124,6 +140,9 @@ class AdminController extends Controller
 	 */
 	public function postSearchAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'post_search');
 
@@ -165,6 +184,9 @@ class AdminController extends Controller
 	 */
 	public function postCommentsAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'post_comments');
 
@@ -176,6 +198,9 @@ class AdminController extends Controller
 	 */
 	public function postCommentEditAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'post_comments');
 
@@ -202,6 +227,9 @@ class AdminController extends Controller
 	 */
 	public function postCommentDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		Blog_BlogCommentsModel::RemoveComment($_GET['id']);
 		$template -> headerSeeOther(
 			'/admin/postComments'
@@ -215,6 +243,9 @@ class AdminController extends Controller
 	 */
 	public function postCategoryAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'post_category');
 
@@ -228,6 +259,9 @@ class AdminController extends Controller
 	 */
 	public function postCategoryAddAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			$template -> setParameter('menu', 'posts');
@@ -251,6 +285,9 @@ class AdminController extends Controller
 	 */
 	public function postCategoryEditAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			$template -> setParameter('menu', 'posts');
@@ -274,6 +311,9 @@ class AdminController extends Controller
 	 */
 	public function postCategoryResortAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		Blog_BlogCategoryModel::Resort($_POST['pos']);
 		$template -> headerSeeOther(
 			'/admin/postCategory/'
@@ -286,6 +326,9 @@ class AdminController extends Controller
 	 */
 	public function postCategoryDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		Blog_BlogCategoryModel::RemoveCategory($_GET['id']);
 		$template -> headerSeeOther(
 			'/admin/postCategory/'
@@ -349,6 +392,9 @@ class AdminController extends Controller
 	 */
 	public function blogModeratorsAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'moderators');
 
@@ -388,6 +434,9 @@ class AdminController extends Controller
 	 */
 	public function blogLinksAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'links');
 
@@ -440,6 +489,9 @@ class AdminController extends Controller
 	 */
 	public function blogLogAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'log');
 		$log = ControlModel::getLogModEvent();
@@ -452,6 +504,9 @@ class AdminController extends Controller
 	 */
 	public function onlineChannelAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'posts');
 		$template -> setParameter('submenu', 'online_channel');
 
@@ -490,6 +545,9 @@ class AdminController extends Controller
 	 */
 	public function chatsAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'chats');
 		$template -> setParameter('submenu', 'chats');
 		
@@ -503,19 +561,22 @@ class AdminController extends Controller
 	 */
 	public function chatAddAction(Application $application, Template $template)
 	{
-	    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-	    {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+		{
 			Chat_ChatRoomsModel::CreateRoom($_POST);
 			$template -> headerSeeOther(
 				'/admin/chats/'
 			);
 
 			exit;
-	    }
-	    
+		}
+		
 		$template -> setParameter('menu', 'chats');
 		$template -> setParameter('submenu', 'chat_add');
-	    return true;
+		return true;
 	}
 	
 	/**
@@ -523,24 +584,27 @@ class AdminController extends Controller
 	 */
 	public function chatEditAction(Application $application, Template $template)
 	{
-	    if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-	    {
-	        if (!isset($_POST['public'])) $_POST['public'] = false;
-	        
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+		{
+			if (!isset($_POST['public'])) $_POST['public'] = false;
+			
 			Chat_ChatRoomsModel::EditRoom($_POST['id'], $_POST);
 			$template -> headerSeeOther(
 				'/admin/chatEdit?id='. $_POST['id']
 			);
 
 			exit;
-	    }
-	    
+		}
+		
 		$template -> setParameter('menu', 'chats');
 		$template -> setParameter('submenu', 'chat_add');
-	    
-	    $this['room'] = Chat_ChatRoomsModel::GetRoom($_GET['id']);
-	    
-	    return true;
+		
+		$this['room'] = Chat_ChatRoomsModel::GetRoom($_GET['id']);
+		
+		return true;
 	}
 	
 	/**
@@ -548,6 +612,9 @@ class AdminController extends Controller
 	 */
 	public function chatDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		Chat_ChatRoomsModel::RemoveRoom($_GET['id']);
 		$template -> headerSeeOther(
 			$_SERVER['HTTP_REFERER']
@@ -561,10 +628,16 @@ class AdminController extends Controller
 	 */
 	 public function staticPagesAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		$template -> setParameter('menu', 'static');
 		$template -> setParameter('submenu', 'static_pages');
 
 		$pages = StaticModel::GetPages();
+		if (!is_array($pages)) {
+			$pages = [];
+		}
 		ksort($pages);
 		$this['pages'] = $pages;
 		return true;
@@ -575,6 +648,9 @@ class AdminController extends Controller
 	 */
 	public function staticAddAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			StaticModel::SetPage($_POST['page'], $_POST['title'], $_POST['content'], $_POST['published']);
 			$template -> headerSeeOther(
@@ -595,6 +671,9 @@ class AdminController extends Controller
 	 */
 	public function staticEditAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if ($_POST['old_page'] != $_POST['page'])
 				StaticModel::RemovePage($_POST['old_page']);
@@ -617,6 +696,9 @@ class AdminController extends Controller
 	 */
 	public function staticDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		StaticModel::RemovePage($_GET['page']);
 		$template -> headerSeeOther(
 			$_SERVER['HTTP_REFERER']
@@ -630,6 +712,9 @@ class AdminController extends Controller
 	 */
 	public function staticFilesAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			if (array_key_exists('upload', $_FILES))
@@ -648,6 +733,9 @@ class AdminController extends Controller
 	 */
 	public function staticFilesDeleteAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
 		StaticModel::RemoveFile($_GET['name']);
 		$template -> headerSeeOther(
 			$_SERVER['HTTP_REFERER']
@@ -669,6 +757,10 @@ class AdminController extends Controller
 	 */
 	public function boardsAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+
 		$template -> setParameter('menu', 'boards');
 		$template -> setParameter('submenu', 'board_list');
 
@@ -676,6 +768,7 @@ class AdminController extends Controller
 
 		// Обработка действий
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
 			$errors = [];
 			// Проверка действия
 			$action = isset($_POST['action']) ? $_POST['action'] : null;
@@ -744,10 +837,15 @@ class AdminController extends Controller
 	 */
 	public function boardAddAction(Application $application, Template $template)
 	{
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		
 		$template -> setParameter('menu', 'boards');
 		$template -> setParameter('submenu', 'board_add');
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
 			list($title, $description, $hidden, $errors) = self::validateBoardSettings();
 			if (! count($errors)) {
 				$add_error = Board_BoardModel::createBoard($title, $description, $hidden);
@@ -760,6 +858,90 @@ class AdminController extends Controller
 			}
 		}
 		if (isset($errors)) $this['board_add_errors'] = $errors;
+		return true;
+	}
+
+	/**
+	 * Иконки принадлежности
+	 */
+	public function homeBoardsAction(Application $application, Template $template) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		$template -> setParameter('menu', 'posts');
+		$template -> setParameter('submenu', 'homeboards');
+
+		$this['homeboards'] = HomeBoardHelper::getBoards();
+		$this['icon_files'] = HomeBoardHelper::listFiles();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
+			$errors = [];
+			list($action, $old_domain, $new_domain, $icon, $name) = [@$_POST['action'], @$_POST['new-domain'], @$_POST['old-domain'], @$_POST['icon'], @$_POST['name']];
+			if (!in_array($action, ['add', 'edit', 'delete'])) {
+				$errors []= "Неверно указано действие";
+				return true;
+			}
+			// Валидация
+			else {
+				if ((!$old_domain && $action != 'add') || (!$new_domain && $action != 'delete')) {
+					$errors []= "Не указан домен";
+				}
+				else {
+					if ($action != 'add' && !HomeBoardHelper::existsBoard($old_domain)) {
+						$errors []= "Домена «{$old_domain}» не существует";
+					}
+					if (
+						$action != 'delete' 
+						&& 
+						HomeBoardHelper::existsBoard($new_domain) 
+						&& !(
+							$action == 'edit' 
+							&& 
+							$new_domain == $old_domain
+						)
+					) {
+						$errors []= "Домен «{$new_domain}» уже существует";
+					}
+				}
+				if ($action == 'edit' && $old_domain == 'anonymous' && $new_domain != $old_domain) {
+					$errors []= "Эту принадлежность нельзя редактировать";
+				}
+				if ($action != 'delete') {
+					if (!$icon) {
+						$errors []= "Не указана иконка";
+					}
+					elseif (!in_array($icon, $this['icon_files'])) {
+						$errors []= "Иконки «{$icon}» не существует";
+					}
+					if (!$name) {
+						$errors []= "Не указано имя";
+					}
+				}
+				elseif ($old_domain == 'anonymous') {
+					$errors []= "Эту принадлежность нельзя удалять";
+				}
+			}
+			// Применение обновлений
+			if (count($errors)) {
+				$this['errors'] = $errors;
+				return true;
+			}
+			if ($action == 'delete') {
+				HomeBoardHelper::deleteBoard($old_domain);
+			}
+			else {
+				HomeBoardHelper::saveBoard($old_domain, $new_domain, $icon, $name);
+			}
+			$this['success'] = "Принадлежность «{$name}» " . ([
+				"add" => "добавлена",
+				"edit" => "отредактирована",
+				"delete" => "удалена"
+			][$action]);
+			// Обновление списка
+			$this['homeboards'] = HomeBoardHelper::getBoards();
+		}
+
 		return true;
 	}
 

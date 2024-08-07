@@ -28,7 +28,7 @@ class Blog_BlogCommentsModel
 			$record = array(
 				'id'         => $id,
 				'post_id'    => $params['post_id'],
-				'ip'         => $_SERVER['REMOTE_ADDR'],
+				'ip'         => md5($_SERVER['REMOTE_ADDR'].MD5_SALT),
 				'created_at' => time(),
 				'text'       => $params['text']
 			);

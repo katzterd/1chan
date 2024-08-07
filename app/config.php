@@ -60,6 +60,7 @@ return array(
 		'user'   => SQL_USER,
 		'pass'   => SQL_PASSWORD
 	),
+	'md5salt'=> MD5_SALT,
 	'routes' => array_merge($board_routes, array(
 		'/admin' => array(
 			'controller' => 'admin',

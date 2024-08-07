@@ -8,4 +8,6 @@ package-lock.json
 1chan.generated.conf
 .env
 .osp
-Nginx_*_vhost.conf
+/www/smilies.json
+/Nginx_*_vhost.conf
+.DS_Store

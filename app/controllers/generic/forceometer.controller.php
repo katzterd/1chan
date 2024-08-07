@@ -57,7 +57,7 @@ class Generic_ForceometerController extends BaseController
                 'uniq_f'  => array()
             );
 
-            for ($y = 2017; $y <= date('Y'); $y++) {
+            for ($y = date('Y') - 1; $y <= date('Y'); $y++) {
                 for ($m = 1; $m <= 12; $m++) {
                     // Пропуск несуществующих дат и текущего месяца:
                     if ($y == 2017 && $m < 4) continue;

@@ -9,7 +9,7 @@
 			<?php else: ?>
 				<div class="b-blog-entry<?php if ($post['hidden']): ?> m-hidden<?php endif; ?>" id="post_<?php echo($post['id']); ?>">
 					<div class="b-blog-entry_b-header">
-						<img src="<?php echo($post['link'] ? TemplateHelper::getIcon($post['link']) : '/ico/favicons/1chan.pl.png'); ?>" width="16" height="16" alt="" />
+						<img src="<?php echo($post['link'] ? TemplateHelper::getIcon($post['link']) : '/ico/favicons/'.HOME_FAVICON.ICONS_VERSION); ?>" width="16" height="16" alt="" />
 					<?php if($post['category']): ?>
 						<a href="/news/cat/<?php echo(TemplateHelper::BlogCategory($post['category'], 'name')); ?>/" class="b-blog-entry_b-header_m-category">
 							<?php echo(TemplateHelper::BlogCategory($post['category'], 'title')); ?></a>

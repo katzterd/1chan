@@ -1,6 +1,6 @@
 {
   "name": "1chan-service",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "1chan server-side utilities",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "fastify": "^4.28.1",
     "fastify-socket.io": "^5.0.0",
     "find-process": "^1.4.7",
+    "image-size": "^1.1.1",
     "mysql-import": "^5.0.26",
     "mysql2": "^3.10.3",
     "php-serialize": "^5.0.1",

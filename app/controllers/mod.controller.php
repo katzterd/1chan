@@ -39,8 +39,8 @@ class ModController extends BaseController
 
 	 		$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
 	 		$rss->language('ru-ru');
-	 		$rss->copyright('Все права пренадлежат вам © 2010');
-	 		$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+	 		$rss->copyright(COPYRIGHT_MSG . date("Y"));
+	 		$rss->managingEditor(RSS_MANAGING_EDITOR);
 	 		$rss->category('Лог модераторских действий');
 
 	 		$rss->startRSS();
@@ -236,27 +236,34 @@ class ModController extends BaseController
 	 */
 	public function hiddenPostAjaxAction(Application $application)
 	{
-		if (!Session::getInstance() -> isAdminSession())
-			return false;
-
+        if (
+            !Session::getInstance() -> isAdminSession() &&
+            !Session::getInstance() -> isModeratorSession()
+        )
+        return false;
 		$post = Blog_BlogPostsModel::GetPost($_GET['id']);
-		if ($post && ControlModel::checkModrights($post['category'])) {
-			Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'],
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['hidden'] ? ' скрыл' : ' показал') .' пост.'.
-				'<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
+        if (!$post) {
+            return false;
+        }
+        $isModEnough = ControlModel::checkModrights($post['category']);
+        if (!$isModEnough){
+            return false;
+        }
+        Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'],
+            date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['hidden'] ? ' скрыл' : ' показал') .' пост.'.
+            '<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
 
-			if (!$post['hidden'])
-			    Blog_BlogPostsModel::SetSpecialComment($_GET['id'], 'Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
-			else
-			    Blog_BlogPostsModel::SetSpecialComment($_GET['id'], '');
+        if (!$post['hidden'])
+            Blog_BlogPostsModel::SetSpecialComment($_GET['id'], 'Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
+        else
+            Blog_BlogPostsModel::SetSpecialComment($_GET['id'], '');
 
-			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['hidden'] ? ' скрыл' : ' показал') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
-				'<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана')
-			);
-		}
+        ControlModel::logModEvent(
+            date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['hidden'] ? ' скрыл' : ' показал') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
+            '<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана')
+        );
 
-		return true;
+        return true;
 	}
 
 	/**
@@ -264,7 +271,10 @@ class ModController extends BaseController
 	 */
 	public function removePostCommentAjaxAction(Application $application)
 	{
-		if (!Session::getInstance() -> isAdminSession())
+		if (
+            !Session::getInstance() -> isAdminSession() &&
+            !Session::getInstance() -> isModeratorSession()
+        )
 			return false;
 
 		$comment = Blog_BlogCommentsModel::GetComment($_GET['id']);
@@ -317,7 +327,7 @@ class ModController extends BaseController
 		if ($validator -> isValid())
 		{
 			$key     = md5(strtolower($_GET['link']));
-			$ip      = md5($_SERVER['REMOTE_ADDR']);
+			$ip      = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 			$counter = $kvs -> get(__CLASS__, 'shared_links_ip', $ip);
 
 			if (!$kvs -> exists(__CLASS__, 'shared_links', $key) && !$kvs -> exists(__CLASS__, 'shared_links_ban', $ip))

@@ -9,7 +9,7 @@ class Board_StatisticsModel
 	 */
 	public static function updatePostStats($board, $id, $writing = false)
 	{
-		$ip    = $_SERVER['REMOTE_ADDR'];
+		$ip    = md5($_SERVER['REMOTE_ADDR'].MD5_SALT);
 		$cache = KVS::getInstance();
 
 		if ($cache -> exists(__CLASS__, $board.':'.$id, 'stats'))
@@ -49,8 +49,8 @@ class Board_StatisticsModel
 		$stats = unserialize($cache -> get(__CLASS__, $board.':'.$id, 'stats'));
 
 		return array(
-			'online'  => max(1, sizeof($stats['online']) == 3 ? 3.5 : sizeof($stats['online'])),
-			'writers' => sizeof($stats['writers'])
+			'online'  => max(1, sizeof($stats['online']??[]) == 3 ? 3.5 : sizeof($stats['online']??[])),
+			'writers' => sizeof($stats['writers']??[])
 		);
 	}
 }

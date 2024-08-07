@@ -12,6 +12,11 @@
 		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
 		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 
+		<?php if ($this -> getParameter('is_board')): ?>
+			<script>IS_BOARD = true</script>
+		<?php else: ?>
+			<script>IS_BOARD = false</script>
+		<?php endif; ?>
 		<script type="text/javascript" src="/js/jquery.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/production.js<?php echo JS_VERSION ?>"></script>

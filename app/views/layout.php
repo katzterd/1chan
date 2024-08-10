@@ -11,14 +11,16 @@
 		<link rel="stylesheet" type="text/css"  href="/css/common.css<?php echo CSS_VERSION ?>" media="all" />
 		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.css<?php echo CSS_VERSION ?>" media="all" />
 		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
-		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
+		<link rel="stylesheet" type="text/css"     href="/js/jquery-ui/jquery-ui.min.css" media="all" />
 
 		<?php if ($this -> getParameter('is_board')): ?>
 			<script>IS_BOARD = true</script>
 		<?php else: ?>
 			<script>IS_BOARD = false</script>
 		<?php endif; ?>
-		<script type="text/javascript" src="/js/jquery.js"></script>
+		<script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
+		<script type="text/javascript" src="/js/jquery-cookie.js"></script>
+		<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/production.js<?php echo JS_VERSION ?>"></script>
 		<script type="text/javascript" src="/js/youtube.js"></script>

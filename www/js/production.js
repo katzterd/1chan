@@ -82,7 +82,7 @@
 		};
 
 		$("#blog_form_preview_button")
-				.attr("disabled", "")
+				.attr("disabled", null)
 				.click(function() {
 					validatePost(function()  {
 						$.post(
@@ -439,7 +439,7 @@
 					"captcha_key": $("#comment_form input[name=captcha_key]").val()
 				},
 				function(result, status) {
-			        $("#comment_form input[type=submit]").attr("disabled", "");
+			        $("#comment_form input[type=submit]").attr("disabled", null);
 					if (status != "error") {
 /*						if (result.captcha == true) {
 							$("#comment_form").submit();
@@ -594,7 +594,7 @@
 			insertText(">>" + id);
 			return false;
 		});
-		$(".js-paste-link").live("click", function() {
+		$(document.body).on("click", ".js-paste-link", function() {
 			insertText(">>" + $(this).attr("name"));
 			return false;
 		});
@@ -856,7 +856,7 @@
 		window['comment_callback'] = function(data) {
 			$("#comment_form_error").html("");
 			$("#comment_form [name=captcha]").val("");
-			$("#comment_form input[type=submit]").attr("disabled", "");
+			$("#comment_form input[type=submit]").attr("disabled", null);
 
 			if (data["success"] == false) {
 				var error_strings = [];
@@ -1031,7 +1031,7 @@
 			}
 		});
 
-		$(".js-paste-link").live("click", function() {
+		$(document.body).on("click", ".js-paste-link", function() {
 			if (updateMode) {
 				insertText(">>" + $(this).attr("name"));
 				return false;
@@ -1042,7 +1042,7 @@
 			imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
 			img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
 
-		$(".b-image-link").live("click", function() { 
+		$(document.body).on("click", ".b-image-link", function() { 
 		   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
 			   x = size[1], y = size[2], 
 			   max_x = document.documentElement.clientWidth,
@@ -1189,7 +1189,7 @@
 				window['board_callback'] = function(data) {
 					$("#board_form_error").html("");
 					$("#board_form input, #board_form textarea").removeClass("g-input-error");
-					$("#board_form input[type=submit]").attr("disabled", "");
+					$("#board_form input[type=submit]").attr("disabled", null);
 
 					if (data["success"] == false)
 					{
@@ -1214,7 +1214,7 @@
 				window['comment_callback'] = function(data) {
 					$("#comment_form_error").html("");
 					$("#comment_form [name=captcha]").val("");
-					$("#comment_form input[type=submit]").attr("disabled", "");
+					$("#comment_form input[type=submit]").attr("disabled", null);
 
 					if (data["success"] == false) {
 						var error_strings = [];
@@ -1376,7 +1376,7 @@
 					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
 					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
 
-				$(".b-image-link").live("click", function() { 
+				$(document.body).on("click", ".b-image-link", function() { 
 				   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
 					   x = size[1], y = size[2], 
 					   max_x = document.documentElement.clientWidth,
@@ -1481,7 +1481,7 @@
 					}
 				});
 
-				$(".js-paste-link").live("click", function() {
+				$(document.body).on("click", ".js-paste-link", function() {
 					if (updateMode) {
 						insertText(">>" + $(this).attr("name"));
 						return false;
@@ -1646,7 +1646,7 @@
 				window['comment_callback'] = function(data) {
 					$("#comment_form_error").html("");
 					$("#comment_form [name=captcha]").val("");
-					$("#comment_form input[type=submit]").attr("disabled", "");
+					$("#comment_form input[type=submit]").attr("disabled", null);
 
 					if (data["success"] == false) {
 						var error_strings = [];
@@ -1767,7 +1767,7 @@
 					return false;
 				});
 
-				$(".js-paste-link").live("click", function() {
+				$(document.body).on("click", ".js-paste-link", function() {
 					insertText(">>" + $(this).attr("name"));
 					return false;
 				});
@@ -1892,7 +1892,7 @@
 					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
 					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
 
-				$(".b-image-link").live("click", function() { 
+				$(document.body).on("click", ".b-image-link", function() { 
 				   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
 					   x = size[1], y = size[2], 
 					   max_x = document.documentElement.clientWidth,
@@ -2453,7 +2453,7 @@
 	                                } else {
 	                                    $(".js-room-password").attr("disabled", "disabled").val("Пароль неверный");
 	                                    setTimeout(function() {
-	                                        $(".js-room-password").attr("disabled", "").val("");
+	                                        $(".js-room-password").attr("disabled", null).val("");
 	                                    }, 2000);
 	                                }
 	                            }
@@ -2485,9 +2485,8 @@
 		                                break;
 		                        }
 		                    });
-		                    // x.socket.setCursor("chat_" + channel_id, 0);
 
-		                    $(".js-message-textarea").attr("disabled", "")
+		                    $(".js-message-textarea").attr("disabled", null)
 			                    .bind("keyup", function(e) {
 			                        var lastCode = $(this).data("lastCode");
 
@@ -2514,7 +2513,7 @@
 	                                }
 	                            });
 
-			                $(".js-message-submit").attr("disabled", "");
+			                $(".js-message-submit").attr("disabled", null);
 
 		                    $("#message_form").submit(function() {
 		                        $(".js-message-submit").attr("disabled", "disabled");
@@ -2533,7 +2532,7 @@
 	                                    } else
 	                                        addErrorMessage(data.errors);
 
-	                                    $(".js-message-submit").attr("disabled", "");
+	                                    $(".js-message-submit").attr("disabled", null);
 	                                },
 	                                "json"
 	                           );
@@ -2546,7 +2545,7 @@
 	                    }
 	                });
 
-	                $(".js-message-from-link").live("click", function() {
+	                $(document.body).on("click", ".js-message-from-link", function() {
 	                    insertText(">>" + this.title +", ");
 	                    return false;
 	                });
@@ -2764,7 +2763,6 @@
 			return false;
 		}).html(poo_chan ? "Выключить каку" : "Включить каку");
 
-		// x.socket.setCursor("page_"+ target_page, 0);
 		x.subscribe("page_"+ target_page, function(data) {
 			var el = $("<img src='/img/poo_target.png' width='48' height='50' class='js-poo g-hidden' />");
 			el.css({
@@ -2782,7 +2780,7 @@
 		(function() {
 			var board = $.cookie("homeboard");
 			if (board) {
-				var el = $(".js-homeboard-select a[name="+ board +"]");
+				var el = $(".js-homeboard-select a[name='"+ board +"']");
 				if (el.length) {
 					$("input[name=homeboard]").val(board);
 					$(".js-homeboard-icon").attr("src", $("img", el).attr("src"));

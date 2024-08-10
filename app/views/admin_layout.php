@@ -6,7 +6,7 @@
 <link href="/admin_style/css/transdmin.css" rel="stylesheet" type="text/css" media="screen" />
 <!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/admin_style/css/ie6.css" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="/admin_style/css/ie7.css" /><![endif]-->
-<script type="text/javascript" src="/admin_style/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
 <!-- script type="text/javascript" src="/admin_style/js/jNice.js"></script -->
 </head>
 

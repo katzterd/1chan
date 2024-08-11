@@ -20,22 +20,23 @@ class BaseController extends Controller
 	/**
 	 * Процессор:
 	 */
-	public function process($template)
-	{
+	public function process($template)	{
 		$session = Session::getInstance();
 		$stats   = Blog_BlogStatisticsModel::getGlobalStats();
 		
 		$links_on = $session -> persistenceGet('show_links_panel', true);
 		if ($links_on) {
-		  $filter   = $session -> persistenceGet('live_filter', true);
-		  $links    = Blog_BlogOnlineModel::GetLinks($filter);
+			$filter   = $session -> persistenceGet('live_filter', true);
+			$links    = Blog_BlogOnlineModel::GetLinks($filter);
 		
-		  $template -> setParameter('online_links', array_slice($links, 0, 12));
-		  $template -> setParameter('right_panel', $links_on);
-    }
+			$template -> setParameter('online_links', array_slice($links, 0, 12));
+			$template -> setParameter('right_panel', $links_on);
+		}
 
-    $boards = Board_BoardModel::getBoardList();
+		$boards = Board_BoardModel::getBoardList();
 		$template -> setParameter('boards', $boards);
+
+		$template -> setParameter('global_top_panel', TemplateHelper::getTopPanelPresentation());
 
 		$template -> setParameter('global_unique',          $stats['unique']);
 		$template -> setParameter('global_online',          $stats['online']);

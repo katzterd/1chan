@@ -167,4 +167,82 @@ class TemplateHelper
 		$last_visit = $session -> persistenceGet('live_last_visit', time());
 		return $cache -> get('Blog_BlogOnlineModel', null, 'lastUpdate') > $last_visit;
 	}
+
+
+	/**
+	 * Верхняя панель
+	 */
+
+	private static $top_panel = null;
+
+	public static function getTopPanel() {
+		if (self::$top_panel == null) {
+			$cache = KVS::getInstance();
+			if ($cache -> exists('TopPanel', null, 'list')) {
+				self::$top_panel = @unserialize($cache -> get('TopPanel', null, 'list')) ?? [];
+			}
+			else {
+				$top_panel = [];
+				$top_panel_json = @file_get_contents(VIEWS_DIR . '/top-panel.json');
+				if ($top_panel_json) {
+					$top_panel = @json_decode($top_panel_json, true) ?? [];
+				}
+				self::$top_panel = $top_panel;
+				self::setTopPanel();
+			}
+		}
+		return self::$top_panel;
+	}
+
+	public const SPIECIAL_LINKS = [
+		[	"id" => "online",
+			"name" => "Онлайн ссылки"	],
+		[	"id" => "chat",
+			"name" => "Анонимные чаты"	],
+		[	"id" => "theme-switcher",
+			"name" => "Переключатель тем"	],
+		[	"id" => "force-o-meter",
+			"name" => "Форсометр"	]
+	];
+
+	public const SPECIAL_LINK_LIST = ["online", "chat", "theme-switcher", "force-o-meter"];
+
+	public static function getTopPanelPresentation() {
+		$top_panel = self::getTopPanel();
+		foreach ($top_panel as &$section) {
+			foreach ($section as &$link) {
+				if (!is_array($link)) { // special links
+					if ($link == 'online') $link = [
+						"href"  => '/live/',
+						"text"  => 'Онлайн ссылки',
+						"class" => 'b-top-panel_b-online-link' . (!self::isLiveUpdated() ? ' m-disactive' : '')
+					];
+					elseif ($link == 'chat') $link = [
+						"href" => '/chat/',
+						"text" => 'Анонимные чаты'
+					];
+					elseif ($link == 'theme-switcher') {
+						$theme = Session::getInstance() -> persistenceGet('global_theme', 'layout');
+						$link = [
+							"href" => '/service/theme/' . (!$theme ? 'omsk' : 'normal') . '/',
+							"text" => (!$theme ? 'Темная' : 'Светлая') . ' тема'
+						];
+					}
+					elseif ($link == 'force-o-meter') $link = [
+						"href" => '/service/force-o-meter/',
+						"text" => 'Форсометр'
+					];
+					else $link = false;
+				}
+			}
+			$section = array_filter($section, function($link) { return $link; });
+		}
+		return $top_panel;
+	}
+
+	public static function setTopPanel($model=null) {
+		if (is_null($model)) $model = self::$top_panel;
+		$cache = KVS::getInstance();
+		$cache -> set('TopPanel', null, 'list', serialize($model));
+	}
 }

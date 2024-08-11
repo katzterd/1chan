@@ -60,30 +60,21 @@
 				text-align: center;
 			"><div class="js-poo-target" style="text-align: center; padding-top: 3px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px;"><img src="/img/poo.png" width="64" height="65"></div><a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a></div> */ ?>
 
-			<div class="b-top-panel">
-				<ul>
-					<li>
-						<a href="/live/" class="b-top-panel_b-online-link<?php if(!TemplateHelper::isLiveUpdated()): ?> m-disactive<?php endif; ?>">Онлайн ссылки</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="/chat/">Анонимные чаты</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="/service/theme/omsk/">Тёмная тема</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="/service/force-o-meter/">Форсометр</a>
-					</li>
-					<li class="b-top-panel_m-right">
-					<?php if (defined("MIRROR_LINK") && defined("MIRROR_LINK_NAME") && MIRROR_LINK && MIRROR_LINK_NAME): ?>
-						<a href="<?php echo MIRROR_LINK ?>"><?php echo MIRROR_LINK_NAME ?></a>
-					<?php endif; ?>
-					</li>
-				</ul>
-			</div>
+			<div class="b-top-panel"><ul>
+				<?php foreach($this -> getParameter('global_top_panel') as $s => $section): ?>
+					<?php $right = $s==1 ? ' class="b-top-panel_m-right"' : '' ?>
+					<?php foreach($section as $i => $link): ?>
+						<?php 
+							$className = @$link['class'] ? " class='" . $link['class'] . "'" : '';
+							$total = sizeof($section);
+						?>
+						<li<?= $right ?>>
+							<a<?= $className ?> href="<?= $link["href"] ?>"><?= $link["text"] ?></a>
+						</li>
+						<?php if ($total > 1 && $i+1 < $total): ?><li>|</li><?php endif; ?>
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+			</ul></div>
 
 			<div class="b-header-block m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-header-block_b-logotype">

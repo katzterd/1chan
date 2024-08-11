@@ -945,4 +945,66 @@ class AdminController extends Controller
 		return true;
 	}
 
+	/**
+	 * Управление верхним меню
+	 */
+	public function topPanelAction(Application $application, Template $template) {
+		$this['top_panel'] = TemplateHelper::getTopPanel();
+
+		$template -> setParameter('menu', 'posts');
+		$template -> setParameter('submenu', 'top_panel');
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
+			$errors = []; $left = []; $right = [];
+			foreach($_POST['type'] as $i => $type) {
+				$n = $i + 1;
+				list($text, $href, $class, $lr) = [@$_POST['text'][$i], @$_POST['href'][$i], @$_POST['class'][$i], @$_POST['lr'][$i]];
+				if (!in_array($lr, ['l', 'r'])) {
+					$errors []= "Запись №$n: Неподдерживаемое расположение ($lr)";
+				}
+				else {
+					if ($type == 'link') {
+						if ($text && $href) {
+							$entry = [
+								"text" => $text,
+								"href" => $href,
+								"class" => $class	];
+							if ($lr == 'l') 
+								$left []= $entry;
+							else 
+								$right []= $entry;
+						}
+						else {
+							$errors []= "Запись №$n: Пустые поля";
+						}
+					}
+					else {
+						if (in_array($type, TemplateHelper::SPECIAL_LINK_LIST)) {
+							if ($lr == 'l') 
+								$left []= $type;
+							else 
+								$right []= $type;
+						}
+						else {
+							$errors []= "Запись №$n: Неподдерживаемый тип специальной ссылки ($type)";
+						}
+					}
+				}
+			}
+			if (count($errors)) {
+				$this['errors'] = $errors;
+				return true;
+			}
+			else {
+				$top_panel = [$left, $right];
+				TemplateHelper::setTopPanel($top_panel);
+				$this['success'] = "Список ссылок обновлён";
+				$this['top_panel'] = $top_panel;
+			}
+		}
+
+		return true;
+	}
+
 }

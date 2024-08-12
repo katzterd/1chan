@@ -949,6 +949,10 @@ class AdminController extends Controller
 	 * Управление верхним меню
 	 */
 	public function topPanelAction(Application $application, Template $template) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		
 		$this['top_panel'] = TemplateHelper::getTopPanel();
 
 		$template -> setParameter('menu', 'posts');

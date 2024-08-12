@@ -79,9 +79,7 @@ a.g-dynamic.m-current:hover {
 .l-comments-wrap {
     border-top: 1px dotted #333;
 }
-.l-footer-wrap {
-    background: url(/img/dne_tocsam.png) top center no-repeat;
-}
+
 
 /**
  * b, m:
@@ -112,9 +110,7 @@ a.g-dynamic.m-current:hover {
     border-right: 1px solid #222;
     border-bottom: 1px solid #222;
 }
-.b-header-block {
-    background: url(/img/tocsam.png) top center no-repeat;
-}
+
 .b-header-block .b-header-block_b-sharelink:link,
 .b-header-block .b-header-block_b-sharelink:visited,
 .b-header-block .b-header-block_b-sharelink:hover {

@@ -77,12 +77,6 @@ a.g-dynamic.m-current:hover {
 .l-comments-wrap {
     border-top: 1px dotted #ccc;
 }
-.l-footer-wrap.m-mascot-news, .l-footer-wrap.m-mascot-fav {
-    background: url(/img/mascot_end.png) top center no-repeat;
-}
-.l-footer-wrap.m-mascot-alone {
-    background: url(/img/mascot_keany_end.png) top center no-repeat;
-}
 
 /**
  * b, m:
@@ -112,19 +106,6 @@ a.g-dynamic.m-current:hover {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-}
-.b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
-    background: url(/img/mascot_hazmat.png) bottom center no-repeat;
-}
-.b-header-block.m-mascot-alone {
-    background: url(/img/mascot_keany.png) top center no-repeat;
-    padding: 13.5px 0;
-    margin-top: 1.5px;
-}
-.b-header-block.m-mascot-operate {
-    background: url(/img/mascot_devarped.png) top center no-repeat;
-    padding: 13.5px 0;
-    margin-top: 1.5px;
 }
 .b-header-block .b-header-block_b-sharelink:link,
 .b-header-block .b-header-block_b-sharelink:visited,
@@ -251,7 +232,6 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     border: 1px solid #bbb;
 }
 .b-comment.m-new {
-    /*background: url(/img/mes_bg2.gif) #e3edfe;*/
     background: #e3edfe;
 }
 .b-comment.m-tip {

@@ -10,6 +10,7 @@
 		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php echo ICONS_VERSION ?>" />
 		<link rel="stylesheet" type="text/css"  href="/css/common.css<?php echo CSS_VERSION ?>" media="all" />
 		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.css<?php echo CSS_VERSION ?>" media="all" />
+		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.custom.css<?php echo CSS_VERSION ?>" media="all" />
 		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
 		<link rel="stylesheet" type="text/css"     href="/js/jquery-ui/jquery-ui.min.css" media="all" />
 
@@ -69,7 +70,7 @@
 				<?php endforeach; ?>
 			</ul></div>
 
-			<div class="b-header-block m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
+			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
 						<img src="/img/<?php echo LOGO_IMG ?>" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />
@@ -165,7 +166,7 @@
 				<?php echo $content; ?>
 
 			</div>
-			<div class="l-footer-wrap m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
+			<div class="l-footer-wrap m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-underlinks">
 					<img src="/ico/rss.png" width="16" height="16" alt="" />
 					<a href="/news/rss.xml">Одобренные</a> |

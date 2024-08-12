@@ -291,6 +291,7 @@ class BlogController extends BaseController
 
 		$template -> setParameter('title', 'Поиск постов');
 		$template -> setParameter('board_id', 'news');
+		$template -> setParameter('mascot', 'search');
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{

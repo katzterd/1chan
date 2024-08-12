@@ -6,6 +6,9 @@
 .b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
     background: url(/img/mascot_hazmat.png) bottom center no-repeat;
 }
+.b-header-block.m-mascot-search {
+    background: url(/img/mascot-investigator.png) bottom center no-repeat;
+}
 /* Маскот шапки (для отдельныйх досок) */
 .b-header-block.m-mascot-alone {
     background: url(/img/mascot_keany.png) top center no-repeat;
@@ -26,3 +29,4 @@
 .l-footer-wrap.m-mascot-alone {
     background: url(/img/mascot_keany_end.png) top center no-repeat;
 }
+

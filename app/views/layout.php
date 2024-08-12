@@ -70,7 +70,7 @@
 				<?php endforeach; ?>
 			</ul></div>
 
-			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
+			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?><?= ($this -> getParameter('mascot', null)) ? " m-mascot-".($this -> getParameter('mascot', null)) : "" ?> ">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
 						<img src="/img/<?php echo LOGO_IMG ?>" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />

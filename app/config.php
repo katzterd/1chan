@@ -51,6 +51,13 @@ if ($board_dirs) {
 }
 else $board_routes = [];
 
+$poo_route = ENABLE_POO=="true" ? [
+	'/service/poo-chan' => array(
+		'controller' => 'static',
+		'action' => 'poo'
+	)
+] : [];
+
 return array(
 	'database' => array(
 		'engine' => 'mysql',
@@ -61,7 +68,7 @@ return array(
 		'pass'   => SQL_PASSWORD
 	),
 	'md5salt'=> MD5_SALT,
-	'routes' => array_merge($board_routes, array(
+	'routes' => array_merge($board_routes, $poo_route, array(
 		'/admin' => array(
 			'controller' => 'admin',
 			'action' => 'posts'
@@ -348,11 +355,7 @@ return array(
 		'/service/share' => array(
 			'controller' => 'mod',
 			'action' => 'shareLink'
-		),/*
-		'/service/poo-chan' => array(
-			'controller' => 'static',
-			'action' => 'poo'
-		),*/
+		),
 		'/chat' => array(
 			'controller' => 'chat',
 			'action' => 'index'

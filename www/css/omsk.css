@@ -535,3 +535,8 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:link,
     border: 1px solid #222;
     box-shadow: 0 0 10px #999;
 }
+
+.js-poo-wrapper {
+    background: black;
+    border: 1px solid #663200;
+}

@@ -45,21 +45,14 @@
 		</div>
 	<?php endif; ?>
 		<div class="l-wrap">
-			<?php /*<div style="
-				position: fixed;
-				background: black;
-				border: 1px solid #aaa;
-				width: 100px;
-				height: 100px;
-				border-radius: 8px;
-				box-shadow: 0px 0px 1px #888;
-				margin-left: 700px;
-				bottom: 0;
-				z-index: 999;
-				font-size: 11px;
-				padding: 5px;
-				text-align: center;
-			"><div class="js-poo-target" style="text-align: center; padding-top: 3px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px;"><img src="/img/poo.png" width="64" height="65"></div><a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a></div> */ ?>
+			<?php if (ENABLE_POO == "true"): ?>
+				<div class="js-poo-wrapper">
+					<div class="js-poo-target">
+						<img src="/img/poo.png" width="64" height="65">
+						<a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a>
+					</div>
+				</div>
+			<?php endif; ?> 
 
 			<div class="b-top-panel"><ul>
 				<?php foreach($this -> getParameter('global_top_panel') as $s => $section): ?>

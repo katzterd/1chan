@@ -2763,12 +2763,12 @@
 			return false;
 		}).html(poo_chan ? "Выключить каку" : "Включить каку");
 
-		x.subscribe("page_"+ target_page, function(data) {
+		x.subscribe("page_"+ target_page, 'poo', function(data) {
 			var el = $("<img src='/img/poo_target.png' width='48' height='50' class='js-poo g-hidden' />");
 			el.css({
 				"position": "absolute",
-				"top":      Math.floor(data.data.top) +"px",
-				"left":     Math.floor(data.data.left) +"px",
+				"top":      Math.floor(data.top) +"px",
+				"left":     Math.floor(data.left) +"px",
 				"zIndex":   99,
 				"dispay":   "none"
 

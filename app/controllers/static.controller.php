@@ -49,8 +49,13 @@ class StaticController extends BaseController
 			return false;
 		}
 
-		EventModel::getInstance()
-            -> ClientBroadcast('page_'. $_POST['target'], "poo", array('top' => $_POST['top'], 'left' => $_POST['left']));
+		EventModel::getInstance() -> ClientBroadcast(
+			'page_'. $_POST['target'], 
+			"poo", 
+			array('top' => $_POST['top'], 'left' => $_POST['left']),
+			null,
+			POO_EXPIRY_TIME
+		);
 
 		$cache -> set(__CLASS__, 'poo', md5($_SERVER['REMOTE_ADDR'].MD5_SALT), 1);
 		$cache -> expire(__CLASS__, 'poo', md5($_SERVER['REMOTE_ADDR'].MD5_SALT), 1);

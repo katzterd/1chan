@@ -29,6 +29,8 @@
 			if (!~this.subscribedTo[channel].indexOf(event)) {
 				this.socket.on(event, data => callback(data))
 				this.subscribedTo[channel].push(event)
+				if (! this.eventHandlers.hasOwnProperty(event))
+					this.eventHandlers[event] = callback
 			}
 		},
 		unsubscribe: function(channel) {
@@ -38,8 +40,15 @@
 				: channel )
 			delete this.subscribedTo[channel]
 		},
-		subscribedTo: {}
+		subscribedTo: {}, eventHandlers: {}
 	};
+
+	x.socket.on('_multi_', events => events.forEach(ev => {
+		const callback = x.eventHandlers?.[ev.event]
+		if (callback) {
+			callback(ev.data)
+		}
+	}))
 
 	/**
 	 * ----------------------------------------------- *

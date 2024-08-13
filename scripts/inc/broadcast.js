@@ -2,6 +2,7 @@ import log from '#inc/logger.js'
 import fastify from "fastify"
 import socketioServer from "fastify-socket.io"
 import { Server } from "socket.io"
+import { kvsConnection } from '#inc/kvs.js'
 
 ;["SIO_SRV_IP",
 	"SIO_TOKEN",
@@ -21,31 +22,73 @@ app.post("/broadcast/", async (req, reply) => {
 		reply.code(403).send()
 		return
 	}
-	const {channel, event, data, ids} = req.body
+	const {channel, event, data, ids, expire} = req.body
 	if (ids) {
-		ids.forEach(id => app.io.to(channel+':'+id).emit(event, data))
+		ids.forEach(id => emit(`${channel}:${id}`, event, data, expire))
 	}
 	else {
-		app.io.to(channel).emit(event, data)
+		emit(channel, event, data, expire)
 	}
 	reply.code(200).send()
 })
 
-app.ready((err) => {
+async function emit(channel, event, data, expire=false) {
+	const kvs = await kvsConnection()
+
+	app.io.to(channel).emit(event, data)
+	if (expire) {
+		const expiryDate = new Date().getTime() + expire *1000 *60 *60
+		kvs.sAdd(`Events:${channel}`, JSON.stringify([ event, data, expiryDate ]) )
+	}
+}
+
+app.ready(async (err) => {
+	const kvs = await kvsConnection()
+
 	if (err) throw err;
 	app.io.on("connection", socket => {
-		socket.on('subscribe', function(rooms) {
-			if (!(rooms instanceof Array))
-				rooms = [rooms]
-			rooms.forEach(room => socket.join(room))
+		socket.on('subscribe', function(channels) {
+			if (!(channels instanceof Array))
+				channels = [channels]
+			channels.forEach(async (channel) => {
+				socket.join(channel)
+
+				const events = await kvs.sMembers(`Events:${channel}`)
+				, now = new Date().getTime()
+				, live = [], dead = [];
+				events.forEach(e => {
+					const eu = unserializeSafe(e)
+					if (eu) {
+						const [event, data, expiryDate] = eu
+						if (expiryDate < now) {
+							dead.push(e)
+						}
+						else {
+							live.push({event, data})
+						}
+					}
+				})
+				if (live.length)
+					socket.emit('_multi_', live)
+				if (dead.length)
+					await kvs.sRem(`Events:${channel}`, dead)
+			})
 		})
-		socket.on('unsubscribe', function(rooms) {
-			if (!(rooms instanceof Array))
-				rooms = [rooms]
-			rooms.forEach(room => socket.leave(room))
+		socket.on('unsubscribe', function(channels) {
+			if (!(channels instanceof Array))
+				channels = [channels]
+			channels.forEach(channel => socket.leave(channel))
 		})
 	})
 })
+
+function unserializeSafe(str) {
+	try {
+		return JSON.parse(str)
+	} catch(e) {
+		return null
+	}
+}
 
 export function listen() {
 	app.listen({ host: process.env.SIO_HOST, port: process.env.SIO_PORT })

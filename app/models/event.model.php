@@ -69,7 +69,7 @@ class EventModel
 	/**
 	 * Сообщение о событии на клиенты:
 	 */
-	public function ClientBroadcast($channel, $event, $data = null, $ids = null)
+	public function ClientBroadcast($channel, $event, $data = null, $ids = null, $expire = false)
 	{
 		$payload = [
 			'channel' => $channel,
@@ -81,6 +81,9 @@ class EventModel
 		}
 		if ($ids) {
 			$payload['ids'] = $ids;
+		}
+		if ($expire) {
+			$payload['expire'] = $expire;
 		}
 		$data_json = json_encode($payload);
 		

@@ -21,6 +21,7 @@
 		<?php endif; ?>
 		<script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
 		<script type="text/javascript" src="/js/jquery-cookie.js"></script>
+		<script type="text/javascript" src="/js/jquery.scrollTo.min.js"></script>
 		<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/production.js<?php echo JS_VERSION ?>"></script>

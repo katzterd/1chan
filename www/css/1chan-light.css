@@ -521,3 +521,96 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     border: 1px solid #aaa;
     box-shadow: 0px 0px 1px #888;
 }
+
+/**
+ * MOBILE VIEW:
+ */
+@media (max-width: 1060px) {
+    .l-left-panel-wrap, 
+    .l-right-panel-wrap {
+        background-color: #fff;
+        border-color: #bbbbbb;
+    }
+    .l-left-panel-wrap.mv-panel-shown, 
+    .l-right-panel-wrap.mv-panel-shown {
+        box-shadow: 0 0 40px #bbbbbb, 0 0 0 100vw #0000000d;
+    }
+    .mv-panel-shown::after {
+        background-color: white;
+    }
+    .mv-panel-toggle-inmenu {
+        color: #7f7f7f;
+    }
+    .mv-panel-toggle-inmenu:hover {
+        color: #000;
+    }
+    .mv-panel-toggle-inmenu::before {
+        box-shadow: 0 2px 0 transparent, 0 4px 0 currentColor, 0 6px 0 transparent, 0 8px 0 currentColor;
+    }
+    .mv-panel-toggle-inpanel {
+        color: #999999;
+    }
+    .mv-panel-toggle-inpanel:hover {
+        color: #333;
+    }
+}
+
+@media (max-width: 700px) {
+    .b-blog-entry, .b-comment {
+        border: 1px solid #0004;
+        border-top-color: #0003;
+        border-bottom-color: #0005;
+        box-shadow: 0 1px 2px #0003;
+        background-color: #fff;
+    }
+    .b-comments-load span {
+        border-color: #cccccc;
+    }
+    .b-blog-entry .b-blog-entry_b-info {
+        background: linear-gradient(0deg, #f4f4f4, transparent);
+    }
+    .l-comments-wrap {
+        background-color: #eaf4ff;
+    }
+    .b-board .l-comments-wrap {
+        border-bottom-color: #a1c1e3;
+        background: linear-gradient(180deg, #fff 0%, #ffffffa1 30px);
+    }
+    .b-comment {
+        border-color: #c2d7ec #a1bcda #77ace6;
+    }
+    .b-board .l-comments-wrap .b-comment:first-of-type::before {
+        border-top-color: #ccc;
+    }
+    .b-board .l-comments-wrap .b-comment:last-of-type::after {
+        border-bottom: 1px solid rgb(44 90 139 / 40%);
+    }
+    .b-comment.m-new {
+        background-color: #fff;
+        border-color: #5baaff;
+        box-shadow: 0 1px 2px #5f87b3, inset 0 0 6px #5baaff2e;
+    }
+    .l-comments-wrap .b-comment-form {
+        background-color: #f7fbff;
+    }
+    .b-comment.m-selected {
+        box-shadow: 0 1px 2px #0003, inset 0 0 1px 2px #559be8;
+    }
+}
+
+@media (max-width: 350px) {
+    .b-header-block.m-mascot-news::before, 
+    .b-header-block.m-mascot-fav::before {
+        background-image: linear-gradient(180deg, #ffffff7d 0%, white 30%, #ffffff7d 100%);
+    }
+    .b-comment-form_b-upload label {
+        background: rgb(0 0 0 / 5%);
+        border-color: #888;
+    }
+    .b-comment-form_b-upload label::before {
+        color: #5e5e5e;
+    }
+}
+.b-comment.m-tip {
+    box-shadow: 0 3px 6px #00000052;
+}

@@ -2811,7 +2811,38 @@
 			}
 		})();
 
-		// x.subscribe(document.body.id, function() {});
+		/* Setup collapsing panels */
+		$('.b-top-panel').prepend(
+			`<div class="mv-panel-toggle mv-panel-toggle-inmenu mv-panel-toggle-inmenu-left" data-panel="left"></div>
+			<div class="mv-panel-toggle mv-panel-toggle-inmenu mv-panel-toggle-inmenu-right" data-panel="right"></div>`)
+		$('.mv-panel-toggle-inmenu').each(function() {
+			const $t = $(this)
+			const sel = `.l-${$t.data('panel')}-panel-wrap`
+			$t.click(function() {
+				const $p = $(sel)
+				if (! $p.hasClass('mv-panel-shown')) {
+					$p.addClass('mv-panel-shown mv-panel-transition')
+				}
+			})
+		})
+		;['left', 'right'].forEach(lr => {
+			const $p = $(`.l-${lr}-panel-wrap`)
+			const hide = () => {
+				$p.removeClass('mv-panel-shown')
+				setTimeout(() => $p.removeClass('mv-panel-transition'), 200)
+			}
+			$p.click(function(ev) {
+				const bcr = $p[0].getBoundingClientRect()
+				if ( (lr=='left' && ev.pageX > bcr.width)
+					|| (lr=='right' && ev.pageX < bcr.x) ) {
+					hide()
+				}
+			})
+			$('<div class="mv-panel-toggle mv-panel-toggle-inpanel"></div>')
+				.prependTo($p)
+				.click(hide)
+		})
+
 	});
 
 	/**

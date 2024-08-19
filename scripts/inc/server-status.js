@@ -2,14 +2,6 @@ import log from '#inc/logger.js'
 import axios from 'axios'
 import { kvsConnection, cacheGet, cacheSet } from '#inc/kvs.js'
 
-;["REDIS_HOST",
-	"REDIS_PORT"
-].forEach(param => {
-	if (typeof process.env[param] === 'undefined') {
-		log.fatal(`Параметр «${param}» не определен в .env-файле!`)
-	}
-})
-
 export async function updateServerStatus() {
 	const kvs = await kvsConnection()
 	const blogLinks = await cacheGet(`Blog_BlogLinksModel::links`)

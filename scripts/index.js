@@ -2,9 +2,12 @@ import '#inc/greet.js'
 import { CronJob } from 'cron'
 import { updateServerStatus } from '#inc/server-status.js'
 import { indexerInit, runIndexer, checkDaemon } from '#inc/sphinx.js'
-import { listen } from '#inc/broadcast.js'
 import log from '#inc/logger.js'
 import { updateSmilies, watchSmilies } from '#inc/smilies.js'
+import checkEnv from '#inc/check-env.js'
+import fastify from "fastify"
+
+checkEnv(['SRV_HOST', 'SRV_PORT', 'SRV_LOCAL_IP'])
 
 // Запуск индексатора
 await indexerInit()
@@ -20,4 +23,13 @@ log.succ('Сервис проверки статуса серверов запу
 await updateSmilies()
 watchSmilies()
 
-listen()
+const app = fastify()
+// Подключение плагина Socket.IO
+app.register(import('#inc/broadcast.js'))
+if (process.env?.TG_ENABLE) {
+	// Подключение плагина Telegram
+	app.register(import('#inc/telegram.js'))
+}
+// Запуск сервера
+app.listen({ host: process.env.SRV_HOST, port: process.env.SRV_PORT })
+log.succ(`Сервер Node.JS @ ${process.env.SRV_HOST}:${process.env.SRV_PORT} принимает сообщения с локального адреса ${process.env.SRV_LOCAL_IP}`)

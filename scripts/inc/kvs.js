@@ -1,6 +1,9 @@
 import log from '#inc/logger.js'
 import { createClient } from 'redis'
 import { serialize, unserialize } from 'php-serialize'
+import checkEnv from '#inc/check-env.js'
+
+checkEnv(["REDIS_HOST", "REDIS_PORT"])
 
 let kvs = null
 export async function kvsConnection() {

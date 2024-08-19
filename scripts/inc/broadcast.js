@@ -1,86 +1,79 @@
 import log from '#inc/logger.js'
-import fastify from "fastify"
 import socketioServer from "fastify-socket.io"
 import { Server } from "socket.io"
 import { kvsConnection } from '#inc/kvs.js'
+import checkEnv from '#inc/check-env.js'
 
-;["SIO_SRV_IP",
-	"SIO_TOKEN",
-	"SIO_HOST",
-	"SIO_PORT"
-].forEach(param => {
-	if (typeof process.env[param] === 'undefined') {
-		log.fatal(`Параметр «${param}» не определен в .env-файле!`)
+checkEnv(["SIO_TOKEN", "SRV_LOCAL_IP"])
+
+export default async function socketIOplugin(fastify) {
+	fastify.register(socketioServer)
+
+	fastify.post("/broadcast/", async (req, reply) => {
+		if (req.ip !== process.env.SRV_LOCAL_IP || req.body.token !== process.env.SIO_TOKEN) {
+			reply.code(403).send()
+			return
+		}
+		const {channel, event, data, ids, expire} = req.body
+		if (ids) {
+			ids.forEach(id => emit(`${channel}:${id}`, event, data, expire))
+		}
+		else {
+			emit(channel, event, data, expire)
+		}
+		reply.code(200).send()
+	})
+
+	async function emit(channel, event, data, expire=false) {
+		const kvs = await kvsConnection()
+
+		fastify.io.to(channel).emit(event, data)
+		if (expire) {
+			const expiryDate = new Date().getTime() + expire *1000 *60 *60
+			kvs.sAdd(`Events:${channel}`, JSON.stringify([ event, data, expiryDate ]) )
+		}
 	}
-})
 
-const app = fastify()
-app.register(socketioServer)
+	fastify.ready(async (err) => {
+		const kvs = await kvsConnection()
 
-app.post("/broadcast/", async (req, reply) => {
-	if (req.ip !== process.env.SIO_SRV_IP || req.body.token !== process.env.SIO_TOKEN) {
-		reply.code(403).send()
-		return
-	}
-	const {channel, event, data, ids, expire} = req.body
-	if (ids) {
-		ids.forEach(id => emit(`${channel}:${id}`, event, data, expire))
-	}
-	else {
-		emit(channel, event, data, expire)
-	}
-	reply.code(200).send()
-})
+		if (err) throw err;
+		fastify.io.on("connection", socket => {
+			socket.on('subscribe', function(channels) {
+				if (!(channels instanceof Array))
+					channels = [channels]
+				channels.forEach(async (channel) => {
+					socket.join(channel)
 
-async function emit(channel, event, data, expire=false) {
-	const kvs = await kvsConnection()
-
-	app.io.to(channel).emit(event, data)
-	if (expire) {
-		const expiryDate = new Date().getTime() + expire *1000 *60 *60
-		kvs.sAdd(`Events:${channel}`, JSON.stringify([ event, data, expiryDate ]) )
-	}
-}
-
-app.ready(async (err) => {
-	const kvs = await kvsConnection()
-
-	if (err) throw err;
-	app.io.on("connection", socket => {
-		socket.on('subscribe', function(channels) {
-			if (!(channels instanceof Array))
-				channels = [channels]
-			channels.forEach(async (channel) => {
-				socket.join(channel)
-
-				const events = await kvs.sMembers(`Events:${channel}`)
-				, now = new Date().getTime()
-				, live = [], dead = [];
-				events.forEach(e => {
-					const eu = unserializeSafe(e)
-					if (eu) {
-						const [event, data, expiryDate] = eu
-						if (expiryDate < now) {
-							dead.push(e)
+					const events = await kvs.sMembers(`Events:${channel}`)
+					, now = new Date().getTime()
+					, live = [], dead = [];
+					events.forEach(e => {
+						const eu = unserializeSafe(e)
+						if (eu) {
+							const [event, data, expiryDate] = eu
+							if (expiryDate < now) {
+								dead.push(e)
+							}
+							else {
+								live.push({event, data})
+							}
 						}
-						else {
-							live.push({event, data})
-						}
-					}
+					})
+					if (live.length)
+						socket.emit('_multi_', live)
+					if (dead.length)
+						await kvs.sRem(`Events:${channel}`, dead)
 				})
-				if (live.length)
-					socket.emit('_multi_', live)
-				if (dead.length)
-					await kvs.sRem(`Events:${channel}`, dead)
+			})
+			socket.on('unsubscribe', function(channels) {
+				if (!(channels instanceof Array))
+					channels = [channels]
+				channels.forEach(channel => socket.leave(channel))
 			})
 		})
-		socket.on('unsubscribe', function(channels) {
-			if (!(channels instanceof Array))
-				channels = [channels]
-			channels.forEach(channel => socket.leave(channel))
-		})
 	})
-})
+}
 
 function unserializeSafe(str) {
 	try {
@@ -88,9 +81,4 @@ function unserializeSafe(str) {
 	} catch(e) {
 		return null
 	}
-}
-
-export function listen() {
-	app.listen({ host: process.env.SIO_HOST, port: process.env.SIO_PORT })
-	log.succ(`Сервис Socket.IO по адресу ${process.env.SIO_HOST}:${process.env.SIO_PORT} принимает сообщения с локального адреса ${process.env.SIO_SRV_IP}`)
 }

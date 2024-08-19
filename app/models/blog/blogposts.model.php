@@ -501,6 +501,7 @@ EventModel::getInstance()
 
 		Blog_BlogStatisticsModel::updateGlobalPosting();
 		EventModel::getInstance()
+			-> TelegramPost('all', $data)
 			-> ClientBroadcast('posts', 'add_post')
 			-> ClientBroadcast('new_posts', 'add_post', array('id' => $data['id'], 'title' => $data['title'], 'category' => $data['category'] ? TemplateHelper::BlogCategory($data['category'], 'name') : 0, 'category_title' => $data['category'] ? TemplateHelper::BlogCategory($data['category'], 'title') : 0));
 	})

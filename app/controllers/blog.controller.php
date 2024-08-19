@@ -619,7 +619,7 @@ class BlogController extends BaseController
 			if (ControlModel::isPostCaptcha())
 			{
 				$validator -> assertExists('captcha_key', 'Введите капчу');
-				if ($_POST['captcha_key'])
+				if (@$_POST['captcha_key'])
 					$validator -> assertEqual(
 						'captcha', $session -> instantGet('captcha_'. $_POST['captcha_key'], false),
 						'Капча введена неверно'

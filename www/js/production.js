@@ -137,7 +137,7 @@
 					.bind("click", function() {
 						$(this).autocomplete("search");
 					})
-					.data( "autocomplete" )._renderItem = function( ul, item ) {
+					.autocomplete( "instance" )._renderItem = function( ul, item ) {
 						return $( "<li></li>" )
 							.css("fontSize", "0.7em")
 							.data( "item.autocomplete", item )

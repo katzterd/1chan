@@ -2096,3 +2096,11 @@ a.hidden:hover {
     overflow: visible;
     word-break: break-word;
 }
+
+.ui-menu-item a {
+    text-decoration: none;
+    display: block;
+    padding: .2em .4em;
+    line-height: 1.5;
+    zoom: 1;
+}

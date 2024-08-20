@@ -97,9 +97,6 @@ class EventModel
 			'Content-Length: ' . strlen($data_json)
 		]);
 		curl_exec($curl_session);
-		if (curl_errno($curl_session)) {
-			die('cURL error: ' . curl_error($curl_session));
-		}
 	}
 
 	/**

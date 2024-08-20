@@ -38,6 +38,7 @@ export default async function socketIOplugin(fastify) {
 		const kvs = await kvsConnection()
 
 		if (err) throw err;
+		fastify.io.setMaxListeners(100)
 		fastify.io.on("connection", socket => {
 			socket.on('subscribe', function(channels) {
 				if (!(channels instanceof Array))

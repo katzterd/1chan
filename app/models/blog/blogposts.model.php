@@ -387,7 +387,7 @@ class Blog_BlogPostsModel
 	/**
 	 * Установка поста "одобренным":
 	 */
-	public static function RatedPost($id, $rated = true, $comment = '')
+	public static function RatedPost($id, $rated = true, $comment = '') // you are rarted
 	{
 		$dbh = PDOQuery::getInstance();
 
@@ -501,7 +501,7 @@ EventModel::getInstance()
 
 		Blog_BlogStatisticsModel::updateGlobalPosting();
 		EventModel::getInstance()
-			-> TelegramPost('all', $data)
+			-> TelegramPost($data)
 			-> ClientBroadcast('posts', 'add_post')
 			-> ClientBroadcast('new_posts', 'add_post', array('id' => $data['id'], 'title' => $data['title'], 'category' => $data['category'] ? TemplateHelper::BlogCategory($data['category'], 'name') : 0, 'category_title' => $data['category'] ? TemplateHelper::BlogCategory($data['category'], 'title') : 0));
 	})
@@ -519,4 +519,11 @@ EventModel::getInstance()
 	-> AddEventListener('info_post', function($data) {
 		EventModel::getInstance()
 			-> ClientBroadcast('post_'. $data[0], 'info_post', array('id' => $data[0], 'comment' => $data[1]));
+	})
+	/**
+	 * Пост удобрили:
+	 */
+	-> AddEventListener('rated_post', function($data) {
+		EventModel::getInstance()
+			-> TelegramApprove($data);
 	});

@@ -266,7 +266,7 @@
 				});
 				return false;
 			});
-			x.addPageProcessor(":moderator", function(path, params) {
+			x.addPageProcessor(":moderator", function(path, isAdmin) {
 				var current_id = null;
 				jQuery.support.opacity = true;
 
@@ -328,7 +328,7 @@
 					current_id = null;
 					return false;
 				});
-				if (params == false) {
+				if (isAdmin == false) {
 				    $("#mod_remove").click(function() {
 					    if (confirm("Вы уверены, что хотите скрыть пост "+ current_id +"?")) {
 					        var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
@@ -719,8 +719,8 @@
 		});
 
 		commentPreview(document);
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params == false)  {
+		x.addPageProcessor(":moderator", function(path, isAdmin) {
+		    if (isAdmin == false)  {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
 				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
@@ -728,8 +728,8 @@
 			    });
 	        }
 		});
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params == false)  {
+		x.addPageProcessor(":moderator", function(path, isAdmin) {
+		    if (isAdmin == false)  {
 			    $(".js-setusercaptcha-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
 				    $.getJSON(location.protocol + "//"+ location.host +"/mod/setUserCaptcha/"+ comment_id +"/");
@@ -843,9 +843,9 @@
 			});
 		}
 
-		x.addPageProcessor(":moderator", function(path, params) {
+		x.addPageProcessor(":moderator", function(path, isAdmin) {
 			modMode = true;
-			if (params) {
+			if (isAdmin) {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var full_id = $("img", this).attr("alt").split("/", 2);
 				    var board = full_id[0], comment_id = full_id[1];
@@ -1636,8 +1636,8 @@
 					$(".js-homeboard-select").hide();
 				});
 
-				x.addPageProcessor(":moderator", function(path, params) {
-				    if (params) {
+				x.addPageProcessor(":moderator", function(path, isAdmin) {
+				    if (isAdmin) {
 					    var link = $('<a href="javascript://"><sup>Изменить название</sup></a>');
 					    link.click(function() {
 						    var title       = prompt("title", $(".b-board-header_name h1").text());
@@ -1949,8 +1949,8 @@
 				});
 
 				commentPreview(document);
-				x.addPageProcessor(":moderator", function(path, params) {
-				    if (params) {
+				x.addPageProcessor(":moderator", function(path, isAdmin) {
+				    if (isAdmin) {
 					    $(".js-remove-button")
 		                    .removeClass("g-hidden").click(function() {
 						        var comment_id = $("img", this).attr("alt"),
@@ -2077,8 +2077,8 @@
 			reloadPage();
 		}, 2 * 60 * 1000);
 
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params) {
+		x.addPageProcessor(":moderator", function(path, isAdmin) {
+		    if (isAdmin) {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var link_id = $("img", this).attr("alt");
 				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removeOnlineLink/"+ link_id +"/");
@@ -2167,8 +2167,8 @@
 			$("#comment_" + data.id).slideUp(500);
 		});
 
-		x.addPageProcessor(":moderator", function(path, params) {
-		    if (params) {
+		x.addPageProcessor(":moderator", function(path, isAdmin) {
+		    if (isAdmin) {
 			    $(".js-remove-button").removeClass("g-hidden").click(function() {
 				    var comment_id = $("img", this).attr("alt");
 				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
@@ -2944,4 +2944,11 @@
 				}
 			)
 	}
+
+	$.get("http://"+ location.host +"/auth", function(data, status) {
+		if (status != 'error' && (+data.auth) >= 0) {
+			x.callPageProcessors(":moderator", data.auth == 0);
+		}
+	}, "json");
+
 })();

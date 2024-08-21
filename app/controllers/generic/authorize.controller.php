@@ -5,12 +5,17 @@
 class Generic_AuthorizeController extends BaseController
 {
 	/**
-	 * Метод авторизации:
+	 * Метод авторизации через форму входа
 	 */
-	public function authorizeSimpleFuckingAction(Application $application)
-	{
-		$session = Session::getInstance();
-		$authorized = ($_SERVER['REQUEST_METHOD'] == 'POST' && $session -> isModerator($_POST['name'], $_POST['key']));
+	public function authorizeSimpleFuckingAction() {
+		Session::getInstance() -> authorize($_POST['name'], $_POST['key']);
 		header('Location: /admin', true, 302);
+	}
+
+	/**
+	 * Метод авторизации через AJAX
+	 */
+	public function authorizeAjaxAction() {
+		return ["auth" => Session::getInstance() -> checkSessionClass()];
 	}
 }

@@ -228,7 +228,7 @@ class Application
 				$this -> controller = $controller;
 				$this -> action     = $action;
 
-				call_user_func(array($ctrl, $action .'SimpleFuckingAction'), $this, $template);
+				call_user_func(array($ctrl, $action .'SimpleFuckingAction'), $this);
 
 				return true;
 			}

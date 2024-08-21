@@ -220,18 +220,13 @@ class Session
 	 */
 	public function isAdminSession()
 	{
-		if (array_key_exists('auth', $_SESSION))
-		{
-			if ($_SESSION['auth']['class'] == 0)
-				return true;
-		}
-		return false;
+		return $this -> checkSessionClass() == 0;
 	}
 
 	/**
-	 * Проверка на модераторство:
+	 * Установка прав модератора в сессии
 	 */
-	public function isModerator($name, $key)
+	public function authorize($name, $key)
 	{
 		$moderators = ControlModel::GetModerators();
 		foreach($moderators as $mod)
@@ -250,12 +245,17 @@ class Session
 	 */
 	public function isModeratorSession()
 	{
-		if (array_key_exists('auth', $_SESSION))
-		{
-			if ($_SESSION['auth']['class'] >= 0)
-				return true;
+		return $this -> checkSessionClass() >= 0;
+	}
+
+	/**
+	 * Проверка сессии на уровень прав:
+	 */
+	public function checkSessionClass() {
+		if (array_key_exists('auth', $_SESSION)) {
+			return $_SESSION['auth']['class'];
 		}
-		return false;
+		else return -1;
 	}
 
 	/**

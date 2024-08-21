@@ -20,9 +20,9 @@ async function sendMessage(data) {
 
 	// Обработка данных
 	let { id, category, link, title, text_original, text_full, channel } = data
-	title = escapeSpecialChars(title)
+	title = escapeSpecialChars(title.trim())
 	let [media, text] = findMediaInText(text_original)
-	text = texyToTgMarkdown(text)
+	text = texyToTgMarkdown(text.trim())
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
 	const url_title = `[${(link ? '↗️ ' : '') + title}](${link ? external_link : internal_link})`

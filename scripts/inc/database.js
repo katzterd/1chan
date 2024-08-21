@@ -16,7 +16,7 @@ const creds = {
 }
 
 let connection = null
-const sqlConnection = async () => {
+export async function sqlConnection() {
 	if (connection) return connection
 	try {
 		connection = await mysql.createConnection(creds)

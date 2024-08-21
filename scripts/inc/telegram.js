@@ -3,6 +3,8 @@ import { texyToTgMarkdown, escapeSpecialChars, escapeInnerURL, findMediaInText }
 import log from '#inc/logger.js'
 import checkEnv from '#inc/check-env.js'
 import { kvsConnection } from "#inc/kvs.js"
+import SQL from 'sql-template-strings'
+import { sqlConnection } from '#inc/database.js'
 
 let tg = null
 if (process.env?.TG_ENABLE) {
@@ -22,11 +24,21 @@ async function sendMessage(data) {
 	text = texyToTgMarkdown(text)
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
-	const url_title = `*[${title}](${link ? external_link : internal_link})*`
+	const url_title = `[${title}](${link ? external_link : internal_link})`
 	const read_more = `[Читать${text_full ? ' дальше' :''}](${internal_link})`
-
+	// Получение категории
+	let cat = ''
+	if (category) {
+		const sql = await sqlConnection()
+		const [record, _] = await sql.query(SQL`SELECT title FROM 1chan_category WHERE id = ${category}`)
+		if (record.length) {
+			// Убрать из имени пробелы и пунктуацию для создания хэштега
+			const catName = record[0].title.replace(/[^\p{L}\p{N}\s]/ug, '').replaceAll(' ', '_')
+			cat = escapeSpecialChars('#' + catName + ' → ')
+		}
+	}
 	// Формирование сообщения
-	const msgText = url_title + '\n\n' + text + '\n\n' + read_more
+	const msgText = '*' + cat + url_title + '*' + '\n\n' + text + '\n\n' + read_more
 	
 	// Отправка сообщения
 	let msg = null

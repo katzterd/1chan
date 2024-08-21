@@ -25,7 +25,7 @@ async function sendMessage(data) {
 	text = texyToTgMarkdown(text)
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
-	const url_title = `[${title}](${link ? external_link : internal_link})`
+	const url_title = `[${(link ? '↗️ ' : '') + title}](${link ? external_link : internal_link})`
 	// Получение категории
 	let cat = ''
 	if (category) {
@@ -61,7 +61,7 @@ async function sendMessage(data) {
 			log.err("Ошибка при отправке поста в канал", e)
 		}
 	}
-	
+
 	// Сохранение ID сообщения
 	if (msg?.message_id) {
 		saveMessageID(id, msg.message_id)

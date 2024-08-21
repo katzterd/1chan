@@ -26,26 +26,24 @@ async function sendMessage(data) {
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
 	const url_title = `[${(link ? '↗️ ' : '') + title}](${link ? external_link : internal_link})`
-	const read_more = `[Читать${text_full ? ' дальше' :''}](${internal_link})`
+	const btm_text = []
+	if (external_link || text_full)
+		btm_text.push(`[Читать${text_full ? ' дальше' :''}](${internal_link})`)
 
 	// Получение категории
-	let cat = ''
 	if (category) {
 		const sql = await sqlConnection()
 		const [record, _] = await sql.query(SQL`SELECT title FROM 1chan_category WHERE id = ${category}`)
 		if (record.length) {
 			// Убрать из имени пробелы и пунктуацию для создания хэштега
 			const catName = record[0].title.replace(/[^\p{L}\p{N}\s]/ug, '').replaceAll(' ', '_')
-			cat = escapeSpecialChars('#' + catName) + ' \\| '
+			btm_text.unshift(escapeSpecialChars('#' + catName))
 		}
 	}
 
 	// Формирование сообщения
-	const msgText = '__*' + url_title + '*__' + '\n\n' + text + '\n\n' + cat + read_more
+	const msgText = '__*' + url_title + '*__' + '\n\n' + text + (btm_text ? '\n\n' + btm_text.join(' \\| ') : '')
 
-	// Создание кнопки
-	// const btn = Markup.inlineKeyboard([Markup.button.url('Читать' + (text_full ? ' дальше' :''), internal_link)])
-	
 	// Отправка сообщения
 	let msg = null
 	if (media) {

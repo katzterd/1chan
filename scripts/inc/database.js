@@ -3,6 +3,9 @@ import SQL from 'sql-template-strings'
 import mysql from 'mysql2/promise'
 import log from '#inc/logger.js'
 import ProgressBar from 'progress'
+import checkEnv from '#inc/check-env.js'
+
+checkEnv(["SQL_HOST", "SQL_PORT", "SQL_USER", "SQL_PASSWORD", "SQL_NAME"])
 
 const creds = {
 	host: process.env.SQL_HOST,
@@ -13,7 +16,7 @@ const creds = {
 }
 
 let connection = null
-const sqlConnection = async () => {
+export async function sqlConnection() {
 	if (connection) return connection
 	try {
 		connection = await mysql.createConnection(creds)

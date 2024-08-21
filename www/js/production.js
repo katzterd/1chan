@@ -3,7 +3,7 @@
  */
 (function(){
 	var x = {
-		socket: io(),
+		socket: typeof io == 'function' ? io() : null,
 		processors: [],
 		addPageProcessor: function(path, processor) {
 			path = path instanceof Array ? path : [path];
@@ -19,6 +19,7 @@
 					this.processors[i]["processor"].call(window, null, params);
 		},
 		subscribe: function(channel, event, callback) {
+			if (! this.socket) return;
 			if (!(channel in this.subscribedTo)) {
 				this.socket.emit('subscribe', 
 					(channel == 'global' && document.body.id)
@@ -34,6 +35,7 @@
 			}
 		},
 		unsubscribe: function(channel) {
+			if (! this.socket) return;
 			this.socket.emit('unsubscribe', 
 				(channel == 'global' && document.body.id)
 				? [channel, 'global:'+document.body.id]
@@ -43,7 +45,7 @@
 		subscribedTo: {}, eventHandlers: {}
 	};
 
-	x.socket.on('_multi_', events => events.forEach(ev => {
+	if (x.socket) x.socket.on('_multi_', events => events.forEach(ev => {
 		const callback = x.eventHandlers?.[ev.event]
 		if (callback) {
 			callback(ev.data)
@@ -737,7 +739,6 @@
 		});
 	});
 
-
 	x.addPageProcessor(/service\/last_board_posts\/?(\d+)?/, function(match) {
 		var modMode = false, _title = document.title, waiting = false, page = match[1];
 		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
@@ -855,7 +856,6 @@
 	        }
 		});
 	});
-
 
 	x.addPageProcessor("fav", function(match) {
 		var postloader = {}, updateMode = false, updateThread = null;
@@ -2365,7 +2365,6 @@
 			return false;
 		});
     });
-
 
 	x.addPageProcessor(/^chat\/[0-9A-z\-]{4,45}/, function(match) {
 		var id = $(".b-chat").attr("id").substring(5), channel_id = null, password = false;

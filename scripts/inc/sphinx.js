@@ -3,10 +3,12 @@ import log from '#inc/logger.js'
 import * as cp from 'node:child_process'
 import findProcess from 'find-process'
 import sleep from '#inc/sleep.js'
+import checkEnv from '#inc/check-env.js'
 
 export async function indexerInit() {
-	let indexerConfig = await fs.readFile('1chan.template.conf', 'utf8');
-	[ "SQL_HOST",
+	let indexerConfig = await fs.readFile('1chan.template.conf', 'utf8')
+	checkEnv([
+		"SQL_HOST",
 		"SQL_USER",
 		"SQL_PASSWORD",
 		"SQL_NAME",
@@ -21,12 +23,7 @@ export async function indexerInit() {
 		"SEARCHD_READ_TIMEOUT",
 		"SEARCHD_MAX_CHILDREN",
 		"SEARCHD_PID_FILE"
-	].forEach(param => {
-		if (typeof process.env[param] === 'undefined') {
-			log.fatal(`Параметр «${param}» не определен в .env-файле!`)
-		}
-		indexerConfig = indexerConfig.replaceAll(`<${param}>`, process.env[param])
-	})
+	], param => indexerConfig = indexerConfig.replaceAll(`<${param}>`, process.env[param]))
 
 	await fs.writeFile('1chan.generated.conf', indexerConfig)
 	log.succ('Файл конфигурации Sphinx сгенерирован')

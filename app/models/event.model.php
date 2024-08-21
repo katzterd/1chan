@@ -69,25 +69,26 @@ class EventModel
 	/**
 	 * Сообщение о событии на клиенты:
 	 */
-	public function ClientBroadcast($channel, $event, $data = null, $ids = null, $expire = false)
+	public function ClientBroadcast($channel, $event, $data = null, $ids = null)
 	{
 		$payload = [
 			'channel' => $channel,
 			'event' => $event,
 			'token' => SIO_TOKEN
 		];
-		if ($data) {
-			$payload['data'] = $data;
-		}
-		if ($ids) {
-			$payload['ids'] = $ids;
-		}
-		if ($expire) {
-			$payload['expire'] = $expire;
-		}
+		if ($data) $payload['data'] = $data;
+		if ($ids)	$payload['ids'] = $ids;
+		$this -> CURLmessage('/broadcast/', $payload);
+		return $this;
+	}
+
+	/**
+	 * Сообщение для Node.JS сервера:
+	 */
+	private function CURLmessage($path, $payload) {
 		$data_json = json_encode($payload);
 		
-		$curl_session = curl_init(SIO_HOST . ':' . SIO_PORT . '/broadcast/');
+		$curl_session = curl_init(SRV_HOST . ':' . SRV_PORT . $path);
 		curl_setopt($curl_session, CURLOPT_PROXY, "");
 		curl_setopt($curl_session, CURLOPT_POSTFIELDS, $data_json);
 		curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
@@ -96,8 +97,29 @@ class EventModel
 			'Content-Length: ' . strlen($data_json)
 		]);
 		curl_exec($curl_session);
-		if (curl_errno($curl_session)) {
-			die('cURL error: ' . curl_error($curl_session));
+	}
+
+	/**
+	 * Отправка поста в telegram канал:
+	 */
+	public function TelegramPost($data) {
+		if (TG_ENABLE) {
+			$this -> CURLmessage('/publish/', $data);
+		}
+		return $this;
+	}
+
+	/**
+	 * Сигнал об удобрении поста для репоста в telegram-канал удобренного:
+	 */
+	public function TelegramApprove($data) {
+		list($id, $rated) = $data;
+		if (TG_ENABLE && TG_CHANNEL_APPROVED && $rated) {
+			$payload = [
+				"id" => $id,
+				"approve" => true
+			];
+			$this -> CURLmessage('/publish/', $payload);
 		}
 		return $this;
 	}

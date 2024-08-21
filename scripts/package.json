@@ -31,6 +31,7 @@
     "prompts": "^2.4.2",
     "redis": "^4.6.15",
     "socket.io": "^4.7.5",
-    "sql-template-strings": "^2.2.2"
+    "sql-template-strings": "^2.2.2",
+    "telegraf": "^4.16.3"
   }
 }

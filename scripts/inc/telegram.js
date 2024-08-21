@@ -26,6 +26,8 @@ async function sendMessage(data) {
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
 	const url_title = `[${(link ? '↗️ ' : '') + title}](${link ? external_link : internal_link})`
+	const read_more = `[Читать${text_full ? ' дальше' :''}](${internal_link})`
+
 	// Получение категории
 	let cat = ''
 	if (category) {
@@ -34,21 +36,21 @@ async function sendMessage(data) {
 		if (record.length) {
 			// Убрать из имени пробелы и пунктуацию для создания хэштега
 			const catName = record[0].title.replace(/[^\p{L}\p{N}\s]/ug, '').replaceAll(' ', '_')
-			cat = '\n\n' + escapeSpecialChars('#' + catName)
+			cat = escapeSpecialChars('#' + catName) + ' \\| '
 		}
 	}
 
 	// Формирование сообщения
-	const msgText = '__*' + url_title + '*__' + '\n\n' + text + cat
+	const msgText = '__*' + url_title + '*__' + '\n\n' + text + '\n\n' + cat + read_more
 
 	// Создание кнопки
-	const btn = Markup.inlineKeyboard([Markup.button.url('Читать' + (text_full ? ' дальше' :''), internal_link)])
+	// const btn = Markup.inlineKeyboard([Markup.button.url('Читать' + (text_full ? ' дальше' :''), internal_link)])
 	
 	// Отправка сообщения
 	let msg = null
 	if (media) {
 		try {
-			msg = await tg['send' + (media.isVideo ? 'Video' : 'Photo')](process.env.TG_CHANNEL_ALL, media.src, { caption: msgText, parse_mode: "MarkdownV2", ...btn })
+			msg = await tg['send' + (media.isVideo ? 'Video' : 'Photo')](process.env.TG_CHANNEL_ALL, media.src, { caption: msgText, parse_mode: "MarkdownV2" })
 		}	catch(e) {
 			log.err(`Ошибка при отправке медиафайла (${media.src}) в канал`, e)
 			media = null // При невозможности загрузить изображение, будет отправлен только текст
@@ -56,7 +58,7 @@ async function sendMessage(data) {
 	}
 	if (!media) {
 		try {
-			msg = await tg.sendMessage(process.env.TG_CHANNEL_ALL, msgText, { parse_mode: "MarkdownV2", ...btn })
+			msg = await tg.sendMessage(process.env.TG_CHANNEL_ALL, msgText, { parse_mode: "MarkdownV2" })
 		}	catch(e) {
 			log.err("Ошибка при отправке поста в канал", e)
 		}

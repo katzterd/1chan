@@ -1,4 +1,4 @@
-import { Telegram } from 'telegraf'
+import { Telegram, Markup } from 'telegraf'
 import { texyToTgMarkdown, escapeSpecialChars, escapeInnerURL, findMediaInText } from '#inc/markup.js'
 import log from '#inc/logger.js'
 import checkEnv from '#inc/check-env.js'
@@ -17,6 +17,7 @@ async function sendMessage(data) {
 		log.warn('Постинг в Telegram-канал отключен')
 		return
 	}
+
 	// Обработка данных
 	let { id, category, link, title, text_original, text_full, channel } = data
 	title = escapeSpecialChars(title)
@@ -25,7 +26,6 @@ async function sendMessage(data) {
 	const internal_link = escapeInnerURL(`${process.env.WEB_DOMAIN}/news/res/${id}`)
 	const external_link = escapeInnerURL(link)
 	const url_title = `[${title}](${link ? external_link : internal_link})`
-	const read_more = `[Читать${text_full ? ' дальше' :''}](${internal_link})`
 	// Получение категории
 	let cat = ''
 	if (category) {
@@ -34,17 +34,21 @@ async function sendMessage(data) {
 		if (record.length) {
 			// Убрать из имени пробелы и пунктуацию для создания хэштега
 			const catName = record[0].title.replace(/[^\p{L}\p{N}\s]/ug, '').replaceAll(' ', '_')
-			cat = escapeSpecialChars('#' + catName + ' → ')
+			cat = '\n\n' + escapeSpecialChars('#' + catName)
 		}
 	}
+
 	// Формирование сообщения
-	const msgText = '*' + cat + url_title + '*' + '\n\n' + text + '\n\n' + read_more
+	const msgText = '__*' + url_title + '*__' + '\n\n' + text + cat
+
+	// Создание кнопки
+	const btn = Markup.inlineKeyboard([Markup.button.url('Читать' + (text_full ? ' дальше' :''), internal_link)])
 	
 	// Отправка сообщения
 	let msg = null
 	if (media) {
 		try {
-			msg = await tg['send' + (media.isVideo ? 'Video' : 'Photo')](process.env.TG_CHANNEL_ALL, media.src, { caption: msgText, parse_mode: "MarkdownV2"})
+			msg = await tg['send' + (media.isVideo ? 'Video' : 'Photo')](process.env.TG_CHANNEL_ALL, media.src, { caption: msgText, parse_mode: "MarkdownV2", ...btn })
 		}	catch(e) {
 			log.err(`Ошибка при отправке медиафайла (${media.src}) в канал`, e)
 			media = null // При невозможности загрузить изображение, будет отправлен только текст
@@ -52,11 +56,12 @@ async function sendMessage(data) {
 	}
 	if (!media) {
 		try {
-			msg = await tg.sendMessage(process.env.TG_CHANNEL_ALL, msgText, { parse_mode: "MarkdownV2" })
+			msg = await tg.sendMessage(process.env.TG_CHANNEL_ALL, msgText, { parse_mode: "MarkdownV2", ...btn })
 		}	catch(e) {
 			log.err("Ошибка при отправке поста в канал", e)
 		}
 	}
+	
 	// Сохранение ID сообщения
 	if (msg?.message_id) {
 		saveMessageID(id, msg.message_id)

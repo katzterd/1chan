@@ -46,7 +46,7 @@
 	};
 
 	if (x.socket) x.socket.on('_multi_', events => events.forEach(ev => {
-		const callback = x.eventHandlers?.[ev.event]
+		const callback = x.eventHandlers[ev.event] || null;
 		if (callback) {
 			callback(ev.data)
 		}

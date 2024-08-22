@@ -6,19 +6,35 @@
 		<meta name="keywords" content="<?php echo META_KEYWORDS ?>" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
 		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
-
 		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php echo ICONS_VERSION ?>" />
+		
 		<link rel="stylesheet" type="text/css"  href="/css/common.css<?php echo CSS_VERSION ?>" media="all" />
-		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.css<?php echo CSS_VERSION ?>" media="all" />
-		<link rel="stylesheet" type="text/css"  href="/css/1chan-light.custom.css<?php echo CSS_VERSION ?>" media="all" />
-		<!-- <link rel="stylesheet" type="text/css"     href="/css/snow.css<?php echo CSS_VERSION ?>" media="all" /> -->
+		<?php $theme = $this -> getParameter('global_theme'); ?>
+		<?php if ($theme): ?>
+			<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/<?= $theme ?>.css<?= CSS_VERSION ?>" media="all" />
+			<link id="color-theme-custom" rel="stylesheet" type="text/css" href="/css/themes/<?= $theme ?>.custom.css<?= CSS_VERSION ?>" media="all" />
+		<?php else: ?>
+			<style id="default-themes">
+				<?php foreach($this -> getParameter('global_themes') as $i => $theme): ?>
+					<?php if ($i==0): ?>
+						/* Дефолтная светлая тема */
+						@import url("/css/themes/<?= $theme ?>.css<?= CSS_VERSION ?>") (prefers-color-scheme: light);
+						@import url("/css/themes/<?= $theme ?>.custom.css<?= CSS_VERSION ?>") (prefers-color-scheme: light);
+					<?php endif; ?>
+					<?php if ($i==1): ?>
+						/* Дефолтная тёмная тема */
+						@import url("/css/themes/<?= $theme ?>.css<?= CSS_VERSION ?>") (prefers-color-scheme: dark);
+						@import url("/css/themes/<?= $theme ?>.custom.css<?= CSS_VERSION ?>") (prefers-color-scheme: dark);
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</style>
+		<?php endif; ?>
+		<script>const COLOR_THEMES = "<?= COLOR_THEMES ?>".split("|")</script>
+
 		<link rel="stylesheet" type="text/css"     href="/js/jquery-ui/jquery-ui.min.css" media="all" />
 
-		<?php if ($this -> getParameter('is_board')): ?>
-			<script>IS_BOARD = true</script>
-		<?php else: ?>
-			<script>IS_BOARD = false</script>
-		<?php endif; ?>
+		<script>const IS_BOARD = <?= ($this -> getParameter('is_board')) ? 'true' : 'false' ?></script>
+
 		<script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
 		<script type="text/javascript" src="/js/jquery-cookie.js"></script>
 		<script type="text/javascript" src="/js/jquery.scrollTo.min.js"></script>

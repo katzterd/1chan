@@ -21,7 +21,12 @@ foreach($env as $k => $v) {
 	$v = explode('#', $v)[0]; // remove .env comments
 	define($k, $v);
 }
+
+/**
+ * Разное
+ */
 date_default_timezone_set(DEFAULT_TIMEZONE);
+$GLOBALS['COLOR_THEMES'] = explode('|', COLOR_THEMES);
 
 /**
  * Подключение библиотек:

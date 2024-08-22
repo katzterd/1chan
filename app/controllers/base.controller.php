@@ -43,11 +43,13 @@ class BaseController extends Controller
 		$template -> setParameter('global_posts',           $stats['posts']);
 		$template -> setParameter('global_unique_posters',  $stats['unique_posters']);
 		$template -> setParameter('global_speed',           $stats['speed']);
-		
-		if ($session -> persistenceGet('global_theme', false)) {
-			return $template -> render($this -> viewParams, $session -> persistenceGet('global_theme'));
-		}
 
+		$theme = $session -> persistenceGet('global_theme', false);
+		if ($theme && !in_array($theme, $GLOBALS['COLOR_THEMES']))
+			$theme = false;
+		$template -> setParameter('global_theme', $theme);
+		$template -> setParameter('global_themes', $GLOBALS['COLOR_THEMES']);
+		
 		parent::process($template);
 	}
 }

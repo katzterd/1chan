@@ -2951,4 +2951,33 @@
 		}
 	}, "json");
 
+	window.switchTheme = function(theme) {
+		if (!~COLOR_THEMES.indexOf(theme)) theme = false;
+		$.get("http://"+ location.host +"/service/theme/" + (theme ? theme : '*'))
+		
+		$selected_theme = $('#color-theme')
+		$selected_custom_theme = $('#color-theme-custom')
+		$default_themes = $('#default-themes')
+
+		if (theme) {
+			$default_themes.remove()
+		}
+		if (!theme) {
+			theme = COLOR_THEMES[window.matchMedia("(prefers-color-scheme:dark)").matches ? 1 : 0]
+		}
+
+		if (!$selected_theme.length) {
+			$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + '.css">')
+		}
+		else {
+			$selected_theme.attr('href', '/css/themes/' + theme + '.css')
+		}
+		if (!$selected_custom_theme.length) {
+			$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + '.custom.css">')
+		}
+		else {
+			$selected_custom_theme.attr('href', '/css/themes/' + theme + '.custom.css')
+		}
+	}
+
 })();

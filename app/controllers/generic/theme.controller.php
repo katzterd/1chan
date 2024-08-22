@@ -9,18 +9,22 @@ class Generic_ThemeController
 	 */
 	public function switchAction(Application $application, Template $template)
 	{
-		$session = Session::getInstance();
-		if ($_GET['theme'] == 'normal') {
-			$session -> persistenceSet('global_theme', false);
-		} else {
-			if (is_file(VIEWS_DIR .'/layout_'. str_replace('/', '', $_GET['theme']) .'.php')) {
-				$session -> persistenceSet('global_theme', 'layout_'. $_GET['theme']);
-			}
-		}
+		self::switchTheme(@$_GET['theme']);
 
-		$template -> headerSeeOther(
-			'/'
-		);
+		$template -> headerSeeOther('/');
 		return false;
+	}
+
+	private static function switchTheme($theme) {
+		$session = Session::getInstance();
+
+		if (is_null($theme) || !in_array($theme, $GLOBALS['COLOR_THEMES']))
+			$theme = false;
+		$session -> persistenceSet('global_theme', $theme);
+		return $theme;
+	}
+
+	public function switchAjaxAction(Application $application) {
+		return self::switchTheme(@$_GET['theme']);
 	}
 }

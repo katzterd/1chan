@@ -15,7 +15,7 @@ class Generic_ThemeController
 		}
 		self::switchTheme($theme);
 
-		$template -> headerSeeOther($_SERVER['HTTP_REFERER']);
+		$template -> headerSeeOther(@$_SERVER['HTTP_REFERER'] ?? '/');
 		return false;
 	}
 

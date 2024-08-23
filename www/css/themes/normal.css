@@ -614,3 +614,7 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
 .b-comment.m-tip {
     box-shadow: 0 3px 6px #00000052;
 }
+
+#color-theme-form option {
+    background: #eaf4ff;
+}

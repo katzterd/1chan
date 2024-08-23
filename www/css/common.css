@@ -2102,7 +2102,10 @@ a.hidden:hover {
     overflow: visible;
     word-break: break-word;
 }
-
+#logo {
+    width: 250px;
+    height: 80px;
+}
 .ui-menu-item a {
     text-decoration: none;
     display: block;

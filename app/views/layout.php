@@ -92,7 +92,7 @@
 			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?><?= ($this -> getParameter('mascot', null)) ? " m-mascot-".($this -> getParameter('mascot', null)) : "" ?> ">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
-						<img src="/img/<?php echo LOGO_IMG ?>" width="250" height="80" alt="<?php echo LOGO_ALT ?>" />
+						<div id="logo"></div>
 					</a>
 				</div>
 				<div class="b-header-block_b-stats" id="stats_block">
@@ -237,8 +237,7 @@
 					</ul>
 				</div>
 				<div class="b-footer-copyrights">
-					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/"><?php echo TemplateHelper::getSiteUrl(); ?></a></span><br><br>
-					<a href="https://validator.w3.org/check?uri=referer"><img src="/img/valid-xhtml10-blue.png" alt="Valid XHTML 1.0 Transitional" style="border:none;"></a>
+					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/"><?php echo TemplateHelper::getSiteUrl(); ?></a></span>
 				</div>
 			</div>
 		</div>

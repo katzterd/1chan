@@ -2,6 +2,11 @@
  * Кастомизация светлой темы
  */
 
+/* Логотип */
+#logo {
+    background: url(/img/logo.png);
+}
+
 /* Маскот шапки (основной) */
 .b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
     background: url(/img/mascot_hazmat.png) bottom center no-repeat;
@@ -29,4 +34,3 @@
 .l-footer-wrap.m-mascot-alone {
     background: url(/img/mascot_keany_end.png) top center no-repeat;
 }
-

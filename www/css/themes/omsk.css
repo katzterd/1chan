@@ -653,3 +653,7 @@ input, textarea {
 .b-live-entry .b-live-entry_b-clicks {
     color: #888;
 }
+
+#color-theme-form option {
+    background: #150b00;
+}

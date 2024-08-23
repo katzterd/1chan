@@ -2844,6 +2844,12 @@
 
 	});
 
+	x.addPageProcessor("*", function() {
+		$('#color-theme-selector').on('change', function() {
+			switchTheme(this.value)
+		})
+	})
+
 	/**
 	 * ----------------------------------------------- *
 	 */
@@ -2950,5 +2956,30 @@
 			x.callPageProcessors(":moderator", data.auth == 0);
 		}
 	}, "json");
+
+	function switchTheme(theme) {
+		if (!~[':reset', ...COLOR_THEMES].indexOf(theme)) theme = ':reset';
+		// Сохранить выбор в сессии
+		$.get("http://"+ location.host +"/service/theme/" + theme)
+		
+		$selected_theme = [$('#color-theme'), $('#color-theme-custom')]
+		$default_themes = $('#default-themes')
+		// Удаление старой темы
+		if (theme != ':reset') {
+			$default_themes.remove()
+		}
+		else {
+			theme = COLOR_THEMES[window.matchMedia("(prefers-color-scheme:dark)").matches ? 1 : 0]
+		}
+		// Включение новой темы
+		['', '.custom'].forEach((suffix, i) => {
+			if ($selected_theme[i].length) {
+				$selected_theme[i].attr('href', '/css/themes/' + theme + suffix + '.css')
+			}
+			else {
+				$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + suffix + '.css">')
+			}
+		})
+	}
 
 })();

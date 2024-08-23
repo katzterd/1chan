@@ -222,11 +222,18 @@ class TemplateHelper
 						"text" => 'Анонимные чаты'
 					];
 					elseif ($link == 'theme-switcher') {
-						$theme = Session::getInstance() -> persistenceGet('global_theme', 'layout');
-						$link = [
-							"href" => '/service/theme/' . (!$theme ? 'omsk' : 'normal') . '/',
-							"text" => (!$theme ? 'Темная' : 'Светлая') . ' тема'
-						];
+						$selected_theme = Session::getInstance() -> persistenceGet('global_theme', false);
+						$html = "<form action='/service/theme/:set' id='color-theme-form' method='POST' style='display: contents'>
+							Тема: <select id='color-theme-selector' name='theme'>
+							<option value=':reset'>Системная</option>";
+						foreach($GLOBALS['COLOR_THEMES'] as $i => $theme) {
+							$name = $i==0 ? "Светлая" : ($i==1 ? "Тёмная" : ucfirst($theme));
+							$html .= "<option value='$theme'"
+								. ($theme == $selected_theme ? ' selected' : '')
+								. ">$name</option>";
+						}
+						$html .= '</select><noscript><input value="" type="submit"></noscript></form>';
+						$link = ["html" => $html];
 					}
 					elseif ($link == 'force-o-meter') $link = [
 						"href" => '/service/force-o-meter/',

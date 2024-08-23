@@ -2,8 +2,10 @@
     [
         "online",
         "chat",
-        "theme-switcher",
-        "force-o-meter"
+        "theme-switcher"
+        
     ],
-    []
+    [
+        "theme-switcher"
+    ]
 ]

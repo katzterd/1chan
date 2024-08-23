@@ -1,3 +1,0 @@
-@import url("1chan-light.css"); /* Fallback if no prefers-color-scheme support */
-@import url("1chan-light.css") (prefers-color-scheme: light);
-@import url("omsk.css")        (prefers-color-scheme: dark);

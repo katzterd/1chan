@@ -75,13 +75,17 @@
 				<?php foreach($this -> getParameter('global_top_panel') as $s => $section): ?>
 					<?php $right = $s==1 ? ' class="b-top-panel_m-right"' : '' ?>
 					<?php foreach($section as $i => $link): ?>
-						<?php 
-							$className = @$link['class'] ? " class='" . $link['class'] . "'" : '';
-							$total = sizeof($section);
-						?>
-						<li<?= $right ?>>
-							<a<?= $className ?> href="<?= $link["href"] ?>"><?= $link["text"] ?></a>
-						</li>
+						<?php if (@$link['html']): ?>
+							<?= $link['html'] ?>
+						<?php else: ?>
+							<?php 
+								$className = @$link['class'] ? " class='" . $link['class'] . "'" : '';
+								$total = sizeof($section);
+							?>
+							<li<?= $right ?>>
+								<a<?= $className ?> href="<?= $link["href"] ?>"><?= $link["text"] ?></a>
+							</li>
+						<?php endif; ?>
 						<?php if ($total > 1 && $i+1 < $total): ?><li>|</li><?php endif; ?>
 					<?php endforeach; ?>
 				<?php endforeach; ?>

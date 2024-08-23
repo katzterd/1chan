@@ -1050,13 +1050,20 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     padding: 0 5px;
     font-size: 18px;
 }
-.b-live-panel ul li.b-live-panel_b-description input[type=submit] {
+.b-live-panel ul li.b-live-panel_b-description input[type=submit],
+#color-theme-form input[type=submit] {
     cursor: pointer;
     background: url(../ico/go.png) no-repeat top center;
     margin-left: 5px;
     width: 16px;
     height: 16px;
     border: none;
+}
+#color-theme-selector {
+    background: inherit;
+    color: inherit;
+    border: none;
+    font-size: inherit;
 }
 .b-live-panel .b-live-panel_b-submenu {
     width: 570px;

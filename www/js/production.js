@@ -2844,6 +2844,12 @@
 
 	});
 
+	x.addPageProcessor("*", function() {
+		$('#color-theme-selector').on('change', function() {
+			switchTheme(this.value)
+		})
+	})
+
 	/**
 	 * ----------------------------------------------- *
 	 */
@@ -2951,33 +2957,29 @@
 		}
 	}, "json");
 
-	window.switchTheme = function(theme) {
-		if (!~COLOR_THEMES.indexOf(theme)) theme = false;
-		$.get("http://"+ location.host +"/service/theme/" + (theme ? theme : '*'))
+	function switchTheme(theme) {
+		if (!~[':reset', ...COLOR_THEMES].indexOf(theme)) theme = ':reset';
+		// Сохранить выбор в сессии
+		$.get("http://"+ location.host +"/service/theme/" + theme)
 		
-		$selected_theme = $('#color-theme')
-		$selected_custom_theme = $('#color-theme-custom')
+		$selected_theme = [$('#color-theme'), $('#color-theme-custom')]
 		$default_themes = $('#default-themes')
-
-		if (theme) {
+		// Удаление старой темы
+		if (theme != ':reset') {
 			$default_themes.remove()
 		}
-		if (!theme) {
+		else {
 			theme = COLOR_THEMES[window.matchMedia("(prefers-color-scheme:dark)").matches ? 1 : 0]
 		}
-
-		if (!$selected_theme.length) {
-			$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + '.css">')
-		}
-		else {
-			$selected_theme.attr('href', '/css/themes/' + theme + '.css')
-		}
-		if (!$selected_custom_theme.length) {
-			$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + '.custom.css">')
-		}
-		else {
-			$selected_custom_theme.attr('href', '/css/themes/' + theme + '.custom.css')
-		}
+		// Включение новой темы
+		['', '.custom'].forEach((suffix, i) => {
+			if ($selected_theme[i].length) {
+				$selected_theme[i].attr('href', '/css/themes/' + theme + suffix + '.css')
+			}
+			else {
+				$('head').append('<link id="color-theme" rel="stylesheet" type="text/css" href="/css/themes/' + theme + suffix + '.css">')
+			}
+		})
 	}
 
 })();

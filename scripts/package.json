@@ -23,7 +23,7 @@
     "fastify-socket.io": "^5.0.0",
     "find-process": "^1.4.7",
     "image-size": "^1.1.1",
-    "mysql-import": "^5.0.26",
+    "mysql-import": "^5.0.21",
     "mysql2": "^3.10.3",
     "php-serialize": "^5.0.1",
     "pm2": "^5.4.2",

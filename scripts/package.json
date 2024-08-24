@@ -1,6 +1,6 @@
 {
   "name": "1chan-service",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "1chan server-side utilities",
   "main": "index.js",
   "scripts": {

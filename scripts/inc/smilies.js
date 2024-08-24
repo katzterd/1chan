@@ -33,7 +33,7 @@ export async function updateSmilies() {
 	await fs.writeFile(`${www}/smilies.json`, JSON.stringify(smilies))
 	await cacheSet(`Smilies::list`, smilies)
 
-	log.succ("Список смайликов обновлен")
+	log.succ(`Список смайликов обновлен (всего: ${smilies.length} шт.)`)
 }
 
 export async function watchSmilies() {
@@ -44,9 +44,7 @@ export async function watchSmilies() {
 		try {
 			const watcher = fs.watch(smilies_dir, { signal });
 			for await (const event of watcher) {
-				if (event.eventType == 'rename') {
-					await updateSmilies()
-				}
+				debounced.call(5000)
 			}
 		} catch (err) {
 			if (err.name === 'AbortError')
@@ -54,4 +52,17 @@ export async function watchSmilies() {
 			throw err;
 		}
 	})()
+}
+
+const debounced = {
+	call: function(delay) {
+		if (this?.busy) {
+			clearTimeout(this.timeout)
+		}
+		this.busy = true
+		this.timeout = setTimeout(() => {
+			updateSmilies()
+			this.busy = false
+		}, delay)
+	}
 }

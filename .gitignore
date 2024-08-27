@@ -13,3 +13,5 @@ package-lock.json
 .DS_Store
 /www/css/themes/normal.custom.css
 /www/css/themes/omsk.custom.css
+/www/img/custom/*
+!/www/img/custom/index.html

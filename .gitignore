@@ -11,5 +11,5 @@ package-lock.json
 /www/smilies.json
 /Nginx_*_vhost.conf
 .DS_Store
-/www/css/normal.custom.css
-/www/css/omsk.custom.css
+/www/css/themes/normal.custom.css
+/www/css/themes/omsk.custom.css

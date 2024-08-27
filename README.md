@@ -1,6 +1,7 @@
 
-1chan
-=====
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Juribiyan/1chan/master/www/img/ogol.png" alt="1chan">
+</p>
 
 Движок, основанный на [слитом движке 1chan.ru](https://github.com/jlbyrey/1chan) и [его форке от devarped](https://gitgud.io/devarped/pierwszykanal). Как и оригинал, форк лицензирован на условиях GNU Affero General Public License, версия 3.
 

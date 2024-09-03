@@ -418,7 +418,7 @@ class KVS
 	}
 
 	/**
-	 * Получение длины сортированного списка:
+	 * Получение сортированного списка:
 	 * $class  - имя класса.
 	 * $id     - идентификатор.
 	 * $name   - имя свойства.
@@ -457,5 +457,27 @@ class KVS
 		return $this -> connection -> zrem(
 			$this -> getNS($class, $id, $name), $value
 		);
+	}
+
+	/**
+	 * Получение сортированного списка, с конвертацией обычного списка в сортированный, если такой будет найден
+	 * $class  - имя класса.
+	 * $id     - идентификатор.
+	 * $name   - имя свойства.
+	 */
+	public function sortedListGetSafe($class, $id = null, $name = null, $offset = 0, $limit = -1)
+	{
+		$sorted_list = $this -> connection -> zrange(
+			$this -> getNS($class, $id, $name), $offset, $limit
+		);
+		if ($sorted_list !== false) return $sorted_list;
+		$list = $this -> listGet($class, $id, $name, $offset, $limit);
+		if (count($list)) {
+			$this -> remove($class, $id, $name);
+			foreach($list as $i => $item) {
+				$this -> sortedListAdd($class, $id, $name, $item, $i);
+			}
+		}
+		return $list;
 	}
 }

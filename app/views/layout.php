@@ -31,7 +31,7 @@
 		<?php endif; ?>
 		<script>const COLOR_THEMES = "<?= COLOR_THEMES ?>".split("|")</script>
 
-		<link rel="stylesheet" type="text/css"     href="/js/jquery-ui/jquery-ui.min.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="/js/jquery-ui/jquery-ui.min.css" media="all" />
 
 		<script>const IS_BOARD = <?= ($this -> getParameter('is_board')) ? 'true' : 'false' ?></script>
 

@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Доски</a></h2>
 <style>
 	.board-options {
@@ -48,7 +49,7 @@
 			<td>Нет досок для отображения. <a href="/admin/boardAdd">Добавить</a></td>
 		<?php else: ?>
 			<?php foreach($boards as $i => $board): ?>
-				<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?>>
+				<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?> data-board="<?= $board["title"] ?>">
 					<td>
 						<b>/<?php echo $board["title"] ?>/</b> – 
 						<?php echo $board["description"] ?>
@@ -75,12 +76,45 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</table>
+	<fieldset>
+		<input type="submit" value="Режим сортировки" id="enter-sorting-mode" />
+	</fieldset>
 </div>
 <script>
 	$('a.edit').click(function(ev) {
 		ev.preventDefault()
 		$(this).parents('tr').toggleClass('options-reveal')
 	})
+	function reorder(list) {
+		$.post('/admin/boardOrder', { list: list }, function(data, status) { console.log(data, status) }, "json")
+	}
+	$('#enter-sorting-mode').one("click", function(ev) {
+		ev.preventDefault()
+		$(this).val("Применить сортировку")
+		$('.board-options').remove()
+		$('a.edit').remove()
+		$('#main tbody').sortable()
+		$(this).on("click", function(ev) {
+			ev.preventDefault()
+			const list = $('#main tr:not(.board-options)').map(function() {
+				return $(this).data('board')
+			}).toArray()
+			$.post('/admin/boardOrder', { list: list }, function(data, status) {
+				if (data.error) {
+					popup('Ошибка сортировки (' + data.error + '). Перезагрузите страницу.', 'error')
+				}
+				else {
+					popup('Сорировка применена')
+				}
+			}, "json")
+		})
+	} )
+
+	function popup(msg, type="succ") {
+		$p = $('<p class="popup-msg pm-' + type + '">' + msg + '</p>').prependTo('#main')
+		if (type == "succ")
+			setTimeout(function() { $p.slideUp() }, 1000)
+	}
 </script>
 <?php if (@$form_submitted) : ?><script>
 	if ( window.history.replaceState ) {

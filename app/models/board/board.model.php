@@ -577,7 +577,7 @@ class Board_BoardModel
 		while($pages_full != 0);
 
 		if ($permanent) {
-			$kvs -> listRemove(__CLASS__, null, 'boards', $this -> board);
+			$kvs -> sortedListRemove(__CLASS__, null, 'boards', $this -> board);
 			$kvs -> remove(__CLASS__, $this -> board, null);
 			self::deleteDirectory(UPLOAD_PATH . '/' . ($this -> board));
 		}
@@ -679,7 +679,7 @@ class Board_BoardModel
 	 */
 	public static function getSimpleBoardList() {
 		$kvs = KVS::getInstance();
-		return $kvs -> listGet(__CLASS__, null, 'boards');
+		return $kvs -> sortedListGetSafe(__CLASS__, null, 'boards');
 	}
 
 	/**
@@ -701,8 +701,7 @@ class Board_BoardModel
 	 */
 	public static function createBoard($title, $description, $hidden=false) {
 		$kvs = KVS::getInstance();
-		$boards = $kvs -> listGet(__CLASS__, null, 'boards');
-		if (in_array($title, $boards)) {
+		if ($kvs -> sortedListIsMember($title, __CLASS__, null, 'boards')) {
 			return "Доска /$title/ уже существует";
 		}
 		$board = [
@@ -711,7 +710,7 @@ class Board_BoardModel
 			"hidden" => $hidden ? 1 : 0
 		];
 		$kvs -> set(__CLASS__, $title, null, serialize($board));
-		$kvs -> listAdd(__CLASS__, null, 'boards', $title, true);
+		$kvs -> sortedListAdd(__CLASS__, null, 'boards', $title);
 		mkdir(UPLOAD_PATH . '/' . $title, 0777, true);
 		return false;
 	}

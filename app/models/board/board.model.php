@@ -721,7 +721,7 @@ class Board_BoardModel
 	public static function reorderBoards($list) {
 		$kvs = KVS::getInstance();
 		$board_list = self::getSimpleBoardList();
-		if (count(array_intersect($list, $board_list)) != count($board_list)) {
+		if (count($list) != count($board_list) || count(array_intersect($list, $board_list)) != count($list)) {
 			return "Список досок для сортировки не совпадает с текущим набором досок";
 		}
 		foreach($list as $i => $title) {

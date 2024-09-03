@@ -861,6 +861,9 @@ class AdminController extends Controller
 		return true;
 	}
 
+	/**
+	 * Сортировка досок
+	 */
 	public function boardOrderAjaxAction(Application $application) {
 		if (!$this->isAdmin){
 			die($application -> go('errors_error401'));

@@ -60,7 +60,7 @@
 						<a href="#" class="edit">Edit/Delete...</a>
 					</td>
 				</tr>
-				<tr class="board-options">
+				<tr class="board-options" data-board="<?= $board["title"] ?>">
 					<td>
 						<input form="board-<?php echo $i ?>" name="description" type="text" class="text-long" value="<?php echo $board["description"] ?>" required pattern="[\S ]{1,20}" minlength="1" maxlength="20"/>
 					</td>
@@ -77,7 +77,7 @@
 		<?php endif; ?>
 	</table>
 	<fieldset>
-		<input type="submit" value="Режим сортировки" id="enter-sorting-mode" />
+		<input type="submit" value="Режим сортировки" id="sorting-mode" />
 	</fieldset>
 </div>
 <script>
@@ -85,30 +85,43 @@
 		ev.preventDefault()
 		$(this).parents('tr').toggleClass('options-reveal')
 	})
-	function reorder(list) {
-		$.post('/admin/boardOrder', { list: list }, function(data, status) { console.log(data, status) }, "json")
-	}
-	$('#enter-sorting-mode').one("click", function(ev) {
-		ev.preventDefault()
-		$(this).val("Применить сортировку")
-		$('.board-options').remove()
-		$('a.edit').remove()
-		$('#main tbody').sortable()
-		$(this).on("click", function(ev) {
-			ev.preventDefault()
-			const list = $('#main tr:not(.board-options)').map(function() {
+	$("#sorting-mode").on("click", function(ev) {
+		var $btn = $(this)
+		var state = $btn.data('mode')
+		if (state != 'sorting') {
+			$("#main tr:not(.board-options)").removeClass('options-reveal')
+			$('#main tbody').sortable()
+			$('a.edit').hide()
+			$(this).data('mode', 'sorting').val("Применить сортировку")
+		}
+		else {
+			$btn.attr('disabled', 'disabled')
+			var list = $('#main tr:not(.board-options)').map(function() {
 				return $(this).data('board')
 			}).toArray()
 			$.post('/admin/boardOrder', { list: list }, function(data, status) {
+				if (status != 'success') {
+					popup('Ошибка XHR', 'error')
+				}
 				if (data.error) {
 					popup('Ошибка сортировки (' + data.error + '). Перезагрузите страницу.', 'error')
 				}
 				else {
 					popup('Сорировка применена')
 				}
+				$("#main .board-options").each(function() {
+					var brd = $(this).data('board')
+					var $bro = $('#main tr:not(.board-options)[data-board="' + brd + '"]')
+					$(this).insertAfter($bro)
+				})
+				$('a.edit').show()
+				$('#main tbody').sortable({disabled: true})
+				$btn.data('mode', 'normal')
+				.val("Режим сортировки")
+				.attr('disabled', null)
 			}, "json")
-		})
-	} )
+		}
+	})
 
 	function popup(msg, type="succ") {
 		$p = $('<p class="popup-msg pm-' + type + '">' + msg + '</p>').prependTo('#main')

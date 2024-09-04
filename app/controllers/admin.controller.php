@@ -960,6 +960,20 @@ class AdminController extends Controller
 	}
 
 	/**
+	 * Сортировка иконок принадлежности
+	 */
+	public function homeBoardOrderAjaxAction(Application $application) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		if ($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['list']) || !is_array($_POST['list'])) {
+			return ["error" => "Неверные данные"];
+		}
+		$sort_error = HomeBoardHelper::reorderList($_POST['list']);
+		return ["error" => $sort_error];
+	}
+
+	/**
 	 * Управление верхним меню
 	 */
 	public function topPanelAction(Application $application, Template $template) {

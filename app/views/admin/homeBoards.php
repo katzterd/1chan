@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Иконки принадлежности</a></h2>
 <style>
 	.board-options {
@@ -54,11 +55,12 @@
 		$options .= "<option value='$f' style='background-image: url(/ico/homeboards/$f)' $selected>$f</option>";
 	}
 	$disabled = $domain == 'anonymous' ? 'disabled' : '';
-	return "<tr class='board-options'>
-		<td><input $disabled placeholder='Домен' name='new-domain' form='hb-$domain' type='text' value='$domain' required></td>
-		<td><select placeholder='Иконка' name='icon' form='hb-$domain' required>$options</select></td>
-		<td><input placeholder='Имя' name='name' form='hb-$domain' type='text' value='{$props[1]}' required></td>
-		<td><form action='/admin/homeBoards' id='hb-$domain' method='post' style='display:contents'>$actions</form></td>
+	$dom = $domain ? $domain : '_new_';
+	return "<tr class='board-options' data-domain='$dom'>
+		<td><input $disabled placeholder='Домен' name='new-domain' form='hb-$dom' type='text' value='$dom' required></td>
+		<td><select placeholder='Иконка' name='icon' form='hb-$dom' required>$options</select></td>
+		<td><input placeholder='Имя' name='name' form='hb-$dom' type='text' value='{$props[1]}' required></td>
+		<td><form action='/admin/homeBoards' id='hb-$dom' method='post' style='display:contents'>$actions</form></td>
 	</tr>";
 } ?>
 <div id="main">
@@ -82,7 +84,7 @@
 		</th>
 		<tbody>
 			<?php foreach($homeboards as $domain => $props): ?>
-				<tr>
+				<tr data-domain="<?= $domain ?>">
 					<td><a href="<?= 'https://' . $domain ?>"><?= $domain ?></a></td>
 					<td><img width="16" height="16" src="<?= '/ico/homeboards/' . $props[0] ?>" alt="<?= $props[0] ?>"></td>
 					<td><?= $props[1] ?></td>
@@ -92,7 +94,7 @@
 				</tr>
 				<?= makeForm($icon_files, $domain, $props) ?>
 			<?php endforeach; ?>
-			<tr>
+			<tr id="new-item" data-domain="_new_">
 				<td><h4>Новая принадлежность</h4></td>
 				<td colspan="2"><img src="" width="16" height="16"></td>
 				<td class="action">
@@ -102,6 +104,9 @@
 			<?= makeForm($icon_files) ?>
 		</tbody>
 	</table>
+	<fieldset>
+		<input type="submit" value="Режим сортировки" id="sorting-mode" />
+	</fieldset>
 </div>
 <script>
 	$('a.edit').click(function(ev) {
@@ -111,6 +116,52 @@
 	$('select[name=icon]').change(function(ev) {
 		$(this).parents('tr').prev().find('img').attr('src', '/ico/homeboards/' + $(this).val())
 	})
+
+	$("#sorting-mode").on("click", function(ev) {
+		var $btn = $(this)
+		var state = $btn.data('mode')
+		if (state != 'sorting') {
+			$("#main tr:not(.board-options)").removeClass('options-reveal')
+			$('#main tbody').sortable()
+			$('a.edit').hide()
+			$('#new-item').hide()
+			$(this).data('mode', 'sorting').val("Применить сортировку")
+		}
+		else {
+			$btn.attr('disabled', 'disabled')
+			var list = $('#main tr:not(.board-options):not(#new-item)').map(function() {
+				return $(this).data('domain')
+			}).toArray()
+			$.post('/admin/homeBoardOrder', { list: list }, function(data, status) {
+				if (status != 'success') {
+					popup('Ошибка XHR', 'error')
+				}
+				if (data.error) {
+					popup('Ошибка сортировки (' + data.error + '). Перезагрузите страницу.', 'error')
+				}
+				else {
+					popup('Сорировка применена')
+				}
+				$('#new-item').appendTo('#main tbody').show()
+				$("#main .board-options").each(function() {
+					var brd = $(this).data('domain')
+					var $bro = $('#main tr:not(.board-options)[data-domain="' + brd + '"]')
+					$(this).insertAfter($bro)
+				})
+				$('a.edit').show()
+				$('#main tbody').sortable({disabled: true})
+				$btn.data('mode', 'normal')
+				.val("Режим сортировки")
+				.attr('disabled', null)
+			}, "json")
+		}
+	})
+
+	function popup(msg, type="succ") {
+		$p = $('<p class="popup-msg pm-' + type + '">' + msg + '</p>').prependTo('#main')
+		if (type == "succ")
+			setTimeout(function() { $p.slideUp() }, 1000)
+	}
 </script>
 <?php if (@$form_submitted) : ?><script>
 	if ( window.history.replaceState ) {

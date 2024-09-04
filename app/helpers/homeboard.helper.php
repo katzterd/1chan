@@ -17,6 +17,12 @@ class HomeBoardHelper {
 				if ($boards_json) {
 					$boards = @json_decode($boards_json, true) ?? [];
 				}
+				else {
+					$boards_json = @file_get_contents(WEB_DIR . '/ico/homeboards/homeboards.example.json');
+					if ($boards_json) {
+						$boards = @json_decode($boards_json, true) ?? [];
+					}
+				}
 				self::$boards = $boards;
 				self::saveList(true);
 			}

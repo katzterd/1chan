@@ -15,3 +15,4 @@ package-lock.json
 /www/css/themes/omsk.custom.css
 /www/img/custom/*
 !/www/img/custom/index.html
+/www/ico/homeboards/homeboards.json

@@ -17,6 +17,12 @@ class HomeBoardHelper {
 				if ($boards_json) {
 					$boards = @json_decode($boards_json, true) ?? [];
 				}
+				else {
+					$boards_json = @file_get_contents(WEB_DIR . '/ico/homeboards/homeboards.example.json');
+					if ($boards_json) {
+						$boards = @json_decode($boards_json, true) ?? [];
+					}
+				}
 				self::$boards = $boards;
 				self::saveList(true);
 			}
@@ -61,5 +67,20 @@ class HomeBoardHelper {
 		$cache -> set('Homeboards', null, 'list', serialize(self::$boards));
 		if (! $only_kvs)
 			file_put_contents(WEB_DIR . '/ico/homeboards/homeboards.json', json_encode(self::$boards));
+	}
+
+	static public function reorderList($list) {
+		$current_list_assoc = self::getBoards();
+		$current_list = array_keys($current_list_assoc);
+		if (count($list) != count($current_list) || count(array_intersect($list, $current_list)) != count($list)) {
+			return "Список иконок для сортировки не совпадает с текущим набором иконок";
+		}
+		$new_list = array();
+		foreach($list as $i => $id) {
+			$new_list[$id]= $current_list_assoc[$id];
+		}
+		self::$boards = $new_list;
+		self::saveList();
+		return false;
 	}
 }

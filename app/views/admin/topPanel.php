@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <style>
 	#main table tr td {
 		padding: 0px 8px;
@@ -152,6 +153,7 @@ else {
 </script><?php endif; ?>
 <script>
 $('tbody')
+.sortable()
 .on('click', '.blb-delete', function(ev) {
 	ev.preventDefault()
 	$(this).parents('.entry').remove()

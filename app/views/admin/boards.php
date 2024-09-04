@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 <h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Доски</a></h2>
 <style>
 	.board-options {
@@ -48,7 +49,7 @@
 			<td>Нет досок для отображения. <a href="/admin/boardAdd">Добавить</a></td>
 		<?php else: ?>
 			<?php foreach($boards as $i => $board): ?>
-				<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?>>
+				<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?> data-board="<?= $board["title"] ?>">
 					<td>
 						<b>/<?php echo $board["title"] ?>/</b> – 
 						<?php echo $board["description"] ?>
@@ -59,7 +60,7 @@
 						<a href="#" class="edit">Edit/Delete...</a>
 					</td>
 				</tr>
-				<tr class="board-options">
+				<tr class="board-options" data-board="<?= $board["title"] ?>">
 					<td>
 						<input form="board-<?php echo $i ?>" name="description" type="text" class="text-long" value="<?php echo $board["description"] ?>" required pattern="[\S ]{1,20}" minlength="1" maxlength="20"/>
 					</td>
@@ -75,12 +76,58 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</table>
+	<fieldset>
+		<input type="submit" value="Режим сортировки" id="sorting-mode" />
+	</fieldset>
 </div>
 <script>
 	$('a.edit').click(function(ev) {
 		ev.preventDefault()
 		$(this).parents('tr').toggleClass('options-reveal')
 	})
+	$("#sorting-mode").on("click", function(ev) {
+		var $btn = $(this)
+		var state = $btn.data('mode')
+		if (state != 'sorting') {
+			$("#main tr:not(.board-options)").removeClass('options-reveal')
+			$('#main tbody').sortable()
+			$('a.edit').hide()
+			$(this).data('mode', 'sorting').val("Применить сортировку")
+		}
+		else {
+			$btn.attr('disabled', 'disabled')
+			var list = $('#main tr:not(.board-options)').map(function() {
+				return $(this).data('board')
+			}).toArray()
+			$.post('/admin/boardOrder', { list: list }, function(data, status) {
+				if (status != 'success') {
+					popup('Ошибка XHR', 'error')
+				}
+				if (data.error) {
+					popup('Ошибка сортировки (' + data.error + '). Перезагрузите страницу.', 'error')
+				}
+				else {
+					popup('Сорировка применена')
+				}
+				$("#main .board-options").each(function() {
+					var brd = $(this).data('board')
+					var $bro = $('#main tr:not(.board-options)[data-board="' + brd + '"]')
+					$(this).insertAfter($bro)
+				})
+				$('a.edit').show()
+				$('#main tbody').sortable({disabled: true})
+				$btn.data('mode', 'normal')
+				.val("Режим сортировки")
+				.attr('disabled', null)
+			}, "json")
+		}
+	})
+
+	function popup(msg, type="succ") {
+		$p = $('<p class="popup-msg pm-' + type + '">' + msg + '</p>').prependTo('#main')
+		if (type == "succ")
+			setTimeout(function() { $p.slideUp() }, 1000)
+	}
 </script>
 <?php if (@$form_submitted) : ?><script>
 	if ( window.history.replaceState ) {

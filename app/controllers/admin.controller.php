@@ -862,6 +862,20 @@ class AdminController extends Controller
 	}
 
 	/**
+	 * Сортировка досок
+	 */
+	public function boardOrderAjaxAction(Application $application) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		if ($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['list']) || !is_array($_POST['list'])) {
+			return ["error" => "Неверные данные"];
+		}
+		$sort_error = Board_BoardModel::reorderBoards($_POST['list']);
+		return ["error" => $sort_error];
+	}
+
+	/**
 	 * Иконки принадлежности
 	 */
 	public function homeBoardsAction(Application $application, Template $template) {
@@ -943,6 +957,20 @@ class AdminController extends Controller
 		}
 
 		return true;
+	}
+
+	/**
+	 * Сортировка иконок принадлежности
+	 */
+	public function homeBoardOrderAjaxAction(Application $application) {
+		if (!$this->isAdmin){
+			die($application -> go('errors_error401'));
+		}
+		if ($_SERVER['REQUEST_METHOD'] != 'POST' || !isset($_POST['list']) || !is_array($_POST['list'])) {
+			return ["error" => "Неверные данные"];
+		}
+		$sort_error = HomeBoardHelper::reorderList($_POST['list']);
+		return ["error" => $sort_error];
 	}
 
 	/**

@@ -1,7 +1,7 @@
 /**
  * 1chan.pl
  */
-(function(){
+(function() {
 	var x = {
 		socket: typeof io == 'function' ? io() : null,
 		processors: [],
@@ -73,12 +73,10 @@
 				},
 				function(result, status) {
 					if (status != "error") {
-						if (result.isValid != true)
-						{
+						if (result.isValid != true) {
 							var error_strings = [];
 							for (var field in result.validationResults)
-							if (result.validationResults.hasOwnProperty(field))
-							{
+							if (result.validationResults.hasOwnProperty(field)) {
 								error_strings.push(result.validationResults[field]);
 								$("#blog_form [name="+ field +"]").addClass("g-input-error");
 							}
@@ -95,7 +93,7 @@
 		$("#blog_form_preview_button")
 				.attr("disabled", null)
 				.click(function() {
-					validatePost(function()  {
+					validatePost(function() {
 						$.post(
 							location.protocol + "//"+ location.host +"/news/add/preview/",
 							{
@@ -163,8 +161,8 @@
 		});
 
 		$(".js-category-pastelink").click(function() {
-		    var code = $(this).attr("name");
-		    $("#blog_form input[name=category]").val(code);
+			var code = $(this).attr("name");
+			$("#blog_form input[name=category]").val(code);
 		});
 
 		$(".js-homeboard-link").click(function() {
@@ -218,31 +216,31 @@
 	x.addPageProcessor(
 		["news/fav", "news/search", /^news\/?(\d+)?$/, /^news\/all/, /^news\/cat/, /^news\/res/, /^news\/hidden/],
 		function() {
-		    $(window)
-		        .bind("keyup", function(e) {
-				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==38)) {
-					    $(window).scrollTo(0, 500);
-				    }
+			$(window)
+				.bind("keyup", function(e) {
+					if ((e.ctrlKey || e.metaKey) && (e.keyCode==38)) {
+						$(window).scrollTo(0, 500);
+					}
 
-				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==40)) {
-				    	var comment = $(".b-comment.m-new").get(0) || $("#comment_form").get(0);
+					if ((e.ctrlKey || e.metaKey) && (e.keyCode==40)) {
+						var comment = $(".b-comment.m-new").get(0) || $("#comment_form").get(0);
 
-				    	if (comment) {
-					   		$(window).scrollTo(comment, 500);
-					   		$(comment).removeClass("m-new");
-					   	} else {
-					   		$(window).scrollTo("100%", 500);
-					   	}
-				    }
+						if (comment) {
+							$(window).scrollTo(comment, 500);
+							$(comment).removeClass("m-new");
+						} else {
+							$(window).scrollTo("100%", 500);
+						}
+					}
 
-				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==39)) {
-					    location.href = location.protocol + "//"+ location.host +"/news/all/new/";
-				    }
+					if ((e.ctrlKey || e.metaKey) && (e.keyCode==39)) {
+						location.href = location.protocol + "//"+ location.host +"/news/all/new/";
+					}
 
-				    if ((e.ctrlKey || e.metaKey) && (e.keyCode==37)) {
-				       history.go(-1);
-				    }
-			    });
+					if ((e.ctrlKey || e.metaKey) && (e.keyCode==37)) {
+					   history.go(-1);
+					}
+				});
 
 			$(".js-favorite-button").click(function() {
 				var img = $("img", this);
@@ -270,35 +268,35 @@
 				var current_id = null;
 				jQuery.support.opacity = true;
 
-                $(".b-blog-entry_b-info").each(function() {
-                    var id = $(this).attr("id").match(/(\d+)/)[1];
-                    
-                    $("<input type='checkbox' class='js-post-group' />")
-                        .attr("name", id)
-                        .css({"vertical-align":"middle"})
-                        .prependTo(this);
-                });
-                
-                $(window).bind("keyup", function(e) {
-                    if (e.shiftKey && (e.keyCode==68)) {
-                        if (confirm("Вы уверены, что хотите удалить посты?")) {
-					        var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
-					        $(".js-post-group:checked").each(function(el, ind) {
-					            var id = $(this).attr("name");
-    						    
-    						    setTimeout((function(id, why) {
-    						        return function() { $.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ id +"/?why="+ encodeURIComponent(why)); };
-    						    })(id, why), 1000 * ind);
-    						});
-					    }
-					    return false;
-                    }
-                    
-                    e.stopPropagation();
-                });
-                
+				$(".b-blog-entry_b-info").each(function() {
+					var id = $(this).attr("id").match(/(\d+)/)[1];
+					
+					$("<input type='checkbox' class='js-post-group' />")
+						.attr("name", id)
+						.css({"vertical-align":"middle"})
+						.prependTo(this);
+				});
+				
+				$(window).bind("keyup", function(e) {
+					if (e.shiftKey && (e.keyCode==68)) {
+						if (confirm("Вы уверены, что хотите удалить посты?")) {
+							var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
+							$(".js-post-group:checked").each(function(el, ind) {
+								var id = $(this).attr("name");
+								
+								setTimeout((function(id, why) {
+									return function() { $.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ id +"/?why="+ encodeURIComponent(why)); };
+								})(id, why), 1000 * ind);
+							});
+						}
+						return false;
+					}
+					
+					e.stopPropagation();
+				});
+				
 				$("#mod_category").click(function() {
-				    var cat = prompt('Введите id категории:', '');
+					var cat = prompt('Введите id категории:', '');
 					$.getJSON(location.protocol + "//"+ location.host +"/mod/categoryPost/"+ current_id +"/?cat="+ encodeURIComponent(cat));
 					$(".b-mod-toolbar").addClass("g-hidden");
 					current_id = null;
@@ -329,18 +327,18 @@
 					return false;
 				});
 				if (isAdmin == false) {
-				    $("#mod_remove").click(function() {
-					    if (confirm("Вы уверены, что хотите скрыть пост "+ current_id +"?")) {
-					        var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
-						    $.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent(why));
-						    $(".b-mod-toolbar").addClass("g-hidden");
-						    current_id = null;
-					    }
-					    return false;
-				    });
-			    } else {
-			        $("#mod_remove").hide();
-			    }
+					$("#mod_remove").click(function() {
+						if (confirm("Вы уверены, что хотите скрыть пост "+ current_id +"?")) {
+							var why = prompt("Введите причину модерации:", "мусор (читайте правила)");
+							$.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent(why));
+							$(".b-mod-toolbar").addClass("g-hidden");
+							current_id = null;
+						}
+						return false;
+					});
+				} else {
+					$("#mod_remove").hide();
+				}
 				$(".b-blog-entry_b-info").bind("dblclick", function() {
 					var current_id = $(this).attr("id").substring(5).substring(0, -5); console.log(current_id);
 					$.getJSON(location.protocol + "//"+ location.host +"/mod/hiddenPost/"+ current_id +"/?why="+ encodeURIComponent("Мусор (читайте правила)"));
@@ -365,7 +363,7 @@
 				});
 			});
 		}
- 	);
+	);
 
 	x.addPageProcessor("news/all", function() {
 		x.subscribe("posts", "add_post", function(data) {
@@ -373,60 +371,60 @@
 		});
 
 		var hidePostList = {};
-	    (function() {
-		    var cookieList = $.cookie("hide");
-		    if (cookieList !== null) {
-			    var list = cookieList.split(",");
-			    for(var i in list) {
-				    hidePostList[list[i]] = true;
-			    }
-		    }
-	    })();
+		(function() {
+			var cookieList = $.cookie("hide");
+			if (cookieList !== null) {
+				var list = cookieList.split(",");
+				for(var i in list) {
+					hidePostList[list[i]] = true;
+				}
+			}
+		})();
 
-	    var toggleHidePost = function(id) {
-		    if (id in hidePostList)
-			    delete hidePostList[id];
-		    else
-			    hidePostList[id] = true;
+		var toggleHidePost = function(id) {
+			if (id in hidePostList)
+				delete hidePostList[id];
+			else
+				hidePostList[id] = true;
 
-		    var strings = [], i;
+			var strings = [], i;
 
-		    for(i in hidePostList)
-			    if(hidePostList.hasOwnProperty(i))
-				    strings.unshift(i);
+			for(i in hidePostList)
+				if(hidePostList.hasOwnProperty(i))
+					strings.unshift(i);
 
-		    $.cookie("hide", strings.slice(0, 31).join(","), {expires: 7, path: "/"});
+			$.cookie("hide", strings.slice(0, 31).join(","), {expires: 7, path: "/"});
 
-		    return (id in hidePostList) ? true : false;
-	    };
+			return (id in hidePostList) ? true : false;
+		};
 
-	    $(".js-hide-link").each(function() {
-	        var id = $("img", this).attr("alt"), node = $("#post_"+ id);
+		$(".js-hide-link").each(function() {
+			var id = $("img", this).attr("alt"), node = $("#post_"+ id);
 
-	        $(this).click(function() {
-	            if (toggleHidePost(id)) {
-			        $(node).addClass("m-hide");
-				    $(".b-blog-entry_b-header a", node).one('click', function(e) {
-					    toggleHidePost(id);
-					    $(node).removeClass("m-hide");
-					    e.stopPropagation();
-					    e.preventDefault();
-				    });
-			    }
+			$(this).click(function() {
+				if (toggleHidePost(id)) {
+					$(node).addClass("m-hide");
+					$(".b-blog-entry_b-header a", node).one('click', function(e) {
+						toggleHidePost(id);
+						$(node).removeClass("m-hide");
+						e.stopPropagation();
+						e.preventDefault();
+					});
+				}
 			});
 
 			if (id in hidePostList) {
-			    $(node).addClass("m-hide");
-			    $(".b-blog-entry_b-header a", node).one('click', function(e) {
-				    toggleHidePost(id);
-				    $(node).removeClass("m-hide");
-				    e.stopPropagation();
-				    e.preventDefault();
-			    });
-		    }
+				$(node).addClass("m-hide");
+				$(".b-blog-entry_b-header a", node).one('click', function(e) {
+					toggleHidePost(id);
+					$(node).removeClass("m-hide");
+					e.stopPropagation();
+					e.preventDefault();
+				});
+			}
 
-		    $(this).removeClass("g-hidden");
-	    });
+			$(this).removeClass("g-hidden");
+		});
 	});
 
 	x.addPageProcessor(/^news\/?(\d+)?$/, function() {
@@ -437,7 +435,7 @@
 
 	x.addPageProcessor(/^news\/res\/(\d+)/, function(match) {
 		var id = match[1],
-		    addComment = function() {  
+			addComment = function() {  
 			$("#comment_form_error").html("");
 			$("#comment_form input[type=submit]").attr("disabled", "disabled");
 			$.post(
@@ -450,12 +448,8 @@
 					"captcha_key": $("#comment_form input[name=captcha_key]").val()
 				},
 				function(result, status) {
-			        $("#comment_form input[type=submit]").attr("disabled", null);
+					$("#comment_form input[type=submit]").attr("disabled", null);
 					if (status != "error") {
-/*						if (result.captcha == true) {
-							$("#comment_form").submit();
-						}
-*/
 						if (result.isValid != true) {
 							var error_strings = [];
 							for (var field in result.validationResults)
@@ -477,12 +471,12 @@
 			);
 		};
 		var writing, waiting, writingTimeout = null, _title = document.title,
-		   statusReading = function() {
+		statusReading = function() {
 			$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/stats/?writing=0");
 			writing = false;
 		};
 		var scrollingInterval = null,
-		    scrollEnable = function() {
+		scrollEnable = function() {
 			if (scrollingInterval) clearInterval(scrollingInterval);
 			var cacheOffsetHeight = parseInt(document.body.offsetHeight);
 			scrollingInterval = setInterval(function() {
@@ -491,10 +485,10 @@
 
 				cacheOffsetHeight = parseInt(document.body.offsetHeight);
 			}, 15);
-		    },
-		    scrollDisable = function() {
+		},
+		scrollDisable = function() {
 			if (scrollingInterval) clearInterval(scrollingInterval);
-		    };
+		};
 		var hash = "";
 		setInterval(function() {
 			if (window.location.hash != hash) {
@@ -506,8 +500,7 @@
 		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
 			clone = clone || false;
 			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
+				if (!$(this).data("preview_open")) {
 					var nm = $(this).attr("name").substring(0, 4);
 					if (nm && nm != "news")
 						return;
@@ -526,10 +519,10 @@
 
 					if (el.length != 0) {
 						var tip = $(el).clone()
-						               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-						               .addClass("m-tip")
-							       	   .attr('id', '')
-						               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+							.addClass("m-tip")
+							.attr('id', '')
+							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -539,13 +532,15 @@
 						$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
-									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-									       .addClass("m-tip")
-									       .attr('id', '')
-									       .css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+									.addClass("m-tip")
+									.attr('id', '')
+									.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
-								if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> (<em>открывающий пост</em>)')
-								else tip.find(".js-comment-id").prepend('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> ');
+								if (data.post_preview) 
+									tip.addClass("m-post-preview").find(".js-comment-id").html('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> (<em>открывающий пост</em>)')
+								else 
+									tip.find(".js-comment-id").prepend('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> ');
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -572,7 +567,10 @@
 		var contentBottom = function() {
 			var el = $(".b-blog-entry"), offset = el.offset(), outHeight = el.outerHeight(true);
 			return offset.top + outHeight;
-		}(), headerShown = false, headerEl = $(".b-blog-entry_b-header").clone().css({"position":"fixed", "top": 2}).addClass("m-floating");
+		}(), 
+		headerShown = false, 
+		headerEl = $(".b-blog-entry_b-header").clone().css({"position":"fixed", "top": 2}).addClass("m-floating");
+
 		$(".b-blog-entry").append(headerEl);
 		headerEl.hide();
 		
@@ -582,11 +580,9 @@
 					headerShown = true;
 					headerEl.show();
 				}
-			} else {
-				if (headerShown) {
-					headerShown = false;
-					headerEl.hide();
-				}
+			} else if (headerShown) {
+				headerShown = false;
+				headerEl.hide();
 			}
 		});
 		$(".b-comment-form_b-uplink a").click(function() {
@@ -598,7 +594,7 @@
 				location.hash = comment_id;
 			});
 			if (location.hash == "#new") {
-			    location.hash = comment_id;
+				location.hash = comment_id;
 			}
 		}
 		$(".js-post-id-link").click(function() {
@@ -684,20 +680,20 @@
 
 		});
 		x.subscribe("post_"+ id, "add_post_comment", function(data) {
-			    var node = $(template("template_comment", data));
-			    $("#placeholder_comment").append(node);
-			    node.slideUp(0).slideDown(300);
+			var node = $(template("template_comment", data));
+			$("#placeholder_comment").append(node);
+			node.slideUp(0).slideDown(300);
 
-			    if (waiting)
-				    document.title = " ★ " + _title + " ★ ";
+			if (waiting)
+				document.title = " ★ " + _title + " ★ ";
 
-			    if ($("#new_comments_link").hasClass("g-disabled")) {
-				    $("#new_comments_link").removeClass("g-disabled").click(function() {
-					    location.hash = data.id;
-				    });
-			    }
-			    commentPreview(node);
-			    $.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
+			if ($("#new_comments_link").hasClass("g-disabled")) {
+				$("#new_comments_link").removeClass("g-disabled").click(function() {
+					location.hash = data.id;
+				});
+			}
+			commentPreview(node);
+			$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
 		});
 		x.subscribe("post_"+ id, "remove_post_comment", function(data) {
 			$("#comment_" + data.id).slideUp(500);
@@ -720,22 +716,22 @@
 
 		commentPreview(document);
 		x.addPageProcessor(":moderator", function(path, isAdmin) {
-		    if (isAdmin == false)  {
-			    $(".js-remove-button").removeClass("g-hidden").click(function() {
-				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
-				    return false;
-			    });
-	        }
+			if (isAdmin == false)  {
+				$(".js-remove-button").removeClass("g-hidden").click(function() {
+					var comment_id = $("img", this).attr("alt");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
+					return false;
+				});
+			}
 		});
 		x.addPageProcessor(":moderator", function(path, isAdmin) {
-		    if (isAdmin == false)  {
-			    $(".js-setusercaptcha-button").removeClass("g-hidden").click(function() {
-				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "//"+ location.host +"/mod/setUserCaptcha/"+ comment_id +"/");
-				    return false;
-			    });
-	        }
+			if (isAdmin == false)  {
+				$(".js-setusercaptcha-button").removeClass("g-hidden").click(function() {
+					var comment_id = $("img", this).attr("alt");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/setUserCaptcha/"+ comment_id +"/");
+					return false;
+				});
+			}
 		});
 	});
 
@@ -744,8 +740,7 @@
 		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
 			clone = clone || false;
 			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
+				if (!$(this).data("preview_open")) {
 
 					if (!clone && previewActiveLink) {
 						$(".b-comment.m-tip").remove();
@@ -764,10 +759,10 @@
 
 					if (el.length != 0) {
 						var tip = $(el).clone()
-						               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-						               .addClass("m-tip")
-							       	   .attr('id', '')
-						               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+							.addClass("m-tip")
+							.attr('id', '')
+							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -777,10 +772,10 @@
 						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
-									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-									       .addClass("m-tip")
-									       .attr('id', '')
-									       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+									.addClass("m-tip")
+									.attr('id', '')
+									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -817,25 +812,25 @@
 
 		if (!page) {
 			x.subscribe("board_global", "add_post_comment", function(data) {
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
-						var node = $(template("template_comment", data));
-						$("#placeholder_comment").prepend(node);
-						node.slideUp(0).slideDown(300);
-						commentPreview(node);
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
+					var node = $(template("template_comment", data));
+					$("#placeholder_comment").prepend(node);
+					node.slideUp(0).slideDown(300);
+					commentPreview(node);
 
-						if (waiting)
-						    document.title = " ★ " + _title + " ★ ";
+					if (waiting)
+						document.title = " ★ " + _title + " ★ ";
 
-						if (modMode) {
-							$(".js-remove-button", node).removeClass("g-hidden").click(function() {
-								var full_id = $("img", this).attr("alt").split("/", 2);
-								var board = full_id[0], comment_id = full_id[1];
-								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
+					if (modMode) {
+						$(".js-remove-button", node).removeClass("g-hidden").click(function() {
+							var full_id = $("img", this).attr("alt").split("/", 2);
+							var board = full_id[0], comment_id = full_id[1];
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
 
-								return false;
-							});
-						}
-					});
+							return false;
+						});
+					}
+				});
 			});
 
 			x.subscribe("board_global", "remove_post_comment", function(data) {
@@ -846,14 +841,14 @@
 		x.addPageProcessor(":moderator", function(path, isAdmin) {
 			modMode = true;
 			if (isAdmin) {
-			    $(".js-remove-button").removeClass("g-hidden").click(function() {
-				    var full_id = $("img", this).attr("alt").split("/", 2);
-				    var board = full_id[0], comment_id = full_id[1];
-				    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
+				$(".js-remove-button").removeClass("g-hidden").click(function() {
+					var full_id = $("img", this).attr("alt").split("/", 2);
+					var board = full_id[0], comment_id = full_id[1];
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id);
 
-				    return false;
-			    });
-	        }
+					return false;
+				});
+			}
 		});
 	});
 
@@ -905,8 +900,7 @@
 		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
 			clone = clone || false;
 			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
+				if (!$(this).data("preview_open")) {
 
 					if (!clone && previewActiveLink) {
 						$(".b-comment.m-tip").remove();
@@ -915,8 +909,8 @@
 					} else if (!previewActiveLink)
 						previewActiveLink = this;
 
-					previewActive     = true;
-					previewTimeout    = clearTimeout(previewTimeout);
+					previewActive  = true;
+					previewTimeout = clearTimeout(previewTimeout);
 
 					var full_id = $(this).attr("name").split("/", 2);
 					var id = full_id[1], board = full_id[0], el = $("#comment_"+ board +"_" + id);
@@ -926,10 +920,10 @@
 
 					if (el.length != 0) {
 						var tip = $(el).clone()
-						               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-						               .addClass("m-tip")
-							       	   .attr('id', '')
-						               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+							.addClass("m-tip")
+							.attr('id', '')
+							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -939,10 +933,10 @@
 						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 							if (status != "error" && data != false) {
 								var tip = $(template("template_comment", data))
-									       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-									       .addClass("m-tip")
-									       .attr('id', '')
-									       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+									.addClass("m-tip")
+									.attr('id', '')
+									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -971,14 +965,13 @@
 			var full_id = $(this).attr("name").split("/", 2);
 			var id = full_id[1], board = full_id[0];
 
-			if (postloader[board +"_"+ id] && postloader[board +"_"+ id].length)
-			{
+			if (postloader[board +"_"+ id] && postloader[board +"_"+ id].length) {
 				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[board +"_"+ id]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
-				    		$("#placeholder_comment_"+ board +"_"+ id).append(node);
-				    		node.slideUp(0).slideDown(300);
-				    		commentPreview(node);
+						$("#placeholder_comment_"+ board +"_"+ id).append(node);
+						node.slideUp(0).slideDown(300);
+						commentPreview(node);
 					}
 					postloader[board +"_"+ id] = [];
 					$("#board_"+ board +"_"+ id +"_postload").hide();
@@ -995,8 +988,8 @@
 				$("#placeholder_comment_"+ board +"_"+ nm).html("");				
 				for(var i in data) {
 					var node = $(template("template_comment", data[i]));
-				    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
-				    	commentPreview(node);
+					$("#placeholder_comment_"+ board +"_"+ nm).append(node);
+					commentPreview(node);
 				}
 				postloader[nm] = [];
 				$("#board_"+ board +"_"+ nm +"_postload").hide();
@@ -1006,30 +999,30 @@
 		});
 
 		x.subscribe("board_global", "add_post_comment", function(data) {
-				if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
-					return false;
+			if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
+				return false;
 
-				if (updateMode && updateThread == data.board_id +"_"+ data.parent_id) {
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
-						var node = $(template("template_comment", data));
-						$("#placeholder_comment_"+ data.board_id +"_"+ data.parent_id).append(node);
-						node.slideUp(0).slideDown(300);
-						commentPreview(node);
-					});
-					$("#post_"+ data.board_id +"_"+ data.parent_id +"_info .js-comments").html(data.count);
-					return false;
-				}
+			if (updateMode && updateThread == data.board_id +"_"+ data.parent_id) {
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ data.board_id +"/get", {id: data.id}, function(data) {
+					var node = $(template("template_comment", data));
+					$("#placeholder_comment_"+ data.board_id +"_"+ data.parent_id).append(node);
+					node.slideUp(0).slideDown(300);
+					commentPreview(node);
+				});
+				$("#post_"+ data.board_id +"_"+ data.parent_id +"_info .js-comments").html(data.count);
+				return false;
+			}
 
-				postloader[data.board_id +"_"+ data.parent_id] ?
-					postloader[data.board_id +"_"+ data.parent_id].push(data.id) :
-					postloader[data.board_id +"_"+ data.parent_id] = [data.id];
+			postloader[data.board_id +"_"+ data.parent_id]
+				? postloader[data.board_id +"_"+ data.parent_id].push(data.id)
+				: postloader[data.board_id +"_"+ data.parent_id] = [data.id];
 
-				$("#board_"+ data.board_id +"_"+ data.parent_id +"_postload")
-					.show().find(".js-postload-num").html(
-						ending(postloader[data.board_id +"_"+ data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
-					);
+			$("#board_"+ data.board_id +"_"+ data.parent_id +"_postload")
+				.show().find(".js-postload-num").html(
+					ending(postloader[data.board_id +"_"+ data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
+				);
 	
-				$("#post_"+ data.board_id +"_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
+			$("#post_"+ data.board_id +"_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
 		});
 
 
@@ -1052,44 +1045,43 @@
 			img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
 
 		$(document.body).on("click", ".b-image-link", function() { 
-		   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
-			   x = size[1], y = size[2], 
-			   max_x = document.documentElement.clientWidth,
-			   max_y = document.documentElement.clientHeight;
+			var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
+				x = size[1], y = size[2], 
+				max_x = document.documentElement.clientWidth,
+				max_y = document.documentElement.clientHeight;
 
-		   if (x >= max_x - 100 || y >= max_y - 50) return true;
+			if (x >= max_x - 100 || y >= max_y - 50) return true;
 	
-		   img
-			  .attr("src", $(this).attr("href"))
-			  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
-		   
-		   backtile.css("position", "fixed").show("fade", 500);
-		   
-		   return false;
+			img.attr("src", $(this).attr("href"))
+				.css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
+			
+			backtile.css("position", "fixed").show("fade", 500);
+			
+			return false;
 		});
 
 		$("#board_comment_captcha").dialog({
-	            autoOpen: false,
-		    modal: true,
-	            resizable: false,
-	            width: 250,
-		    open: function() {
-			var img = $("img", this).get(0);
-			img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+			autoOpen: false,
+			modal: true,
+			resizable: false,
+			width: 250,
+			open: function() {
+				var img = $("img", this).get(0);
+				img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
 
-		        $("input", this).focus().val("");
-		    },
-		    buttons: {
-			    "Отмена": function() {
-				    $(this).dialog("close");
-		            },
-			    "Отправить": function() {
-				    $("#comment_form input[name=captcha]").val($("input", this).val());
-				    $("#comment_form").submit();
-				    $(this).dialog("close");
-		            }
-		    },
-	            show: 'fade', hide: 'fade'
+				$("input", this).focus().val("");
+			},
+			buttons: {
+				"Отмена": function() {
+					$(this).dialog("close");
+				},
+				"Отправить": function() {
+					$("#comment_form input[name=captcha]").val($("input", this).val());
+					$("#comment_form").submit();
+					$(this).dialog("close");
+				}
+			},
+			show: 'fade', hide: 'fade'
 		});
 
 		$("#board_comment_captcha").keyup(function(e){
@@ -1097,7 +1089,7 @@
 				$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
 				return false;
 			}
-             	});
+		});
 
 		$(".js-update-post-button").click(function(e) {
 			e.stopPropagation();
@@ -1116,14 +1108,13 @@
 			updateMode = true;
 			updateThread = board +"_"+ id;
 
-			if (postloader[updateThread] && postloader[updateThread].length)
-			{
+			if (postloader[updateThread] && postloader[updateThread].length) {
 				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
 					for(var i in data) {
 						var node = $(template("template_comment", data[i]));
-					    	$("#placeholder_comment_"+ updateThread).append(node);
-					    	node.slideUp(0).slideDown(300);
-					    	commentPreview(node);
+						$("#placeholder_comment_"+ updateThread).append(node);
+						node.slideUp(0).slideDown(300);
+						commentPreview(node);
 					}
 					postloader[updateThread] = [];
 					$("#board_"+ updateThread +"_postload").hide();
@@ -1191,443 +1182,416 @@
 
 	if (IS_BOARD) {
 		x.addPageProcessor(/^(\w+)\/?(\d+)?$/, function(match) {
-				var board = match[1], postloader = {}, updateMode = false, updateThread = null;
-				var writing, waiting, writingTimeout = null, _title = document.title;
-				$(".js-update-post-button").removeClass("g-hidden");
+			var board = match[1], postloader = {}, updateMode = false, updateThread = null;
+			var writing, waiting, writingTimeout = null, _title = document.title;
+			$(".js-update-post-button").removeClass("g-hidden");
 
-				window['board_callback'] = function(data) {
-					$("#board_form_error").html("");
-					$("#board_form input, #board_form textarea").removeClass("g-input-error");
-					$("#board_form input[type=submit]").attr("disabled", null);
+			window['board_callback'] = function(data) {
+				$("#board_form_error").html("");
+				$("#board_form input, #board_form textarea").removeClass("g-input-error");
+				$("#board_form input[type=submit]").attr("disabled", null);
 
-					if (data["success"] == false)
-					{
-						var error_strings = [];
-						for (var field in data["errors"])
+				if (data["success"] == false) {
+					var error_strings = [];
+					for (var field in data["errors"])
+					if (data["errors"].hasOwnProperty(field)) {
+						error_strings.push(data["errors"][field]);
+						$("#board_form [name="+ field +"]").addClass("g-input-error");
+					}
+
+					$("#board_form [name=captcha]").val("");
+					$("#board_form_error").html(error_strings.join(", "));
+					return false;
+				}
+
+				$("#board_form").get(0).reset();
+				location.href = location.protocol + "//"+ location.host +"/"+ board +"/res/"+ data.id +"/";
+				throw void(0);
+			};
+
+			window['comment_callback'] = function(data) {
+				$("#comment_form_error").html("");
+				$("#comment_form [name=captcha]").val("");
+				$("#comment_form input[type=submit]").attr("disabled", null);
+
+				if (data["success"] == false) {
+					var error_strings = [];
+					for (var field in data["errors"])
 						if (data["errors"].hasOwnProperty(field))
-						{
 							error_strings.push(data["errors"][field]);
-							$("#board_form [name="+ field +"]").addClass("g-input-error");
-						}
 
-						$("#board_form [name=captcha]").val("");
-						$("#board_form_error").html(error_strings.join(", "));
-						return false;
-					}
+					if ("captcha" in data["errors"])
+						$("#board_comment_captcha").dialog("open");
 
-					$("#board_form").get(0).reset();
-					location.href = location.protocol + "//"+ location.host +"/"+ board +"/res/"+ data.id +"/";
-					throw void(0);
-				};
-
-				window['comment_callback'] = function(data) {
-					$("#comment_form_error").html("");
-					$("#comment_form [name=captcha]").val("");
-					$("#comment_form input[type=submit]").attr("disabled", null);
-
-					if (data["success"] == false) {
-						var error_strings = [];
-						for (var field in data["errors"])
-							if (data["errors"].hasOwnProperty(field))
-								error_strings.push(data["errors"][field]);
-
-						if ("captcha" in data["errors"])
-							$("#board_comment_captcha").dialog("open");
-
-						$("#comment_form_error").html(error_strings.join(", "));
-						return false;
-					}
-					$("#comment_form").get(0).reset();
-				};
-
-				$(window)
-					.bind("blur", function() {
-						$(".b-comment.m-new").removeClass("m-new");
-						waiting = true;
-					})
-					.bind("focus", function() {
-						waiting = false;
-						document.title = _title;
-					});
-
-				$(".js-delete-button").click(function() {
-					var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
-
-					if (password.length)
-						$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
-
+					$("#comment_form_error").html(error_strings.join(", "));
 					return false;
+				}
+				$("#comment_form").get(0).reset();
+			};
+
+			$(window)
+				.bind("blur", function() {
+					$(".b-comment.m-new").removeClass("m-new");
+					waiting = true;
+				})
+				.bind("focus", function() {
+					waiting = false;
+					document.title = _title;
 				});
 
-				$(".js-favorite-button").click(function() {
-					var img = $("img", this);
-					$.getJSON(this.href, function(data, status) {
-						if (data.favorite == true)
-							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
-						else
-							$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
-					});
-					return false;
+			$(".js-delete-button").click(function() {
+				var password = prompt(board != "int" ? "Введите пароль удаления" : "Enter the password", "");
+
+				if (password.length)
+					$.getJSON($(this).attr("href") + "&password="+ encodeURIComponent(password));
+
+				return false;
+			});
+
+			$(".js-favorite-button").click(function() {
+				var img = $("img", this);
+				$.getJSON(this.href, function(data, status) {
+					if (data.favorite == true)
+						$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-true.png");
+					else
+						$(img).attr("src", location.protocol + "//"+ location.host +"/ico/favorites-false.png");
 				});
+				return false;
+			});
 
-				$(".js-subscribe-checkbox").bind("change", function() {
-					if ($(this).is(":checked")) {
-						$.getJSON(location.protocol + "//"+ location.host +"/service/subscribeBoard/"+ board +"/");
-						console.log("subscibed");
-					} else {
-		 				$.getJSON(location.protocol + "//"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
-					}
-				});
+			$(".js-subscribe-checkbox").bind("change", function() {
+				if ($(this).is(":checked")) {
+					$.getJSON(location.protocol + "//"+ location.host +"/service/subscribeBoard/"+ board +"/");
+					console.log("subscibed");
+				} else {
+					$.getJSON(location.protocol + "//"+ location.host +"/service/unsubscribeBoard/"+ board +"/"); 
+				}
+			});
 
-				var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
-					clone = clone || false;
-					$(".js-cross-link", node).mouseover(function(e) {
-						if (!$(this).data("preview_open"))
-						{
-
-							if (!clone && previewActiveLink) {
-								$(".b-comment.m-tip").remove();
-								$(previewActiveLink).data("preview_open", false);
-								previewActiveLink = this;
-							} else if (!previewActiveLink)
-								previewActiveLink = this;
-
-							previewActive     = true;
-							previewTimeout    = clearTimeout(previewTimeout);
-
-							var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
-
-							if ($(this).attr("name") != board +"/"+ id)
-								return;
-
-							if (el.length != 0) {
-								var tip = $(el).clone()
-								               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-								               .addClass("m-tip")
-									       	   .attr('id', '')
-								               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
-								$(document.body).append(tip);
-								tip.slideUp(0).slideDown(300);
-								$(this).data("preview_open", true);
-								commentPreview(tip, true);
-							} else {
-								var link_ = this;
-								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
-									if (status != "error" && data != false) {
-										var tip = $(template("template_comment", data))
-											       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-											       .addClass("m-tip")
-											       .attr('id', '')
-											       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
-
-										$(document.body).append(tip);
-										tip.slideUp(0).slideDown(300);
-										$(link_).data("preview_open", true);
-										commentPreview(tip, true);
-									}
-								});
-							}
-						}
-						e.stopPropagation();
-					});
-				};
-				$(document.body).mouseover(function(e) {
-					if (!previewTimeout && previewActive) {
-						previewTimeout = setTimeout(function() {
+			var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
+				clone = clone || false;
+				$(".js-cross-link", node).mouseover(function(e) {
+					if (!$(this).data("preview_open")) {
+						if (!clone && previewActiveLink) {
 							$(".b-comment.m-tip").remove();
 							$(previewActiveLink).data("preview_open", false);
-							previewActiveLink = null;
-							previewActive = false;
-						}, 400);
+							previewActiveLink = this;
+						} else if (!previewActiveLink)
+							previewActiveLink = this;
+
+						previewActive     = true;
+						previewTimeout    = clearTimeout(previewTimeout);
+
+						var id = $(this).text().replace(/\D/g, ""), el = $("#comment_"+ board +"_" + id);
+
+						if ($(this).attr("name") != board +"/"+ id)
+							return;
+
+						if (el.length != 0) {
+							var tip = $(el).clone()
+								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+								.addClass("m-tip")
+								.attr('id', '')
+								.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							$(document.body).append(tip);
+							tip.slideUp(0).slideDown(300);
+							$(this).data("preview_open", true);
+							commentPreview(tip, true);
+						} else {
+							var link_ = this;
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
+								if (status != "error" && data != false) {
+									var tip = $(template("template_comment", data))
+										.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+										.addClass("m-tip")
+										.attr('id', '')
+										.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+
+									$(document.body).append(tip);
+									tip.slideUp(0).slideDown(300);
+									$(link_).data("preview_open", true);
+									commentPreview(tip, true);
+								}
+							});
+						}
 					}
+					e.stopPropagation();
 				});
-				commentPreview(document);
+			};
+			$(document.body).mouseover(function(e) {
+				if (!previewTimeout && previewActive) {
+					previewTimeout = setTimeout(function() {
+						$(".b-comment.m-tip").remove();
+						$(previewActiveLink).data("preview_open", false);
+						previewActiveLink = null;
+						previewActive = false;
+					}, 400);
+				}
+			});
+			commentPreview(document);
 
-				$(".js-postload-link").click(function() {
-					var nm = $(this).attr("name");
+			$(".js-postload-link").click(function() {
+				var nm = $(this).attr("name");
 
-					if (postloader[nm] && postloader[nm].length)
-					{
-						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
-							for(var i in data) {
-								var node = $(template("template_comment", data[i]));
-						    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
-						    	node.slideUp(0).slideDown(300);
-						    	commentPreview(node);
-							}
-							postloader[nm] = [];
-							$("#board_"+ board +"_"+ nm +"_postload").hide();
-							$("#post_"+ nm +"_info .js-comments").removeClass("g-bold")
-						});
-					}
-				});
-
-				$(".js-thread-load").click(function() {
-					var nm = $(this).attr("name");
-
-					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
-						$("#placeholder_comment_"+ board +"_"+ nm).html("");				
+				if (postloader[nm] && postloader[nm].length) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[nm]}, function(data) {
 						for(var i in data) {
 							var node = $(template("template_comment", data[i]));
-						    	$("#placeholder_comment_"+ board +"_"+ nm).append(node);
-						    	commentPreview(node);
+							$("#placeholder_comment_"+ board +"_"+ nm).append(node);
+							node.slideUp(0).slideDown(300);
+							commentPreview(node);
 						}
 						postloader[nm] = [];
 						$("#board_"+ board +"_"+ nm +"_postload").hide();
-						$("#board_"+ board +"_"+ nm +"_thread_load").hide();
-						$("#post_"+ nm +"_info .js-comments").removeClass("g-bold");
+						$("#post_"+ nm +"_info .js-comments").removeClass("g-bold")
 					});
+				}
+			});
+
+			$(".js-thread-load").click(function() {
+				var nm = $(this).attr("name");
+
+				$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {thread_id: nm}, function(data) {
+					$("#placeholder_comment_"+ board +"_"+ nm).html("");				
+					for(var i in data) {
+						var node = $(template("template_comment", data[i]));
+						$("#placeholder_comment_"+ board +"_"+ nm).append(node);
+						commentPreview(node);
+					}
+					postloader[nm] = [];
+					$("#board_"+ board +"_"+ nm +"_postload").hide();
+					$("#board_"+ board +"_"+ nm +"_thread_load").hide();
+					$("#post_"+ nm +"_info .js-comments").removeClass("g-bold");
 				});
-				
-				
-				
-				var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
-					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
-					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
-
-				$(document.body).on("click", ".b-image-link", function() { 
-				   var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
-					   x = size[1], y = size[2], 
-					   max_x = document.documentElement.clientWidth,
-					   max_y = document.documentElement.clientHeight;
-
-				   if (x >= max_x - 100 || y >= max_y - 50) return true;
+			});
 			
-				   img
-					  .attr("src", $(this).attr("href"))
-					  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
-				   
-				   backtile.css("position", "fixed").show("fade", 500);
-				   
-				   return false;
-				});
-
-				x.subscribe("board_"+ board, "add_post", function(data) {
-					$("#post_notify").show("fade");
-				});
-
-				x.subscribe("board_"+ board, "add_post_comment", function(data) {
-						if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
-							return false;
-
-						$.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
-						post_filters.push(data.id);
-					    	if (waiting)
-						    document.title = " ★ " + _title + " ★ ";
-
-						if (updateMode && data.parent_id == updateThread) {
-							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
-								var node = $(template("template_comment", data));
-								$("#placeholder_comment_"+ board +"_"+ data.parent_id).append(node);
-								node.slideUp(0).slideDown(300);
-								commentPreview(node);
-							});
-							$("#post_"+ data.parent_id +"_info .js-comments").html(data.count);
-							return false;
-						}
-						postloader[data.parent_id] ?
-							postloader[data.parent_id].push(data.id) :
-							postloader[data.parent_id] = [data.id];
-
-		                if (board != "int")
-						    $("#board_"+ board +"_"+ data.parent_id +"_postload")
-							    .show().find(".js-postload-num").html(
-								    ending(postloader[data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
-							    );
-				        else
-						    $("#board_"+ board +"_"+ data.parent_id +"_postload")
-							    .show().find(".js-postload-num").html(postloader[data.parent_id].length);
 			
-						$("#post_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
-				});
+			
+			var backtile = $("<div>")
+				.css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100})
+				.appendTo("body")
+				.hide()
+				.click(function() { 
+					$(this).hide("fade", function() { 
+						$(this).css("position", "absolute"); 
+					}); 
+				})
+			, imgwrap = $("<div>")
+				.css({"position": "absolute", "top": "50%", "left": "50%"})
+				.appendTo(backtile)
+			, img = $("<img>")
+				.attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.")
+				.css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"})
+				.appendTo(imgwrap);
 
-				$("#board_captcha").dialog({
-			            autoOpen: false,
-				    modal: true,
-			            resizable: false,
-			            width: 250,
-				    open: function() {
+			$(document.body).on("click", ".b-image-link", function() { 
+				var size = /(\d+)x(\d+)/.exec($(this).attr("title")),
+				x = size[1], y = size[2], 
+				max_x = document.documentElement.clientWidth,
+				max_y = document.documentElement.clientHeight;
+
+				if (x >= max_x - 100 || y >= max_y - 50) return true;
+			
+				img.attr("src", $(this).attr("href"))
+				  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
+			   
+				backtile.css("position", "fixed").show("fade", 500);
+				
+				return false;
+			});
+
+			x.subscribe("board_"+ board, "add_post", function(data) {
+				$("#post_notify").show("fade");
+			});
+
+			x.subscribe("board_"+ board, "add_post_comment", function(data) {
+				if (!$("#post_"+ data.board_id +"_"+ data.parent_id).length)
+					return false;
+
+				$.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
+				post_filters.push(data.id);
+				if (waiting)
+					document.title = " ★ " + _title + " ★ ";
+
+				if (updateMode && data.parent_id == updateThread) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: data.id}, function(data) {
+						var node = $(template("template_comment", data));
+						$("#placeholder_comment_"+ board +"_"+ data.parent_id).append(node);
+						node.slideUp(0).slideDown(300);
+						commentPreview(node);
+					});
+					$("#post_"+ data.parent_id +"_info .js-comments").html(data.count);
+					return false;
+				}
+				postloader[data.parent_id] ?
+					postloader[data.parent_id].push(data.id) :
+					postloader[data.parent_id] = [data.id];
+
+				if (board != "int")
+					$("#board_"+ board +"_"+ data.parent_id +"_postload")
+						.show().find(".js-postload-num").html(
+							ending(postloader[data.parent_id].length, "новый ответ", "новых ответа", "новых ответов")
+						);
+				else
+					$("#board_"+ board +"_"+ data.parent_id +"_postload")
+						.show().find(".js-postload-num").html(postloader[data.parent_id].length);
+			
+				$("#post_"+ data.parent_id +"_info .js-comments").addClass("g-bold").html(data.count);
+			});
+
+			$("#board_captcha").dialog({
+				autoOpen: false,
+				modal: true,
+				resizable: false,
+				width: 250,
+				open: function() {
 					var img = $("img", this).get(0);
 					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
 
-				        $("input", this).focus().val("");
-				    },
-				    buttons: {
-					    "Cancel": function() {
-						    $(this).dialog("close");
-				            },
-					    "OK": function() {
-						    $("input[name=captcha]").val($("input", this).val());
-						    $("#board_form").submit();
-						    $(this).dialog("close");
-				            }
-				    },
-			            show: 'fade', hide: 'fade'
-				});
+					$("input", this).focus().val("");
+				},
+				buttons: {
+					"Cancel": function() {
+						$(this).dialog("close");
+					},
+					"OK": function() {
+						$("input[name=captcha]").val($("input", this).val());
+						$("#board_form").submit();
+						$(this).dialog("close");
+					}
+				},
+				show: 'fade', hide: 'fade'
+			});
 
-				$("#board_captcha, #board_comment_captcha").keyup(function(e){
-					if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-						$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
+			$("#board_captcha, #board_comment_captcha").keyup(function(e) {
+				if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+					$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
+					return false;
+				}
+			});
+
+			$("#board_form")
+				.attr("target", "board_form_iframe")
+				.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createAjaxForm/")
+				.submit(function() {
+					if ($("input[name=captcha]").val().length == 0) {
+						$("#board_captcha").dialog("open");
 						return false;
 					}
-		             	});
+					$("#board_form input[type=submit]").attr("disabled", "disabled");
+				});
 
-				$("#board_form")
+			$(".js-post-id-link").click(function() {
+				if (updateMode) {
+					insertText(">>" + id);
+					return false;
+				}
+			});
+
+			$(document.body).on("click", ".js-paste-link", function() {
+				if (updateMode) {
+					insertText(">>" + $(this).attr("name"));
+					return false;
+				}
+			});
+
+			$("#board_comment_captcha").dialog({
+				autoOpen: false,
+				modal: true,
+				resizable: false,
+				width: 250,
+				open: function() {
+					var img = $("img", this).get(0);
+					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+
+					$("input", this).focus().val("");
+				},
+				buttons: {
+					"Cancel": function() {
+						$(this).dialog("close");
+					},
+					"OK": function() {
+						$("#comment_form input[name=captcha]").val($("input", this).val());
+						$("#comment_form").submit();
+						$(this).dialog("close");
+					}
+				},
+				show: 'fade', hide: 'fade'
+			});
+
+			$(".js-update-post-button").click(function(e) {
+				e.stopPropagation();
+				if (updateMode == true) {
+					$("#comment_form").remove();
+					if (updateThread == $(this).attr("name")) {
+						updateMode = false;
+						updateThread = null;
+						return;
+					}		
+				}
+
+				updateMode = true;
+				updateThread = $(this).attr("name");
+
+				if (postloader[updateThread] && postloader[updateThread].length) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
+						for(var i in data) {
+							var node = $(template("template_comment", data[i]));
+							$("#placeholder_comment_"+ board +"_"+ updateThread).append(node);
+							node.slideUp(0).slideDown(300);
+							commentPreview(node);
+						}
+						postloader[updateThread] = [];
+						$("#board_"+ board +"_"+ updateThread +"_postload").hide();
+						$("#post_"+ updateThread +"_info .js-comments").removeClass("g-bold")
+					});
+				}
+
+				$("#placeholder_form_comment_"+ board +"_"+ updateThread)
+					.html(template("template_form_comment", {"id": updateThread, "textarea": "</textarea>"}));
+				
+				$("#comment_form")
 					.attr("target", "board_form_iframe")
-					.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createAjaxForm/")
+					.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
 					.submit(function() {
-						if ($("input[name=captcha]").val().length == 0) {
-							$("#board_captcha").dialog("open");
-							return false;
-						}
-						$("#board_form input[type=submit]").attr("disabled", "disabled");
+						$("#comment_form input[type=submit]").attr("disabled", "disabled");
 					});
 
-				$(".js-post-id-link").click(function() {
-					if (updateMode) {
-						insertText(">>" + id);
-						return false;
-					}
-				});
+				var statusReading = function(id) {
+					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
+					writing = false;
+				};
 
-				$(document.body).on("click", ".js-paste-link", function() {
-					if (updateMode) {
-						insertText(">>" + $(this).attr("name"));
-						return false;
-					}
-				});
+				$("#comment_form_text")
+					.bind("keyup", function(e) {
+						if (!writing) {
+							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
+							writing = true;
+						}
 
-				$("#board_comment_captcha").dialog({
-			            autoOpen: false,
-				    modal: true,
-			            resizable: false,
-			            width: 250,
-				    open: function() {
-					var img = $("img", this).get(0);
-					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
-
-				        $("input", this).focus().val("");
-				    },
-				    buttons: {
-					    "Cancel": function() {
-						    $(this).dialog("close");
-				            },
-					    "OK": function() {
-						    $("#comment_form input[name=captcha]").val($("input", this).val());
-						    $("#comment_form").submit();
-						    $(this).dialog("close");
-				            }
-				    },
-			            show: 'fade', hide: 'fade'
-				});
-
-				$(".js-update-post-button").click(function(e) {
-					e.stopPropagation();
-					if (updateMode == true) {
-						$("#comment_form").remove();
-						if (updateThread == $(this).attr("name")) {
-							updateMode = false;
-							updateThread = null;
-							return;
-						}		
-					}
-
-					updateMode = true;
-					updateThread = $(this).attr("name");
-
-					if (postloader[updateThread] && postloader[updateThread].length)
-					{
-						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get", {id: postloader[updateThread]}, function(data) {
-							for(var i in data) {
-								var node = $(template("template_comment", data[i]));
-							    	$("#placeholder_comment_"+ board +"_"+ updateThread).append(node);
-							    	node.slideUp(0).slideDown(300);
-							    	commentPreview(node);
-							}
-							postloader[updateThread] = [];
-							$("#board_"+ board +"_"+ updateThread +"_postload").hide();
-							$("#post_"+ updateThread +"_info .js-comments").removeClass("g-bold")
-						});
-					}
-
-					$("#placeholder_form_comment_"+ board +"_"+ updateThread)
-						.html(template("template_form_comment", {"id": updateThread, "textarea": "</textarea>"}));
-					
-					$("#comment_form")
-						.attr("target", "board_form_iframe")
-						.attr("action", location.protocol + "//"+ location.host +"/"+ board +"/createPostAjaxForm/")
-						.submit(function() {
-							$("#comment_form input[type=submit]").attr("disabled", "disabled");
-						});
-
-					var statusReading = function(id) {
+						if (writingTimeout) clearTimeout(writingTimeout);
+						writingTimeout = setTimeout(statusReading, 5000);
+						e.stopPropagation();
+					})
+					.bind("blur", function() {
 						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
 						writing = false;
-					};
-
-					$("#comment_form_text")
-						.bind("keyup", function(e) {
-							if (!writing) {
-								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=1");
-								writing = true;
-							}
-
-							if (writingTimeout) clearTimeout(writingTimeout);
-							writingTimeout = setTimeout(statusReading, 5000);
-							e.stopPropagation();
-						})
-						.bind("blur", function() {
-							$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ updateThread +"/stats/?writing=0");
-							writing = false;
-						})
-						.bind("keyup", function(e) {
-							if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
-								$("#comment_form").submit();
-							}
-						});
-
-					$("#comment_form .js-homeboard-link").click(function() {
-						$("#comment_form .js-homeboard-select").toggle();
-					});
-
-					$("#comment_form .js-homeboard-select").bind("mouseup", function(e) {
-						e.stopPropagation();
-					});
-				
-					$("#comment_form .js-homeboard-select-link").click(function(e) {
-						var board = $(this).attr("name");
-						$("input[name=homeboard]").val(board);
-						$.cookie("homeboard", board, {expires: 356, path: "/"});
-
-						$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
-						$(".js-homeboard-select").hide();
-					});
-				
-					(function() {
-						var board = $.cookie("homeboard");
-						if (board) {
-							var el = $("#comment_form .js-homeboard-select a[name="+ board +"]");
-							if (el.length) {
-								$("input[name=homeboard]").val(board);
-								$(".js-homeboard-icon").attr("src", $("img", el).attr("src"));
-							}
+					})
+					.bind("keyup", function(e) {
+						if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
+							$("#comment_form").submit();
 						}
-					})();
+					});
+
+				$("#comment_form .js-homeboard-link").click(function() {
+					$("#comment_form .js-homeboard-select").toggle();
 				});
 
-				$("#board_form .js-homeboard-link").click(function() {
-					$("#board_form .js-homeboard-select").toggle();
-				});
-
-				$(document.body).bind("mouseup", function() {
-					$(".js-homeboard-select").hide();
-				});
-
-				$("#board_form .js-homeboard-select").bind("mouseup", function(e) {
+				$("#comment_form .js-homeboard-select").bind("mouseup", function(e) {
 					e.stopPropagation();
 				});
-				
-				$("#board_form .js-homeboard-select-link").click(function(e) {
+			
+				$("#comment_form .js-homeboard-select-link").click(function(e) {
 					var board = $(this).attr("name");
 					$("input[name=homeboard]").val(board);
 					$.cookie("homeboard", board, {expires: 356, path: "/"});
@@ -1635,18 +1599,51 @@
 					$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
 					$(".js-homeboard-select").hide();
 				});
+			
+				(function() {
+					var board = $.cookie("homeboard");
+					if (board) {
+						var el = $("#comment_form .js-homeboard-select a[name="+ board +"]");
+						if (el.length) {
+							$("input[name=homeboard]").val(board);
+							$(".js-homeboard-icon").attr("src", $("img", el).attr("src"));
+						}
+					}
+				})();
+			});
 
-				x.addPageProcessor(":moderator", function(path, isAdmin) {
-				    if (isAdmin) {
-					    var link = $('<a href="javascript://"><sup>Изменить название</sup></a>');
-					    link.click(function() {
-						    var title       = prompt("title", $(".b-board-header_name h1").text());
-						    var description = prompt("description", $(".b-board-header_desc").text());
-						    $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
-					    });
-					    $(".b-board-header_options").append(link);
-			        }
-				});
+			$("#board_form .js-homeboard-link").click(function() {
+				$("#board_form .js-homeboard-select").toggle();
+			});
+
+			$(document.body).bind("mouseup", function() {
+				$(".js-homeboard-select").hide();
+			});
+
+			$("#board_form .js-homeboard-select").bind("mouseup", function(e) {
+				e.stopPropagation();
+			});
+			
+			$("#board_form .js-homeboard-select-link").click(function(e) {
+				var board = $(this).attr("name");
+				$("input[name=homeboard]").val(board);
+				$.cookie("homeboard", board, {expires: 356, path: "/"});
+
+				$(".js-homeboard-icon").attr("src", $("img", this).attr("src"));
+				$(".js-homeboard-select").hide();
+			});
+
+			x.addPageProcessor(":moderator", function(path, isAdmin) {
+				if (isAdmin) {
+					var link = $('<a href="javascript://"><sup>Изменить название</sup></a>');
+					link.click(function() {
+						var title       = prompt("title", $(".b-board-header_name h1").text());
+						var description = prompt("description", $(".b-board-header_desc").text());
+						$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/changeTitle", {title:title, description:description}); 
+					});
+					$(".b-board-header_options").append(link);
+				}
+			});
 		});
 
 		x.addPageProcessor(/^(\w+)\/res\/(\d+)/, function(match) {
@@ -1673,12 +1670,12 @@
 				};
 
 				var writing, waiting, writingTimeout = null, _title = document.title,
-				   statusReading = function() {
+				statusReading = function() {
 					$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/res/"+ id +"/stats/?writing=0");
 					writing = false;
 				};
 				var scrollingInterval = null,
-				    scrollEnable = function() {
+				scrollEnable = function() {
 					if (scrollingInterval) clearInterval(scrollingInterval);
 					var cacheOffsetHeight = parseInt(document.body.offsetHeight);
 					scrollingInterval = setInterval(function() {
@@ -1687,10 +1684,10 @@
 
 						cacheOffsetHeight = parseInt(document.body.offsetHeight);
 					}, 15);
-				    },
-				    scrollDisable = function() {
+				},
+				scrollDisable = function() {
 					if (scrollingInterval) clearInterval(scrollingInterval);
-				    };
+				};
 				var hash = "";
 				setInterval(function() {
 					if (window.location.hash != hash) {
@@ -1699,12 +1696,11 @@
 						$("#comment_"+hash.substring(1)).addClass("m-selected");
 					}
 				}, 100);
-				var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
+				var previewTimeout, previewActive, previewActiveLink, 
+				commentPreview = function(node, clone) {
 					clone = clone || false;
 					$(".js-cross-link", node).mouseover(function(e) {
-						if (!$(this).data("preview_open"))
-						{
-
+						if (!$(this).data("preview_open")) {
 							if (!clone && previewActiveLink) {
 								$(".b-comment.m-tip").remove();
 								$(previewActiveLink).data("preview_open", false);
@@ -1722,10 +1718,10 @@
 
 							if (el.length != 0) {
 								var tip = $(el).clone()
-								               .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-								               .addClass("m-tip")
-									       	   .attr('id', '')
-								               .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+									.addClass("m-tip")
+									.attr('id', '')
+									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
 								$(this).data("preview_open", true);
@@ -1735,10 +1731,10 @@
 								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/get/", {id: id}, function(data, status) {
 									if (status != "error" && data != false) {
 										var tip = $(template("template_comment", data))
-											       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-											       .addClass("m-tip")
-											       .attr('id', '')
-											       .css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+											.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+											.addClass("m-tip")
+											.attr('id', '')
+											.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 										$(document.body).append(tip);
 										tip.slideUp(0).slideDown(300);
@@ -1802,27 +1798,27 @@
 				});
 				
 				$("#board_comment_captcha").dialog({
-			            autoOpen: false,
-				    modal: true,
-			            resizable: false,
-			            width: 250,
-				    open: function() {
-					var img = $("img", this).get(0);
-					img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
+					autoOpen: false,
+					modal: true,
+					resizable: false,
+					width: 250,
+					open: function() {
+						var img = $("img", this).get(0);
+						img.src = img.src.replace(/rand=(\d+)?$/, "rand="+ Math.random());
 
-				        $("input", this).focus().val("");
-				    },
-				    buttons: {
-					    "Cancel": function() {
-						    $(this).dialog("close");
-				            },
-					    "OK": function() {
-						    $("#comment_form input[name=captcha]").val($("input", this).val());
-						    $("#comment_form").submit();
-						    $(this).dialog("close");
-				            }
-				    },
-			            show: 'fade', hide: 'fade'
+						$("input", this).focus().val("");
+					},
+					buttons: {
+						"Cancel": function() {
+							$(this).dialog("close");
+						},
+						"OK": function() {
+							$("#comment_form input[name=captcha]").val($("input", this).val());
+							$("#comment_form").submit();
+							$(this).dialog("close");
+						}
+					},
+					show: 'fade', hide: 'fade'
 				});
 
 				$("#board_comment_captcha").keyup(function(e){
@@ -1830,7 +1826,7 @@
 						$(".ui-dialog:visible").find('.ui-dialog-buttonpane').find('button:last').trigger("click");
 						return false;
 					}
-		             	});
+				});
 
 				$("#comment_form")
 					.attr("target", "comment_form_iframe")
@@ -1895,8 +1891,6 @@
 						document.title = _title;
 					});
 				
-				
-				
 				var backtile = $("<div>").css({"background": "rgba(255, 255, 255, .5)", "width": "100%", "height": "100%", "position":"absolute", "top": 0, "left": 0, "zIndex": 100}).appendTo("body").hide().click(function() { $(this).hide("fade", function() { $(this).css("position", "absolute"); }); }),
 					imgwrap = $("<div>").css({"position": "absolute", "top": "50%", "left": "50%"}).appendTo(backtile),
 					img = $("<img>").attr("alt", "Кликните мышкой, чтобы скрыть просматриваемое изображение.").css({"background": "#323232", "border": "5px solid #fff", "box-shadow": "2px 2px 5px rgba(0, 0, 0, .3)", "border-radius": "8px", "margin-top": "-50%", "margin-left": "-50%", "position": "relative"}).appendTo(imgwrap);
@@ -1909,8 +1903,7 @@
 
 				   if (x >= max_x - 100 || y >= max_y - 50) return true;
 			
-				   img
-					  .attr("src", $(this).attr("href"))
+				   img.attr("src", $(this).attr("href"))
 					  .css({"width": x, "height": y, "margin-top": -y/2, "margin-left": -x/2});
 				   
 				   backtile.css("position", "fixed").show("fade", 500);
@@ -1927,22 +1920,22 @@
 					location.reload();
 				});
 				x.subscribe("boardpost_"+ board +"_"+ id, "add_post_comment", function(data) {
-					    $.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
-				            post_filters.push(data.id);
+					$.getJSON("/service/notifyCheck/"+ data.board_id +"/"+ data.parent_id);
+						post_filters.push(data.id);
 
-					    var node = $(template("template_comment", data));
-					    $("#placeholder_comment").append(node);
-					    node.slideUp(0).slideDown(300);
+					var node = $(template("template_comment", data));
+					$("#placeholder_comment").append(node);
+					node.slideUp(0).slideDown(300);
 
-					    if (waiting)
-						    document.title = " ★ " + _title + " ★ ";
+					if (waiting)
+						document.title = " ★ " + _title + " ★ ";
 
-					    if ($("#new_comments_link").hasClass("g-disabled")) {
-						    $("#new_comments_link").removeClass("g-disabled").click(function() {
-							    location.hash = data.id;
-						    });
-					    }
-					    commentPreview(node);
+					if ($("#new_comments_link").hasClass("g-disabled")) {
+						$("#new_comments_link").removeClass("g-disabled").click(function() {
+							location.hash = data.id;
+						});
+					}
+					commentPreview(node);
 				});
 				x.subscribe("boardpost_"+ board +"_"+ id, "remove_post_comment", function(data) {
 					$("#comment_" + board +"_"+ data.id).slideUp(500);
@@ -1950,23 +1943,23 @@
 
 				commentPreview(document);
 				x.addPageProcessor(":moderator", function(path, isAdmin) {
-				    if (isAdmin) {
-					    $(".js-remove-button")
-		                    .removeClass("g-hidden").click(function() {
-						        var comment_id = $("img", this).attr("alt"),
-		                            delall     = confirm('Удалить все ответы от автора?');
-						        $.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
-						        return false;
-					        });
-			        }
+					if (isAdmin) {
+						$(".js-remove-button")
+							.removeClass("g-hidden").click(function() {
+								var comment_id = $("img", this).attr("alt"),
+									delall     = confirm('Удалить все ответы от автора?');
+								$.getJSON(location.protocol + "//"+ location.host +"/"+ board +"/remove/?id="+ comment_id + (delall ? "&delall=1" : ""));
+								return false;
+							});
+					}
 				});
 		});
 	}
 
 	x.addPageProcessor("live", function() {
 		var resetFileds = function(reset) {
-			var link        = $("#add_link_form input[name=link]").val(),
-			    description = $("#add_link_form input[name=description]").val();
+			var link = $("#add_link_form input[name=link]").val(),
+			description = $("#add_link_form input[name=description]").val();
 
 			if (reset || (link == "" && description == "") || (link == "Ссылка" && description == "Краткое описание")) {
 				$("#add_link_form input[name=link]").val("Ссылка").css({color: "#ddd"}).one("focus", function() {
@@ -1977,7 +1970,7 @@
 				});
 			}
 		},
-		   reloadPage = function() {
+		reloadPage = function() {
 			$.getJSON(location.protocol + "//"+ location.host +"/live/", function(data, status) {
 				if (status != "error") {
 					if (data.length == 0) {
@@ -1993,7 +1986,8 @@
 					}
 				}
 			});
-		}, filter = true;
+		}, 
+		filter = true;
 
 		$.getJSON(location.protocol + "//"+ location.host +"/live/set_filter/", function(data) {filter = data});
 
@@ -2024,8 +2018,7 @@
 							$("#add_link_form").submit();
 						}
 
-						if (result.isValid != true)
-						{
+						if (result.isValid != true) {
 							var error_strings = [];
 							for (var field in result.validationResults)
 							if (result.validationResults.hasOwnProperty(field))
@@ -2041,11 +2034,11 @@
 		});
 
 		$(".js-open-right-panel").click(function() {
-            $.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "on"}, function(data, status) {
-                location.reload();
-            });
-            return false;
-        });
+			$.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "on"}, function(data, status) {
+				location.reload();
+			});
+			return false;
+		});
 
 		x.subscribe("live", "add_online_link", function(data) {
 			if (filter instanceof Array && filter.indexOf(data.board) == -1)
@@ -2078,13 +2071,13 @@
 		}, 2 * 60 * 1000);
 
 		x.addPageProcessor(":moderator", function(path, isAdmin) {
-		    if (isAdmin) {
-			    $(".js-remove-button").removeClass("g-hidden").click(function() {
-				    var link_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removeOnlineLink/"+ link_id +"/");
-				    return false;
-			    });
-	        }
+			if (isAdmin) {
+				$(".js-remove-button").removeClass("g-hidden").click(function() {
+					var link_id = $("img", this).attr("alt");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/removeOnlineLink/"+ link_id +"/");
+					return false;
+				});
+			}
 		});
 	});
 
@@ -2093,8 +2086,7 @@
 		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
 			clone = clone || false;
 			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
+				if (!$(this).data("preview_open")) {
 					var nm = $(this).attr("name").substring(0, 4);
 					if (nm && nm != "news")
 						return;
@@ -2113,10 +2105,10 @@
 					$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 						if (status != "error" && data != false) {
 							var tip = $(template("template_comment", data))
-								       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-								       .addClass("m-tip")
-								       .attr('id', '')
-								       .css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+								.addClass("m-tip")
+								.attr('id', '')
+								.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 							if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html("(<em>открывающий пост</em>)");
 							$(document.body).append(tip);
 							tip.slideUp(0).slideDown(300);
@@ -2151,15 +2143,15 @@
 		commentPreview(document);
 
 		x.subscribe("post_last_comments", "add_post_comment", function(data) {
-		    $.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ data.post_id +"/getComment/"+ data.id, {"title" : 1}, function(data) {
-			    var node = $(template("template_comment", data));
-			    $("#placeholder_comment").prepend(node);
-			    node.slideUp(0).slideDown(400);
+			$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ data.post_id +"/getComment/"+ data.id, {"title" : 1}, function(data) {
+				var node = $(template("template_comment", data));
+				$("#placeholder_comment").prepend(node);
+				node.slideUp(0).slideDown(400);
 
-			    if (waiting)
-				    document.title = " ★ " + _title + " ★ ";
+				if (waiting)
+					document.title = " ★ " + _title + " ★ ";
 
-			    commentPreview(node);
+				commentPreview(node);
 			});
 		});
 
@@ -2168,22 +2160,21 @@
 		});
 
 		x.addPageProcessor(":moderator", function(path, isAdmin) {
-		    if (isAdmin) {
-			    $(".js-remove-button").removeClass("g-hidden").click(function() {
-				    var comment_id = $("img", this).attr("alt");
-				    $.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
-				    return false;
-			    });
-	        }
+			if (isAdmin) {
+				$(".js-remove-button").removeClass("g-hidden").click(function() {
+					var comment_id = $("img", this).attr("alt");
+					$.getJSON(location.protocol + "//"+ location.host +"/mod/removePostComment/"+ comment_id +"/");
+					return false;
+				});
+			}
 		});
 	});
 
-    x.addPageProcessor("service/modlog", function() {
-        var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
+	x.addPageProcessor("service/modlog", function() {
+		var previewTimeout, previewActive, previewActiveLink, commentPreview = function(node, clone) {
 			clone = clone || false;
 			$(".js-cross-link", node).mouseover(function(e) {
-				if (!$(this).data("preview_open"))
-				{
+				if (!$(this).data("preview_open")) {
 					var nm = $(this).attr("name").substring(0, 4);
 					if (nm && nm != "news")
 						return;
@@ -2202,10 +2193,10 @@
 					$.getJSON(location.protocol + "//"+ location.host +"/news/last_comments/", {id: id}, function(data, status) {
 						if (status != "error" && data != false) {
 							var tip = $(template("template_comment", data))
-								       .mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
-								       .addClass("m-tip")
-								       .attr('id', '')
-								       .css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
+								.addClass("m-tip")
+								.attr('id', '')
+								.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 							if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html("(<em>открывающий пост</em>)");
 							$(document.body).append(tip);
 							tip.slideUp(0).slideDown(300);
@@ -2228,99 +2219,98 @@
 			}
 		});
 		commentPreview(document);
-    });
+	});
 
 	x.addPageProcessor("chat", function() {
-	    $(".js-favchatlist").sortable({
-	        connectWith: ".js-allchatlist", dropOnEmpty: true, revert: true,
-	        update: function(event, ui) {
-	            if ($(this).children().length == 0)
-	                $(".js-favchatlist-empty").show();
-	            else
-	                $(".js-favchatlist-empty").hide();
+		$(".js-favchatlist").sortable({
+			connectWith: ".js-allchatlist", dropOnEmpty: true, revert: true,
+			update: function(event, ui) {
+				if ($(this).children().length == 0)
+					$(".js-favchatlist-empty").show();
+				else
+					$(".js-favchatlist-empty").hide();
 
-	            var favorites = [];
-	            $(".b-chat-rooms_b-room", this).each(function() {
-	                var id = this.id.substring(5);
-	                favorites.push(id);
-	            });
+				var favorites = [];
+				$(".b-chat-rooms_b-room", this).each(function() {
+					var id = this.id.substring(5);
+					favorites.push(id);
+				});
 
-	            $.post(
-				    location.protocol + "//"+ location.host +"/chat/favorites/",
-				    {
-					    "favorites": favorites.join(",")
-				    }
+				$.post(
+					location.protocol + "//"+ location.host +"/chat/favorites/",
+					{
+						"favorites": favorites.join(",")
+					}
 				);
-	        }
-	    }).disableSelection();
+			}
+		}).disableSelection();
 
-	    $(".js-allchatlist").sortable({
-	        connectWith: ".js-favchatlist", dropOnEmpty: true, revert: true,
-	        update: function(event, ui) {
-	            if ($(this).children().length == 0)
-	                $(".js-allchatlist-empty").show();
-	            else
-	                $(".js-allchatlist-empty").hide();
-	        }
-	    }).disableSelection();
+		$(".js-allchatlist").sortable({
+			connectWith: ".js-favchatlist", dropOnEmpty: true, revert: true,
+			update: function(event, ui) {
+				if ($(this).children().length == 0)
+					$(".js-allchatlist-empty").show();
+				else
+					$(".js-allchatlist-empty").hide();
+			}
+		}).disableSelection();
 
-	    $(".b-chat-rooms_b-chat-group_b-add-hidden").click(function() {
-	        var room = prompt("Скопируйте ссылку или идентификатор скрытой комнаты", "");
-	        if((matches = /([^\/]{45})/g.exec(room)) != null)
-	        {
-	            var favorites = [];
-	            $(".js-favchatlist .b-chat-rooms_b-room").each(function() {
-	                var id = this.id.substring(5);
-	                favorites.push(id);
-	            });
-	            favorites.push(matches[0]);
+		$(".b-chat-rooms_b-chat-group_b-add-hidden").click(function() {
+			var room = prompt("Скопируйте ссылку или идентификатор скрытой комнаты", "");
+			if((matches = /([^\/]{45})/g.exec(room)) != null) {
+				var favorites = [];
+				$(".js-favchatlist .b-chat-rooms_b-room").each(function() {
+					var id = this.id.substring(5);
+					favorites.push(id);
+				});
+				favorites.push(matches[0]);
 
-	            $.post(
-				    location.protocol + "//"+ location.host +"/chat/favorites/",
-				    {
-					    "favorites": favorites.join(",")
-				    },
-				    function(data, state) {
-				        if (state !== "error")
-				            location.reload();
-				    }
+				$.post(
+					location.protocol + "//"+ location.host +"/chat/favorites/",
+					{
+						"favorites": favorites.join(",")
+					},
+					function(data, state) {
+						if (state !== "error")
+							location.reload();
+					}
 				);
-	        }
-	    });
+			}
+		});
 
-	    x.subscribe("chats", "add_room", function(data) {
+		x.subscribe("chats", "add_room", function(data) {
 			$("#chat_notify").show("fade");
 		});
 
 		x.subscribe("chats", "edit_room", function(data) {
-		    var node = $("#room_"+ data.room_id);
+			var node = $("#room_"+ data.room_id);
 
-		    if (node.length == 0 && data["public"]) {
-		        $("#chat_notify").show("fade");
-		        return;
-		    }
+			if (node.length == 0 && data["public"]) {
+				$("#chat_notify").show("fade");
+				return;
+			}
 
-		    $(".b-chat-rooms_b-room_b-header a", node).html(data.title);
-		    $(".b-chat-rooms_b-room_b-description p", node).html(data.description);
+			$(".b-chat-rooms_b-room_b-header a", node).html(data.title);
+			$(".b-chat-rooms_b-room_b-description p", node).html(data.description);
 
-		    if (!data["public"])
-		        $(".js-hidden-room-icon", node).removeClass("g-hidden");
-		    else
-		         $(".js-hidden-room-icon", node).addClass("g-hidden");
+			if (!data["public"])
+				$(".js-hidden-room-icon", node).removeClass("g-hidden");
+			else
+				 $(".js-hidden-room-icon", node).addClass("g-hidden");
 
-		    if (data["password"])
-		        $(".js-key-icon", node).removeClass("g-hidden");
-		    else
-		        $(".js-key-icon", node).addClass("g-hidden");
+			if (data["password"])
+				$(".js-key-icon", node).removeClass("g-hidden");
+			else
+				$(".js-key-icon", node).addClass("g-hidden");
 		});
 
 		x.subscribe("chats", "stats_updated_room", function(data) {
-		    $("#room_"+ data.room_id +" .b-chat-rooms_b-room_b-info em").html(ending(data.online, "участник", "участника", "участников"));
+			$("#room_"+ data.room_id +" .b-chat-rooms_b-room_b-info em").html(ending(data.online, "участник", "участника", "участников"));
 		});
 	});
 
 	x.addPageProcessor("chat/add", function() {
-	    var validateRoom = function(callback) {
+		var validateRoom = function(callback) {
 			$("#chat_form_error").html("");
 			$("#chat_form input, #chat_form textarea").removeClass("g-input-error");
 
@@ -2364,7 +2354,7 @@
 			});
 			return false;
 		});
-    });
+	});
 
 	x.addPageProcessor(/^chat\/[0-9A-z\-]{4,45}/, function(match) {
 		var id = $(".b-chat").attr("id").substring(5), channel_id = null, password = false;
@@ -2372,212 +2362,211 @@
 		var _title = document.title, waiting, notifier = null, notify = false;
 
 		if (id) {
-		    $(window)
-			    .bind("blur", function() {
-				    waiting = true;
-			    })
-			    .bind("focus", function() {
-				    waiting = false;
-				    if (notifier) notifier.cancel();
-				    document.title = _title;
-			    });
+			$(window)
+				.bind("blur", function() {
+					waiting = true;
+				})
+				.bind("focus", function() {
+					waiting = false;
+					if (notifier) notifier.cancel();
+					document.title = _title;
+				});
 
 			(function() {
-			        var element = $(".b-chat_b-messages").get(0);
-			        var cacheOffsetHeight = parseInt(element.scrollHeight);
-			        setInterval(function() {
-				        if (parseInt(element.scrollHeight) != cacheOffsetHeight)
-					        element.scrollTop += parseInt(element.scrollHeight) - cacheOffsetHeight + 10;
+				var element = $(".b-chat_b-messages").get(0);
+				var cacheOffsetHeight = parseInt(element.scrollHeight);
+				setInterval(function() {
+					if (parseInt(element.scrollHeight) != cacheOffsetHeight)
+						element.scrollTop += parseInt(element.scrollHeight) - cacheOffsetHeight + 10;
 
-				        cacheOffsetHeight = parseInt(element.scrollHeight);
-			        }, 15);
+					cacheOffsetHeight = parseInt(element.scrollHeight);
+				}, 15);
 
-			        window.onresize = (function() {
-			            var view_h = document.documentElement.clientHeight;
-			            element.style.height = parseInt((view_h / 100) * 50) + "px";
+				window.onresize = (function() {
+					var view_h = document.documentElement.clientHeight;
+					element.style.height = parseInt((view_h / 100) * 50) + "px";
 
-			            return arguments.callee;
-			        })();
-		    })();
+					return arguments.callee;
+				})();
+			})();
 
-		    x.subscribe("chat_" + id, "stats_updated", function(data) {
-		        $(".js-room-statistics").html(ending(data.online, "участник", "участника", "участников"));
-		    });
+			x.subscribe("chat_" + id, "stats_updated", function(data) {
+				$(".js-room-statistics").html(ending(data.online, "участник", "участника", "участников"));
+			});
 
-		    x.subscribe("chat_" + id, "edit_room", function(data) {
-		        $(".js-room-title").html(data.title);
-		    });
+			x.subscribe("chat_" + id, "edit_room", function(data) {
+				$(".js-room-title").html(data.title);
+			});
 
-		    var lastMessage = [];
-	        var addInfoMessage = function(message) {
-	                var node = $(template("template_message_info", {"message": message}));
-	                $("#placeholder_messages").append(node);
-	                node.slideUp(0).slideDown(500);
-	            },
-	            addErrorMessage = function(message) {
-	                var node = $(template("template_message_error", {"message": message}));
-	                $("#placeholder_messages").append(node);
-	                node.slideUp(0).slideDown(500);
-	            },
-	            addMessage = function(id, date, message) {
-	                var message_re = new RegExp("(&gt;&gt;"+ your_messages.join("|&gt;&gt;") +")\\b", "g");
+			var lastMessage = [];
+			var addInfoMessage = function(message) {
+				var node = $(template("template_message_info", {"message": message}));
+				$("#placeholder_messages").append(node);
+				node.slideUp(0).slideDown(500);
+			},
+			addErrorMessage = function(message) {
+				var node = $(template("template_message_error", {"message": message}));
+				$("#placeholder_messages").append(node);
+				node.slideUp(0).slideDown(500);
+			},
+			addMessage = function(id, date, message) {
+				var message_re = new RegExp("(&gt;&gt;"+ your_messages.join("|&gt;&gt;") +")\\b", "g");
 
-	                if (your_messages.length && message_re.test(message)) {
-	                    message = message.replace(message_re, '<b style="border-bottom:1px dotted #555;">$1</b>');
-	                }
+				if (your_messages.length && message_re.test(message)) {
+					message = message.replace(message_re, '<b style="border-bottom:1px dotted #555;">$1</b>');
+				}
 
-	                if (waiting) {
-				        if (window.webkitNotifications) {
-				            if (window.webkitNotifications.checkPermission() == 0 && notify) {
-				                if (notifier) notifier.cancel();
-				                notifier = window.webkitNotifications.createNotification("", _title, $(message).text());
-				                notifier.show();
-				            }
-				        }
+				if (waiting) {
+					if (window.webkitNotifications) {
+						if (window.webkitNotifications.checkPermission() == 0 && notify) {
+							if (notifier) notifier.cancel();
+							notifier = window.webkitNotifications.createNotification("", _title, $(message).text());
+							notifier.show();
+						}
+					}
 
-				        document.title = " ★ " + _title + " ★ ";
-				    }
+					document.title = " ★ " + _title + " ★ ";
+				}
 
-	                var node = $(template("template_message_normal", {"id": id, "date": date, "message": message}));
-	                $("#placeholder_messages").append(node);
-	                $(node).fadeOut(0).fadeIn(300);
-	            },
-	            addPasswordMessage = function() {
-	                $("#placeholder_messages").append(template("template_message_password", {}));
-	                $("#password_form").submit(function() {
-	                    $.post(
-	                        location.protocol + "//"+ location.host +"/chat/"+ id +"/",
-	                        {
-	                            "command":  "checkpassword",
-	                            "password": $(".js-room-password").val()
-	                        },
-	                        function(data, status) {
-	                            if (status !== "error") {
-	                                if (data) {
-	                                    channel_id = data;
-	                                    password = $(".js-room-password").val();
-	                                    $("#password_form").html("Успешно авторизирован.");
-	                                    enterChat();
-	                                } else {
-	                                    $(".js-room-password").attr("disabled", "disabled").val("Пароль неверный");
-	                                    setTimeout(function() {
-	                                        $(".js-room-password").attr("disabled", null).val("");
-	                                    }, 2000);
-	                                }
-	                            }
-	                        },
-	                        "json"
-	                    );
-	                    return false;
-	                });
+				var node = $(template("template_message_normal", {"id": id, "date": date, "message": message}));
+				$("#placeholder_messages").append(node);
+				$(node).fadeOut(0).fadeIn(300);
+			},
+			addPasswordMessage = function() {
+				$("#placeholder_messages").append(template("template_message_password", {}));
+				$("#password_form").submit(function() {
+					$.post(
+						location.protocol + "//"+ location.host +"/chat/"+ id +"/",
+						{
+							"command":  "checkpassword",
+							"password": $(".js-room-password").val()
+						},
+						function(data, status) {
+							if (status !== "error") {
+								if (data) {
+									channel_id = data;
+									password = $(".js-room-password").val();
+									$("#password_form").html("Успешно авторизирован.");
+									enterChat();
+								} else {
+									$(".js-room-password").attr("disabled", "disabled").val("Пароль неверный");
+									setTimeout(function() {
+										$(".js-room-password").attr("disabled", null).val("");
+									}, 2000);
+								}
+							}
+						},
+						"json"
+					);
+					return false;
+				});
 
-	            },
-	            enterChat = function() {
-	                $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "welcome"}, function(data, status) {
-	                    if (status !== "error")
-	                    {
-	                        addInfoMessage("Добро пожаловать в комнату <b>«"+ data.title +'»</b> (<a href="' + location.protocol + '//'+ location.host +'/chat/log/'+ id +'/">лог комнаты</a>). <br />Описание: '+ data.description +'<br /><a href="/help/rules/#chat">Правила раздела</a>, <a href="/help/markup/">разметка сообщений</a>.');
-	                        if (data.info)
-	                            addInfoMessage(data.info);
+			},
+			enterChat = function() {
+				$.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "welcome"}, function(data, status) {
+						if (status !== "error")
+						{
+							addInfoMessage("Добро пожаловать в комнату <b>«"+ data.title +'»</b> (<a href="' + location.protocol + '//'+ location.host +'/chat/log/'+ id +'/">лог комнаты</a>). <br />Описание: '+ data.description +'<br /><a href="/help/rules/#chat">Правила раздела</a>, <a href="/help/markup/">разметка сообщений</a>.');
+							if (data.info)
+								addInfoMessage(data.info);
 
-	                        x.subscribe("chat_" + channel_id, "message", function(data) {
-		                        switch(data.type) {
-		                            case 'normal':
-		                                addMessage(data.id, data.date, data.message);
-		                                break;
-		                            case 'info':
-		                                addInfoMessage(data.message);
-		                                break;
-		                            case 'error':
-		                                addErrorMessage(data.message);
-		                                break;
-		                        }
-		                    });
+							x.subscribe("chat_" + channel_id, "message", function(data) {
+								switch(data.type) {
+									case 'normal':
+										addMessage(data.id, data.date, data.message);
+										break;
+									case 'info':
+										addInfoMessage(data.message);
+										break;
+									case 'error':
+										addErrorMessage(data.message);
+										break;
+								}
+							});
 
-		                    $(".js-message-textarea").attr("disabled", null)
-			                    .bind("keyup", function(e) {
-			                        var lastCode = $(this).data("lastCode");
+							$(".js-message-textarea").attr("disabled", null)
+								.bind("keyup", function(e) {
+									var lastCode = $(this).data("lastCode");
 
-				                    if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
-					                    $("#message_form").submit();
-				                    }
+									if ((e.ctrlKey || e.metaKey) && (e.keyCode==10 || e.keyCode==13)) {
+										$("#message_form").submit();
+									}
 
-				                    if ((e.ctrlKey || e.metaKey) && (e.keyCode==38)) {
-					                    $(this).val(lastMessage.pop());
-				                    }
+									if ((e.ctrlKey || e.metaKey) && (e.keyCode==38)) {
+										$(this).val(lastMessage.pop());
+									}
 
-				                    if ((e.keyCode==10 || e.keyCode==13) && (lastCode==10 || lastCode==13)) {
-					                    $("#message_form").submit();
-				                    }
+									if ((e.keyCode==10 || e.keyCode==13) && (lastCode==10 || lastCode==13)) {
+										$("#message_form").submit();
+									}
 
-			                        $(this).data("lastCode", e.keyCode);
-			                    })
-			                    .one("click", function() {
-			                        if (window.webkitNotifications) {
-	                                    window.webkitNotifications.requestPermission(function() {
-	                                        if (window.webkitNotifications.checkPermission() == 0)
-	                                            notify = true;
-	                                    });
-	                                }
-	                            });
+									$(this).data("lastCode", e.keyCode);
+								})
+								.one("click", function() {
+									if (window.webkitNotifications) {
+										window.webkitNotifications.requestPermission(function() {
+											if (window.webkitNotifications.checkPermission() == 0)
+												notify = true;
+										});
+									}
+								});
 
-			                $(".js-message-submit").attr("disabled", null);
+							$(".js-message-submit").attr("disabled", null);
 
-		                    $("#message_form").submit(function() {
-		                        $(".js-message-submit").attr("disabled", "disabled");
-		                        $.post(
-	                                location.protocol + "//"+ location.host +"/chat/"+ id +"/",
-	                                {
-	                                    "command":  "message",
-	                                    "password":  password || '',
-	                                    "message":  $(".js-message-textarea").val()
-	                                },
-	                                function(data) {
-	                                    if (data.error == false) {
-	                                        lastMessage.push($(".js-message-textarea").val());
-	                                        your_messages.push(data.id);
-	                                        $(".js-message-textarea").val("");
-	                                    } else
-	                                        addErrorMessage(data.errors);
+							$("#message_form").submit(function() {
+								$(".js-message-submit").attr("disabled", "disabled");
+								$.post(
+									location.protocol + "//"+ location.host +"/chat/"+ id +"/",
+									{
+										"command":  "message",
+										"password":  password || '',
+										"message":  $(".js-message-textarea").val()
+									},
+									function(data) {
+										if (data.error == false) {
+											lastMessage.push($(".js-message-textarea").val());
+											your_messages.push(data.id);
+											$(".js-message-textarea").val("");
+										} else
+											addErrorMessage(data.errors);
 
-	                                    $(".js-message-submit").attr("disabled", null);
-	                                },
-	                                "json"
-	                           );
-		                        return false;
-		                    });
+										$(".js-message-submit").attr("disabled", null);
+									},
+									"json"
+							   );
+								return false;
+							});
 
-		                    setInterval(function() {
-		                        $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "ping"});
-		                    }, 1000 * 30);
-	                    }
-	                });
+							setInterval(function() {
+								$.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "ping"});
+							}, 1000 * 30);
+						}
+				});
 
-	                $(document.body).on("click", ".js-message-from-link", function() {
-	                    insertText(">>" + this.title +", ");
-	                    return false;
-	                });
-	            };
+				$(document.body).on("click", ".js-message-from-link", function() {
+					insertText(">>" + this.title +", ");
+					return false;
+				});
+			};
 
-	        $.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "enter"}, function(data, status) {
-	            if (status !== "error")
-	            {
-	                if (data == null)
-	                    return addErrorMessage("Запрошенный канал не существует.");
+			$.getJSON(location.protocol + "//"+ location.host +"/chat/"+ id +"/", {"command": "enter"}, function(data, status) {
+				if (status !== "error") {
+					if (data == null)
+						return addErrorMessage("Запрошенный канал не существует.");
 
-	                if (data == false)
-	                    return addPasswordMessage();
+					if (data == false)
+						return addPasswordMessage();
 
-                    channel_id = data;
-	                enterChat();
-	            }
-	        });
-	    }
+					channel_id = data;
+					enterChat();
+				}
+			});
+		}
 	});
 
 	x.addPageProcessor("*", function() {
 		var to = null,
-		    reloadOnlineLinks = function() {
+			reloadOnlineLinks = function() {
 			$.getJSON(location.protocol + "//"+ location.host +"/live/?num=12", function(data, status) {
 				if (status != "error") {
 					if (data.length == 0) {
@@ -2594,10 +2583,10 @@
 			};
 
 		$(".b-live-entry_b-description, .b-blog-entry_b-header a.m-external").click(function(e) {
-            var  w = window.open();
-            w.document.write('<meta http-equiv="refresh" content="0;url='+ $(this).attr("href") +'">');
-            w.document.close();
-            return false;
+			var  w = window.open();
+			w.document.write('<meta http-equiv="refresh" content="0;url='+ $(this).attr("href") +'">');
+			w.document.close();
+			return false;
 		});
 
 		$("#stats_block")
@@ -2610,12 +2599,12 @@
 			})
 			.mouseenter(function() {
 				$.getJSON(location.protocol + "//"+ location.host +"/service/getGlobalStats/", {}, function(data, status) {
-				    $("#stats_online").html(data["global_online"]);
-			        $("#stats_hosts").html(data["global_unique"]);
-			        $("#stats_posts").html(data["global_posts"]);
-			        $("#stats_unique_posters").html(data["global_unique_posters"]);
-			        $("#stats_speed").html(data["global_speed"]);
-			    });
+					$("#stats_online").html(data["global_online"]);
+					$("#stats_hosts").html(data["global_unique"]);
+					$("#stats_posts").html(data["global_posts"]);
+					$("#stats_unique_posters").html(data["global_unique_posters"]);
+					$("#stats_speed").html(data["global_speed"]);
+				});
 			})
 			.mouseleave(function() {
 				to = setTimeout(function() {
@@ -2623,7 +2612,8 @@
 				}, 500);
 			});
 
-		$(".js-links-panel").mouseover(function() {
+		$(".js-links-panel")
+			.mouseover(function() {
 				$(".js-close-right-panel").removeClass("g-hidden");
 			})
 			.mouseleave(function() {
@@ -2631,10 +2621,10 @@
 			});
 
 		$(".js-close-right-panel").click(function() {
-		    $.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "off"}, function(data, status) {
-		        $(".l-right-panel-wrap").remove();
-		    });
-		    return false;
+			$.getJSON(location.protocol + "//"+ location.host +"/live/linksPanel/", {status: "off"}, function(data, status) {
+				$(".l-right-panel-wrap").remove();
+			});
+			return false;
 		});
 
 		$("#ajax_loader").ajaxSend(function() {
@@ -2669,8 +2659,7 @@
 
 		var waiting = false, queue = [], showNotify = function(data, thread) {
 			thread = thread || false;
-			if (thread)
-			{
+			if (thread) {
 				var link = data.link;
 				notify(
 					"Новый тред в разделе &laquo;"+ data.board +"&raquo;:", 
@@ -2679,9 +2668,8 @@
 						window.open(link);
 					}
 				);
-			}
-			else
-			{
+			} 
+			else {
 				var link = data.link;
 				notify(
 					"Новый пост в треде &laquo;"+ data.title +"&raquo; (раздел "+ data.board +"):", 
@@ -2699,13 +2687,11 @@
 			})
 			.bind("focus", function() {
 				waiting = false;
-				if (queue.length)
-				{
+				if (queue.length) {
 					for(var i in queue)
-					if (queue.hasOwnProperty(i))
-					{
-						showNotify(queue[i], !("post" in queue[i]));
-					}
+						if (queue.hasOwnProperty(i)) {
+							showNotify(queue[i], !("post" in queue[i]));
+						}
 					queue = [];
 				}
 			});
@@ -2733,8 +2719,7 @@
 			if (message) {
 				var j = 0;
 				for(var i in message)
-				if (message.hasOwnProperty(i))
-				{
+				if (message.hasOwnProperty(i)) {
 					(function(data, j) { setTimeout(function() {
 						showNotify(data, !("post" in data));
 					}, 10000 * Math.floor(j / 5))})($.parseJSON(message[i]), j++);
@@ -2861,7 +2846,7 @@
 	/**
 	 * ----------------------------------------------- *
 	 */
-	function ending(num, n1, n2, n5){
+	function ending(num, n1, n2, n5) {
 		num = num.toString();
 		ch = parseInt(num.substr(-1, 1));
 
@@ -2882,54 +2867,46 @@
 	};
 
 	var cache = {};
-	function template(str, data){
-		var fn = !/\W/.test(str) ?
-		  cache[str] = cache[str] ||
-		    template(document.getElementById(str).value) :
-
-		  new Function("obj",
-		    "var p=[],print=function(){p.push.apply(p,arguments);};" +
-		    "with(obj){p.push('" +
-		    str
-		      .replace(/[\r\t\n]/g, " ")
-		      .split("<%").join("\t")
-		      .replace(/((^|%>)[^\t]*)'/g, "$1\r")
-		      .replace(/\t=(.*?)%>/g, "',$1,'")
-		      .split("\t").join("');")
-		      .split("%>").join("p.push('")
-		      .split("\r").join("\\'")
-		  + "');}return p.join('');");
+	function template(str, data) {
+		// What le fuck is this
+		var fn = !/\W/.test(str) 
+			? cache[str] = cache[str] || template(document.getElementById(str).value) 
+			: new Function("obj",
+				"var p=[],print=function(){p.push.apply(p,arguments);};" +
+				"with(obj){p.push('" +
+				str	.replace(/[\r\t\n]/g, " ")
+					.split("<%").join("\t")
+					.replace(/((^|%>)[^\t]*)'/g, "$1\r")
+					.replace(/\t=(.*?)%>/g, "',$1,'")
+					.split("\t").join("');")
+					.split("%>").join("p.push('")
+					.split("\r").join("\\'")
+				+ "');}return p.join('');");
 
 		return data ? fn( data ) : fn;
 	  };
 
-	function insertText(text)
-	{
+	function insertText(text) {
 		var textarea = document.getElementById("comment_form_text");
-		if(textarea)
-		{
-			if(textarea.createTextRange && textarea.caretPos)
-			{
+		if(textarea) {
+			if(textarea.createTextRange && textarea.caretPos) {
 				var caretPos=textarea.caretPos;
 				caretPos.text=caretPos.text.charAt(caretPos.text.length-1)==" "?text+" ":text;
 			}
-			else if(textarea.setSelectionRange)
-			{
+			else if(textarea.setSelectionRange) {
 				var start=textarea.selectionStart;
 				var end=textarea.selectionEnd;
 				textarea.value=textarea.value.substr(0,start)+text+textarea.value.substr(end);
 				textarea.setSelectionRange(start+text.length,start+text.length);
 			}
-			else
-			{
+			else {
 				textarea.value+=text+" ";
 			}
 			textarea.focus();
 		}
 	};
 
-	function notify(title, text, click, silent)
-	{
+	function notify(title, text, click, silent)	{
 		title  = title  || "";
 		text   = text   || "";
 		click  = click  || function() { $(this).remove(); };
@@ -2942,13 +2919,13 @@
 
 		$(".js-notifiers").append(node);
 		node.show("clip", 500, 
-				function() {
-					var t = this;
-					setTimeout(function() {
-						$(t).hide("fade", 1000, function() { $(this).remove(); });
-					}, 10000);
-				}
-			)
+			function() {
+				var t = this;
+				setTimeout(function() {
+					$(t).hide("fade", 1000, function() { $(this).remove(); });
+				}, 10000);
+			}
+		)
 	}
 
 	$.get("http://"+ location.host +"/auth", function(data, status) {

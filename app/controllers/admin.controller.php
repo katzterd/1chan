@@ -716,14 +716,57 @@ class AdminController extends Controller
 			die($application -> go('errors_error401'));
 		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (array_key_exists('upload', $_FILES))
-				StaticModel::CreateFile($_FILES['upload']);
+			$this['form_submitted'] = true;
+			$errors = [];
+			list($file, $dir, $name) = [ @$_FILES['upload'], @$_POST['dir'], @$_POST['name'] ];
+			if (!$file) {
+				$errors []= "Файл отсутствует";
+			}
+			else {
+				preg_match('/^([a-zA-Z0-9._ -]+)\.([a-zA-Z0-9_-]+)$/', $file['name'], $file_name);
+				$ext = @$file_name[2];
+			}
+			if (! in_array($dir, ["/uploads/", "/ico/homeboards/", "/img/smilies/"])) {
+				$errors []= "Некорректная директория загрузки ($dir)";
+			}
+			elseif ($dir != "/uploads/" && (!@$ext || !preg_match('/^ico|gif|jpe?g|png|webp$/', $ext))) {
+				$errors []= "Некорректный тип файла (.$ext)";
+			}
+			if ($name) {
+				if (!preg_match('/^[a-zA-Z0-9._ -]+$/', $name)) {
+					$errors []= "Некорректное имя файла ($name)";
+				}
+				else {
+					$file_name = $name . (@$ext ? ".".strtolower($ext) : "");
+				}
+			}
+			else {
+				$file_name = $file['name'];
+			}
+			if ($dir == "/img/smilies/") {
+				$file_name = preg_replace('/ /', "_", $file_name);
+			}
+
+			if (!count($errors)) {
+				$upload_result = StaticModel::CreateFile($file, $dir, $file_name);
+				if ($upload_result) {
+					$this['success'] = "Файл \"$file_name\" загружен";
+				}
+				else {
+					$errors []= "Ошибка загрузки файла";
+				}
+			}
 		}
 		
 		$template -> setParameter('menu', 'static');
 		$template -> setParameter('submenu', 'static_files');
 
+		if (isset($errors)) $this['errors'] = $errors;
+
 		$this['files'] = StaticModel::GetFiles();
+		$this['homeboards'] = HomeBoardHelper::listFiles();
+		$this['smilies'] = TexyHelper::getSmilies();
+
 		return true;
 	}
 

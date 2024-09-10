@@ -99,19 +99,21 @@ class StaticModel
 	/**
 	 * Добавление файла
 	 */
-	public static function CreateFile($file)
-	{
-		if (is_uploaded_file($file['tmp_name']))
-		{
-			$cache = KVS::getInstance();
-			$files_record = unserialize($cache -> get(__CLASS__, null, 'file_list'));
-			$files = $files_record ? (array)$files_record : array();
+	public static function CreateFile($file, $dir="/uploads/", $name=null) {
+		if (!is_uploaded_file($file['tmp_name'])) return false;
 
-			move_uploaded_file($file['tmp_name'], WEB_DIR .'/uploads/'. $file['name']);
-			array_unshift($files, $file);
+		$cache = KVS::getInstance();
+		$files_record = unserialize($cache -> get(__CLASS__, null, 'file_list'));
+		$files = $files_record ? (array)$files_record : array();
 
-			$cache -> set(__CLASS__, null, 'file_list', serialize($files));
-		}
+		if ($name) $file['name'] = $name;
+		$upload_result = move_uploaded_file($file['tmp_name'], WEB_DIR . $dir . $file['name'] );
+		if (!$upload_result) return false;
+		
+		array_unshift($files, $file);
+		$cache -> set(__CLASS__, null, 'file_list', serialize($files));
+		
+		return true;
 	}
 
 	/**

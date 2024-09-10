@@ -712,11 +712,10 @@ class AdminController extends Controller
 	 */
 	public function staticFilesAction(Application $application, Template $template)
 	{
-		if (!$this->isAdmin){
+		if (!$this->isAdmin) {
 			die($application -> go('errors_error401'));
 		}
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if (array_key_exists('upload', $_FILES))
 				StaticModel::CreateFile($_FILES['upload']);
 		}

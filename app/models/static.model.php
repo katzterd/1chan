@@ -104,7 +104,8 @@ class StaticModel
 		if (is_uploaded_file($file['tmp_name']))
 		{
 			$cache = KVS::getInstance();
-			$files = (array)unserialize($cache -> get(__CLASS__, null, 'file_list'));
+			$files_record = unserialize($cache -> get(__CLASS__, null, 'file_list'));
+			$files = $files_record ? (array)$files_record : array();
 
 			move_uploaded_file($file['tmp_name'], WEB_DIR .'/uploads/'. $file['name']);
 			array_unshift($files, $file);

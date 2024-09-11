@@ -4,7 +4,7 @@ import sizeof from 'image-size'
 import { cacheSet } from '#inc/kvs.js'
 
 const www = '../www'
-const smilies_dir = `${www}/img/smilies`
+export const smilies_dir = `${www}/img/smilies`
 const img_ext = ['gif', 'png', 'jpg', 'jpeg', 'wepb']
 
 export async function updateSmilies() {

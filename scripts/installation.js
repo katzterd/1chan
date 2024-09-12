@@ -61,7 +61,7 @@ else {
 
 console.log('\n')
 
-installSmilies()
-installHomeboards()
+await installSmilies()
+await installHomeboards()
 
 process.exit(1)

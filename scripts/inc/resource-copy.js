@@ -9,6 +9,7 @@ const smilies_res_dir = '../resources/smilies'
 export async function installSmilies() {
 	try {
 		const directoryExists = await fs.access(smilies_dir)
+		log.succ('Директория смайликов существует')
 	}
 	catch(e) {
 		log.warn('Директории смайликов не существует. Будет скопирован дефолтный набор.')
@@ -22,6 +23,7 @@ const homeboards_dir = '../www/ico/homeboards'
 export async function installHomeboards() {
 	try {
 		const directoryExists = await fs.access(homeboards_dir)
+		log.succ('Директория иконок принадлежности существует')
 	}
 	catch(e) {
 		log.warn('Директории иконок принадлежности не существует. Будет скопирован дефолтный набор.')

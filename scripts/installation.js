@@ -3,6 +3,7 @@ import { checkDB, dumpSQL } from '#inc/database.js'
 import chalk from 'chalk'
 import prompts from 'prompts'
 import { listAdmins, createAdmin } from '#inc/admin.js'
+import { installSmilies, installHomeboards } from '#inc/resource-copy.js'
 
 console.log(chalk.bold.hex('#fd5b00').inverse(`1chan installation script v.${process.env.npm_package_version}`))
 
@@ -57,5 +58,10 @@ else {
 		}
 	}
 }
+
+console.log('\n')
+
+installSmilies()
+installHomeboards()
 
 process.exit(1)

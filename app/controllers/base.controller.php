@@ -37,6 +37,7 @@ class BaseController extends Controller
 		$template -> setParameter('boards', $boards);
 
 		$template -> setParameter('global_top_panel', TemplateHelper::getTopPanelPresentation());
+		$template -> setParameter('favicon', TemplateHelper::getFavicon());
 
 		$template -> setParameter('global_unique',          $stats['unique']);
 		$template -> setParameter('global_online',          $stats['online']);

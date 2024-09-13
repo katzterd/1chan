@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>1chan | Администраторская</title>
+<?= $this -> getParameter('favicon') ?>
 <link href="/admin_style/css/transdmin.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="/js/jquery-3.7.1.min.js"></script>
 </head>

@@ -17,6 +17,7 @@ class AdminController extends Controller
 		if (!$this->isAdmin && !$this->isMod) {
 			die($application -> go('errors_error401'));
 		}
+		$template -> setParameter('favicon', TemplateHelper::getFavicon());
 	}
 
 	/**
@@ -1081,4 +1082,23 @@ class AdminController extends Controller
 		return true;
 	}
 
+	/**
+	 * Установка фавикона:
+	 */
+	public function faviconAction(Application $application, Template $template)
+	{
+		if (!$this->isAdmin) {
+			die($application -> go('errors_error401'));
+		}
+		$template -> setParameter('menu', 'posts');
+		$template -> setParameter('submenu', 'favicon');
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
+			$favicon = @$_POST['favicon'] ?? "";
+			TemplateHelper::saveFavicon($favicon);
+		}
+
+		return true;
+	}
 }

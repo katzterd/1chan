@@ -252,4 +252,26 @@ class TemplateHelper
 		$cache = KVS::getInstance();
 		$cache -> set('TopPanel', null, 'list', serialize($model));
 	}
+
+	private static $favicon = null;
+
+	public static function getFavicon() {
+		if (self::$favicon == null) {
+			$cache = KVS::getInstance();
+			if ($cache -> exists(__CLASS__, null, 'favicon')) {
+				self::$favicon = @($cache -> get(__CLASS__, null, 'favicon')) ?? "";
+			}
+			else {
+				$favicon = '<link rel="icon" type="image/png" href="/ico/favicon.png" />';
+				self::$favicon = $favicon;
+				self::saveFavicon($favicon);
+			}
+		}
+		return self::$favicon;
+	}
+
+	public static function saveFavicon($value) {
+		$cache = KVS::getInstance();
+		$cache -> set(__CLASS__, null, 'favicon', $value);
+	}
 }

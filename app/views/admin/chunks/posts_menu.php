@@ -17,4 +17,5 @@
 	<li><a href="/admin/blogLog"<?php if ($this -> getParameter('submenu') == "log"): ?> class="active"<?php endif; ?>>Лог управления</a></li>
 	<li><a href="/admin/homeBoards"<?php if ($this -> getParameter('submenu') == "homeboards"): ?> class="active"<?php endif; ?>>Принадлежности</a></li>
 	<li><a href="/admin/topPanel"<?php if ($this -> getParameter('submenu') == "top_panel"): ?> class="active"<?php endif; ?>>Верхнее меню</a></li>
+	<li><a href="/admin/favicon"<?php if ($this -> getParameter('submenu') == "favicon"): ?> class="active"<?php endif; ?>>Фавикон</a></li>
 </ul>

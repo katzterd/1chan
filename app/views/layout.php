@@ -6,8 +6,7 @@
 		<meta name="keywords" content="<?php echo META_KEYWORDS ?>" />
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
 		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
-		<link rel="icon"       type="image/png" href="/ico/favicon.png<?php echo ICONS_VERSION ?>" />
-		
+		<?= $this -> getParameter('favicon') ?>
 		<link rel="stylesheet" type="text/css"  href="/css/common.css<?php echo CSS_VERSION ?>" media="all" />
 		<?php $theme = $this -> getParameter('global_theme'); ?>
 		<?php if ($theme): ?>

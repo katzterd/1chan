@@ -2835,6 +2835,62 @@
 		})
 	})
 
+	x.addPageProcessor('*', function() {
+		$('p > a[href*=youtu]').each(function() {
+			var $link = $(this)
+			var postID = $link
+				.parents('.b-comment, .b-blog-entry')
+				.attr('id').match(/(\d+)/)
+			if (!postID) return;
+			postID = postID[0]
+			var videoID = $link.attr('href')
+				.match(/(v=)?(%3D)?(\/)?(%2F)?([_\-\d\w+]{11})/)
+			if (!videoID) return;
+			videoID = videoID[5]
+			var videoSRC = 'https://www.youtube-nocookie.com/embed/' + videoID
+			, imageSRCbig  = 'https://i.ytimg.com/vi/' + videoID + '/0.jpg'
+			, imageSRCmini = 'https://i.ytimg.com/vi/' + videoID + '/default.jpg'
+			, videoBlockID = 'video' + postID + videoID
+			, imageBlockID = 'image' + postID + videoID
+			, videoHTML = $('<embed />').attr({
+				type: '',
+				width: 560,
+				height: 315,
+				src: videoSRC,
+				wmode: 'transparent'
+			})
+			, closeButton = $('<button />')
+				.click(function() {
+					$('#'+videoBlockID).slideUp(1000)
+					$('#'+imageBlockID).slideDown(1000)
+				})
+				.text('×')
+			, imageHTMLbig = $('<img />').attr({
+				src: imageSRCmini
+			}).css({
+				width: 560,
+				height: 315
+			})
+			, imageHTMLmini = $('<img />').attr({
+				src: imageSRCmini
+			})
+			$('<div />')
+				.attr({ id: videoBlockID })
+				.css({ display: 'none' })
+				.append(videoHTML)
+				.append(closeButton)
+				.insertAfter(this)
+			$('<div />')
+				.attr({ id: imageBlockID })
+				.append(imageHTMLmini)
+				.click(function() {
+					$link.slideUp(1000)
+					$('#'+videoBlockID).slideDown(1000)
+				})
+				.insertAfter(this)
+		})
+	})
+
 	/**
 	 * ----------------------------------------------- *
 	 */

@@ -40,7 +40,6 @@
 		<script type="text/javascript" src="/js/jquery-ui/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/production.js<?php echo JS_VERSION ?>"></script>
-		<script type="text/javascript" src="/js/youtube.js"></script>
 	</head>
 
 	<body id="<?php echo(Session::getInstance() -> getKey()); ?>">

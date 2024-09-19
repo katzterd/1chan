@@ -103,80 +103,88 @@
 			</div>
 
 			<?php if($this -> getParameter('right_panel')): ?>
-            		<div class="l-right-panel-wrap">
-			    <div class="b-links-panel js-links-panel">
-			         <div class="b-links-panel_b-title">
-			            <h2>Онлайн ссылки</h2>
-			        </div>
-			        <div class="b-links-panel_b-links">
-			            <div id="placeholder_link_panel">
-			            <?php $links = $this -> getParameter('online_links', array()); ?>
-			            <?php if (!empty($links)): ?>
-				            <?php foreach($links as $link): ?>
-				            <div class="b-live-entry">
-					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><?php echo($link['category']['title']); ?></a>
-				            </div>
-				            <?php endforeach; ?>
+				<div class="l-right-panel-wrap">
+					<div class="b-links-panel js-links-panel">
+						<div class="b-links-panel_b-title">
+							<h2>Онлайн ссылки</h2>
+						</div>
+						<div class="b-links-panel_b-links">
+							<div id="placeholder_link_panel">
+								<?php $links = $this -> getParameter('online_links', array()); ?>
+								<?php if (!empty($links)): ?>
+									<?php foreach($links as $link): ?>
+										<div class="b-live-entry">
+											<a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><?php echo($link['category']['title']); ?></a>
+										</div>
+									<?php endforeach; ?>
 
-			            <?php else: ?>
-			                <em>Нет активных ссылок</em>
-			            <?php endif; ?>
-			            </div>
-			            <textarea id="template_link_panel" style="display:none">
-					        <div class="b-live-entry">
-						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
-					        </div>
-				        </textarea>
-				    </div>
-				    <div class="b-links-panel_b-footer">
-				        <a href="/live/">К подробному списку &rarr;</a>
-				    </div>
-				    <div class="b-links-panel_b-hide">
-				    	<a href="/live/linksPanel/?status=off" class="b-links-panel_b-title_b-close g-dynamic js-close-right-panel g-hidden">Скрыть панель</a>
+								<?php else: ?>
+									<em>Нет активных ссылок</em>
+								<?php endif; ?>
+							</div>
+							<textarea id="template_link_panel" style="display:none">
+								<div class="b-live-entry">
+									<a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
+								</div>
+							</textarea>
+						</div>
+						<div class="b-links-panel_b-footer">
+							<a href="/live/">К подробному списку &rarr;</a>
+						</div>
+						<div class="b-links-panel_b-hide">
+							<a href="/live/linksPanel/?status=off" class="b-links-panel_b-title_b-close g-dynamic js-close-right-panel g-hidden">Скрыть панель</a>
+						</div>
 					</div>
+
+					<?php if ($this -> getParameter('right-side-bar')): ?>
+						<div class="b-menu-panel"><?= $this -> getParameter('right-side-bar') ?></div>
+					<?php endif; ?>
 				</div>
-			</div>
 			<?php endif; ?>
 
 			<div class="l-left-panel-wrap">
-			    <div class="b-menu-panel">
-			         <div class="b-menu-panel_b-title">
-			            <h2>Первый канал</h2>
-			        </div>
-			        <div class="b-menu-panel_b-links">
-			            <ul>
-			            	<li<?php if($this -> getParameter('board_id') == 'news'): ?> class="m-active"<?php endif; ?>><a href="/news/">Одобренные</a> | <a href="/news/all/">Все</a></li>
-			            	<li class="b-menu-panel_b-footer">
-						<a class="hidden" href="/news/hidden/">Скрытые</a>
-				        </li>
-				    </ul>
-				    </div>
+				<div class="b-menu-panel">
+					<div class="b-menu-panel_b-title">
+						<h2>Первый канал</h2>
+					</div>
+					<div class="b-menu-panel_b-links">
+						<ul>
+							<li<?php if($this -> getParameter('board_id') == 'news'): ?> class="m-active"<?php endif; ?>><a href="/news/">Одобренные</a> | <a href="/news/all/">Все</a></li>
+							<li class="b-menu-panel_b-footer">
+								<a class="hidden" href="/news/hidden/">Скрытые</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 
-			    <div class="b-menu-panel">
-			         <div class="b-menu-panel_b-title">
-			            <h2>Общение</h2>
-			        </div>
-			          <div class="b-menu-panel_b-links">
-			            <ul>
-			            	<?php if (empty($this -> getParameter('boards'))): ?>
-			            		<li>Нет активных разделов</li>
-										<?php else: ?>
-											<?php foreach($this -> getParameter('boards') as $board): ?>
-												<?php if (!@$board['hidden']): ?>
-												<li <?= $this -> getParameter('board_id') == $board['title'] ? 'class="m-active"' : '' ?>>
-													<a href="/<?= $board['title'] ?>/">/<?= $board['title'] ?>/ - <?= $board['description'] ?></a>
-												</li>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										<?php endif; ?>
-			            	<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="/fav/">Избранные треды</a></li>
-				        <li class="b-menu-panel_b-footer">
-				            <a href="/service/last_board_posts/">&larr; последние посты</a>
-				        </li>
-				    </ul>
-				    </div>
+				<div class="b-menu-panel">
+					<div class="b-menu-panel_b-title">
+						<h2>Общение</h2>
+					</div>
+					<div class="b-menu-panel_b-links">
+						<ul>
+							<?php if (empty($this -> getParameter('boards'))): ?>
+								<li>Нет активных разделов</li>
+							<?php else: ?>
+								<?php foreach($this -> getParameter('boards') as $board): ?>
+									<?php if (!@$board['hidden']): ?>
+									<li <?= $this -> getParameter('board_id') == $board['title'] ? 'class="m-active"' : '' ?>>
+										<a href="/<?= $board['title'] ?>/">/<?= $board['title'] ?>/ - <?= $board['description'] ?></a>
+									</li>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							<?php endif; ?>
+							<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="/fav/">Избранные треды</a></li>
+							<li class="b-menu-panel_b-footer">
+									<a href="/service/last_board_posts/">&larr; последние посты</a>
+							</li>
+						</ul>
+					</div>
 				</div>
+
+				<?php if ($this -> getParameter('left-side-bar')): ?>
+					<div class="b-menu-panel"><?= $this -> getParameter('left-side-bar') ?></div>
+				<?php endif; ?>
 			</div>
 
 			<div class="l-content-wrap">
@@ -193,46 +201,31 @@
 				<?php $_footer_links = Blog_BlogLinksModel::GetLinks(); ?>
 				<div class="b-footer-imgboards">
 					<h2>Имиджборды:</h2>
-					<ul>
-					<?php foreach($_footer_links['imgboards'] as $link): ?>
-
+					<ul><?php foreach($_footer_links['imgboards'] as $link): ?>
 						<li>
-						<?php if(@$link['offline']): ?>
-
-							<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
-							<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
-						<?php else: ?>
-
-							<img src="<?php echo(TemplateHelper::getIcon($link['href'])); ?>" width="16" height="16" alt="" />
-							<a href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
-						<?php endif; ?>
-
+							<?php if(@$link['offline']): ?>
+								<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
+								<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
+							<?php else: ?>
+								<img src="<?php echo(TemplateHelper::getIcon($link['href'])); ?>" width="16" height="16" alt="" />
+								<a href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
+							<?php endif; ?>
 						</li>
-					<?php endforeach; ?>
-
-					</ul>
-
+					<?php endforeach; ?></ul>
 				</div>
 				<div class="b-footer-services">
 					<h2>Другие ссылки:</h2>
-					<ul>
-					<?php foreach($_footer_links['services'] as $link): ?>
-
+					<ul><?php foreach($_footer_links['services'] as $link): ?>
 						<li>
-						<?php if(@$link['offline']): ?>
-
-							<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
-							<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
-						<?php else: ?>
-
-							<img src="<?php echo(TemplateHelper::getIcon($link['href'])); ?>" width="16" height="16" alt="" />
-							<a href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
-						<?php endif; ?>
-
+							<?php if(@$link['offline']): ?>
+								<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
+								<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
+							<?php else: ?>
+								<img src="<?php echo(TemplateHelper::getIcon($link['href'])); ?>" width="16" height="16" alt="" />
+								<a href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
+							<?php endif; ?>
 						</li>
-					<?php endforeach; ?>
-
-					</ul>
+					<?php endforeach; ?></ul>
 				</div>
 				<div class="b-footer-copyrights">
 					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/"><?php echo TemplateHelper::getSiteUrl(); ?></a></span>

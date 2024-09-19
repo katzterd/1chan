@@ -1101,4 +1101,29 @@ class AdminController extends Controller
 
 		return true;
 	}
+
+	/**
+	 * Установка содержимого боковых панелей:
+	 */
+	public function sidePanelsAction(Application $application, Template $template)
+	{
+		if (!$this->isAdmin) {
+			die($application -> go('errors_error401'));
+		}
+		$template -> setParameter('menu', 'posts');
+		$template -> setParameter('submenu', 'side_panels');
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this['form_submitted'] = true;
+			foreach (['left', 'right'] as $pos) {
+				TemplateHelper::setSidePanel($pos, @$_POST[$pos] ?? "");
+			}
+		}
+
+		list($left, $right) = TemplateHelper::getSidePanels();
+		$template -> setParameter('left-side-bar', $left);
+		$template -> setParameter('right-side-bar', $right);
+
+		return true;
+	}
 }

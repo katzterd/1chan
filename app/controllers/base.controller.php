@@ -39,6 +39,10 @@ class BaseController extends Controller
 		$template -> setParameter('global_top_panel', TemplateHelper::getTopPanelPresentation());
 		$template -> setParameter('favicon', TemplateHelper::getFavicon());
 
+		list($left, $right) = TemplateHelper::getSidePanels();
+		$template -> setParameter('left-side-bar', $left);
+		$template -> setParameter('right-side-bar', $right);
+
 		$template -> setParameter('global_unique',          $stats['unique']);
 		$template -> setParameter('global_online',          $stats['online']);
 		$template -> setParameter('global_posts',           $stats['posts']);

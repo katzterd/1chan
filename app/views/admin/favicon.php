@@ -1,4 +1,4 @@
-<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Ссылки</a></h2>
+<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Фавикон</a></h2>
 <div id="main">
 	<form action="/admin/favicon" method="post" class="jsNice">
 		<h3>Установка фавикона:</h3>

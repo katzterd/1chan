@@ -274,4 +274,22 @@ class TemplateHelper
 		$cache = KVS::getInstance();
 		$cache -> set(__CLASS__, null, 'favicon', $value);
 	}
+
+	private static $side_panel_left  = null;
+	private static $side_panel_right = null;
+
+	public static function getSidePanels() {
+		$cache = KVS::getInstance();
+		foreach (['left', 'right'] as $pos) {
+			if (self::${'side_panel_'.$pos} == null) {
+				self::${'side_panel_'.$pos} = @($cache -> get(__CLASS__, 'side-panel', $pos)) ?? "";
+			}
+		}
+		return [self::$side_panel_left, self::$side_panel_right];
+	}
+
+	public static function setSidePanel($pos, $value) {
+		$cache = KVS::getInstance();
+		$cache -> set(__CLASS__, 'side-panel', $pos, $value);
+	}
 }

@@ -1,0 +1,10 @@
+.sensitive-text {
+	-webkit-text-security: disc;
+	-moz-text-security: disc;
+	text-security: disc;
+}
+.sensitive-text:focus {
+	-webkit-text-security: none;
+	-moz-text-security: none;
+	text-security: none;
+}

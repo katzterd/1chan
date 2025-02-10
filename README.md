@@ -29,6 +29,3 @@ $ docker exec -t 1chan /1chan/scripts/config/docker-entrypoint.sh install
 ```
 
 frontend will appear on `http://localhost:80`
-
-### K8S way
-See in **https://github.com/rsddsdr/1chan/tree/main/k8s**

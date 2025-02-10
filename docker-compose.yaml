@@ -1,0 +1,45 @@
+services: 
+  db:
+    image: mariadb:10.5
+    container_name: db
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+    restart: always
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - 1chan
+
+  1chan:
+    build: .
+    container_name: 1chan
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    networks:
+      - 1chan
+    depends_on:
+      - db
+      - redis
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - 1chan
+
+volumes:
+  mariadb_data:
+  redis_data:
+
+networks:
+  1chan:

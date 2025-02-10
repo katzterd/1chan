@@ -8,11 +8,11 @@ import checkEnv from '#inc/check-env.js'
 export async function indexerInit() {
 	let indexerConfig = await fs.readFile('1chan.template.conf', 'utf8')
 	checkEnv([
-		"SQL_HOST",
-		"SQL_USER",
-		"SQL_PASSWORD",
-		"SQL_NAME",
-		"SQL_PORT",
+		"MARIADB_HOST",
+		"MARIADB_PORT",
+		"MARIADB_DATABASE",
+		"MARIADB_USER",
+		"MARIADB_PASSWORD",
 		"SPHINX_HOST",
 		"SPHINX_PORT",
 		"SPHINX_DATA_DIR",

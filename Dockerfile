@@ -63,4 +63,4 @@ COPY --from=builder /npm/node_modules ./scripts/node_modules
 
 EXPOSE 80
 
-ENTRYPOINT ["nginx" "-c" "/1chan/scripts/config/nginx.conf" "&" "/1chan/scripts/config/docker-entrypoint.sh"]
+ENTRYPOINT /usr/sbin/nginx -c /1chan/scripts/config/nginx.conf & /1chan/scripts/config/docker-entrypoint.sh

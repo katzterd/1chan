@@ -1,13 +1,13 @@
 services: 
   db:
-    image: mariadb:10.5
+    image: mariadb:11.6
     container_name: db
     ports:
       - "3306:3306"
     env_file:
       - .env
     environment:
-      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
     restart: always
     volumes:
       - mariadb_data:/var/lib/mysql

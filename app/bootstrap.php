@@ -16,9 +16,19 @@ define('UPLOAD_PATH',     WEB_DIR .'/uploads');
 /**
  * Загрузка .env-файла:
  */
+/*
 $env = parse_ini_file(APPLICATION_DIR . '/../.env');
 foreach($env as $k => $v) {
 	$v = explode('#', $v)[0]; // remove .env comments
+	define($k, $v);
+}
+*/
+
+/**
+ * Загрузка env-vars:
+ */
+$env = getenv();
+foreach($env as $k => $v) {
 	define($k, $v);
 }
 

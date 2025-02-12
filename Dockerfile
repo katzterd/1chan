@@ -56,10 +56,14 @@ ADD ./instance-config.php   ./instance-config.php
 
 RUN mv ./resources/smilies    ./www/img/smilies
 RUN mv ./resources/homeboards ./www/ico/homeboards
-
 RUN mkdir -p /var/lib/sphinxsearch
 
+VOLUME /1chan/www/img/smilies
+VOLUME /1chan/www/ico/homeboards
+VOLUME /var/lib/sphinxsearch
+
 COPY --from=builder /npm/node_modules ./scripts/node_modules
+
 
 EXPOSE 80
 

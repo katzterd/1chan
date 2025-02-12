@@ -15,7 +15,7 @@ export async function kvsConnection() {
 			log.err('Node <-> Redis connection error')
 			console.error(err)
 		})
-		.on('ready', () => log.succ(`🔺 Подключен к серверу redis: ${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`))
+		.on('ready', () => log.succ(`🔺 Подключен к серверу redis: ${process.env.REDIS_HOST}:${process.env.REDIS_PORT} \n`))
 		.connect()
 	}
 	return kvs

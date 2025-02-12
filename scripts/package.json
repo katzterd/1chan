@@ -28,7 +28,6 @@
     "php-serialize": "^5.0.1",
     "pm2": "^5.4.2",
     "progress": "^2.0.3",
-    "prompts": "^2.4.2",
     "redis": "^4.6.15",
     "socket.io": "^4.7.5",
     "sql-template-strings": "^2.2.2",

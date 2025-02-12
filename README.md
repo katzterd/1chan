@@ -25,7 +25,7 @@ $ docker compose up -d
 
 #### 3. Setup db and admin account
 ```
-$ docker exec -t 1chan /1chan/scripts/config/docker-entrypoint.sh install
+$ docker exec -it 1chan /1chan/scripts/config/docker-entrypoint.sh install
 ```
 
 frontend will appear on `http://localhost:80`

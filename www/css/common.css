@@ -32,7 +32,7 @@ form {
     padding: 0;
 }
 p {
-    margin: 12px 0;
+    margin: 10px 0;
     line-height: 16px;
 }
 code {
@@ -1790,6 +1790,8 @@ a.hidden:hover {
         text-indent: 0;
         top: 0px!important;
         left: 8px;
+        right: 8px;
+        border-radius: 0px 0px 8px 8px;
     }
     .b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
         padding-bottom: 0;
@@ -1815,11 +1817,12 @@ a.hidden:hover {
         display: none;
     }
     .b-header-block .b-header-block_b-stats p {
-        margin: 10px 10px 0;
+        margin: 4px 0px 4px -4px;
         max-width: 100vw;
         overflow-wrap: anywhere;
         height: auto;
-        white-space: normal;
+        white-space: nowrap;
+        font-size: 0.6em!important;
     }
     .b-comment.m-tip {
         left: 0px!important;

@@ -19,7 +19,7 @@
     "chalk": "^5.3.0",
     "cron": "^3.1.7",
     "fastify": "^4.28.1",
-    "fastify-socket.io": "^5.0.0",
+    "fastify-socket.io": "^5.1.0",
     "find-process": "^1.4.7",
     "image-size": "^1.1.1",
     "mysql-import": "^5.0.21",
@@ -28,7 +28,7 @@
     "pm2": "^5.4.2",
     "progress": "^2.0.3",
     "redis": "^4.6.15",
-    "socket.io": "^4.7.5",
+    "socket.io": "^4.8.1",
     "sql-template-strings": "^2.2.2",
     "telegraf": "^4.16.3"
   }

@@ -15,7 +15,9 @@ services:
       - 1chan
 
   1chan:
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker/1chan.Dockerfile
     container_name: 1chan
     restart: always
     env_file:
@@ -23,12 +25,44 @@ services:
     environment:
       MARIADB_HOST: "db"
       MARIADB_PORT: "3306"
-      SRV_HOST: "127.0.0.1"
+      SRV_HOST: "1chan-service"
       SRV_PORT: "9393"
-      SRV_LOCAL_IP: "127.0.0.1"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
-      SPHINX_HOST: "127.0.0.1"
+      SPHINX_HOST: "1chan-service"
+      SPHINX_PORT: "3312"
+      CSS_VERSION: "?1"
+      JS_VERSION: "?1"
+      ICONS_VERSION: "?1"
+    ports:
+      - "80:80"
+    volumes:
+      - www-img:/src/www/img
+      - www-ico:/src/www/ico
+    networks:
+      - 1chan
+    depends_on:
+      - db
+      - redis
+      - 1chan-service
+
+  1chan-service:
+    build:
+      context: .
+      dockerfile: ./docker/1chan-service.Dockerfile
+    container_name: 1chan-service
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MARIADB_HOST: "db"
+      MARIADB_PORT: "3306"
+      SRV_HOST: "0.0.0.0"
+      SRV_PORT: "9393"
+      SRV_LOCAL_HOST: "1chan-service"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      SPHINX_HOST: "0.0.0.0"
       SPHINX_PORT: "3312"
       SPHINX_DATA_DIR: "/var/lib/sphinxsearch"
       SPHINX_BIN_DIR: "/usr/bin"
@@ -39,11 +73,9 @@ services:
       SEARCHD_READ_TIMEOUT: "5"
       SEARCHD_MAX_CHILDREN: "30"
       SEARCHD_PID_FILE: "searchd.pid"
-      CSS_VERSION: "?1"
-      JS_VERSION: "?1"
-      ICONS_VERSION: "?1"
-    ports:
-      - "80:80"
+    volumes:
+      - www-img:/src/www/img
+      - www-ico:/src/www/ico
     networks:
       - 1chan
     depends_on:
@@ -62,6 +94,8 @@ services:
 volumes:
   mariadb_data:
   redis_data:
+  www-img:
+  www-ico:
 
 networks:
   1chan:

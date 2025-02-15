@@ -5,7 +5,7 @@
 /scripts/cron.sh
 /www/uploads
 /app/views/static
-/www/smilies.json
+/www/img/smilies/smilies.json
 /www/css/themes/normal.custom.css
 /www/css/themes/omsk.custom.css
 /www/img/custom/*

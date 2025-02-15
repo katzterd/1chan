@@ -522,7 +522,7 @@
 							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 							.addClass("m-tip")
 							.attr('id', '')
-							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -535,7 +535,7 @@
 									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 									.addClass("m-tip")
 									.attr('id', '')
-									.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.css({display:'block', width: data.post_preview ? '520px' : '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 								if (data.post_preview) 
 									tip.addClass("m-post-preview").find(".js-comment-id").html('<a href="' + location.protocol + '//'+ location.host +'/news/res/'+ data.post_id +'/">'+ data.post_title +'</a> (<em>открывающий пост</em>)')
@@ -762,7 +762,7 @@
 							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 							.addClass("m-tip")
 							.attr('id', '')
-							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -775,7 +775,7 @@
 									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 									.addClass("m-tip")
 									.attr('id', '')
-									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -923,7 +923,7 @@
 							.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 							.addClass("m-tip")
 							.attr('id', '')
-							.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+							.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 						$(document.body).append(tip);
 						tip.slideUp(0).slideDown(300);
 						$(this).data("preview_open", true);
@@ -936,7 +936,7 @@
 									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 									.addClass("m-tip")
 									.attr('id', '')
-									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
@@ -1292,7 +1292,7 @@
 								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 								.addClass("m-tip")
 								.attr('id', '')
-								.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 							$(document.body).append(tip);
 							tip.slideUp(0).slideDown(300);
 							$(this).data("preview_open", true);
@@ -1305,7 +1305,7 @@
 										.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 										.addClass("m-tip")
 										.attr('id', '')
-										.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+										.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 									$(document.body).append(tip);
 									tip.slideUp(0).slideDown(300);
@@ -1721,7 +1721,7 @@
 									.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 									.addClass("m-tip")
 									.attr('id', '')
-									.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+									.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 								$(document.body).append(tip);
 								tip.slideUp(0).slideDown(300);
 								$(this).data("preview_open", true);
@@ -1734,7 +1734,7 @@
 											.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 											.addClass("m-tip")
 											.attr('id', '')
-											.css({display:'block', width: '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+											.css({display:'block', width: '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 
 										$(document.body).append(tip);
 										tip.slideUp(0).slideDown(300);
@@ -2108,7 +2108,7 @@
 								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 								.addClass("m-tip")
 								.attr('id', '')
-								.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								.css({display:'block', width: data.post_preview ? '520px' : '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 							if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html("(<em>открывающий пост</em>)");
 							$(document.body).append(tip);
 							tip.slideUp(0).slideDown(300);
@@ -2196,7 +2196,7 @@
 								.mouseover(function(e) { previewTimeout = clearTimeout(previewTimeout); e.stopPropagation(); })
 								.addClass("m-tip")
 								.attr('id', '')
-								.css({display:'block', width: data.post_preview ? '520px' : '450px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
+								.css({display:'block', width: data.post_preview ? '520px' : '560px', position: 'absolute', top: e.pageY + 8, left: e.pageX + 8});
 							if (data.post_preview) tip.addClass("m-post-preview").find(".js-comment-id").html("(<em>открывающий пост</em>)");
 							$(document.body).append(tip);
 							tip.slideUp(0).slideDown(300);

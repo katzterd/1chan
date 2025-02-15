@@ -641,7 +641,7 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     font-style: regular;
 }
 .b-comment .b-comment_b-body pre {
-    max-width: 500px;
+    max-width: 540px;
 }.b-post-statistics {
     width: 560px;
     margin: 2px auto;

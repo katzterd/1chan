@@ -25,8 +25,7 @@ services:
     environment:
       MARIADB_HOST: "db"
       MARIADB_PORT: "3306"
-# shit
-      SRV_HOST: "172.18.0.5"
+      SRV_HOST: "1chan-service"
       SRV_PORT: "9393"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
@@ -45,6 +44,7 @@ services:
     depends_on:
       - db
       - redis
+      - 1chan-service
 
   1chan-service:
     build:
@@ -59,8 +59,7 @@ services:
       MARIADB_PORT: "3306"
       SRV_HOST: "0.0.0.0"
       SRV_PORT: "9393"
-# this is so shit, i need to fix broadcast.js
-      SRV_LOCAL_IP: "172.18.0.4"
+      SRV_LOCAL_HOST: "1chan-service"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
       SPHINX_HOST: "0.0.0.0"
@@ -82,7 +81,6 @@ services:
     depends_on:
       - db
       - redis
-      - 1chan
 
   redis:
     image: redis:7

@@ -642,6 +642,7 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
 }
 .b-comment .b-comment_b-body pre {
     max-width: 540px;
+    white-space: break-spaces;
 }.b-post-statistics {
     width: 560px;
     margin: 2px auto;
@@ -1451,6 +1452,7 @@ a.hidden:hover {
     padding-right: 0px; 
     padding-bottom: 3px; 
     padding-left: 0px;
+    cursor: move;
 }
 
 /**

@@ -43,8 +43,6 @@ services:
     networks:
       - 1chan
     depends_on:
-      - db
-      - redis
       - 1chan-service
 
   1chan-service:

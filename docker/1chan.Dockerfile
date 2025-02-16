@@ -26,7 +26,6 @@ WORKDIR /src
 ADD ./docker/config/1chan   .
 ADD ./app                   ./app
 ADD ./www                   ./www
-ADD ./instance-config.php   ./instance-config.php
 
 EXPOSE 80
 

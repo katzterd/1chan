@@ -39,6 +39,7 @@ services:
     volumes:
       - www-img:/src/www/img
       - www-ico:/src/www/ico
+      - www-uploads:/src/www/uploads
     networks:
       - 1chan
     depends_on:
@@ -62,7 +63,7 @@ services:
       SRV_LOCAL_HOST: "1chan-service"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
-      SPHINX_HOST: "127.0.0.1"
+      SPHINX_HOST: "0.0.0.0"
       SPHINX_PORT: "3312"
       SPHINX_DATA_DIR: "/var/lib/sphinxsearch"
       SPHINX_BIN_DIR: "/usr/bin"
@@ -76,6 +77,7 @@ services:
     volumes:
       - www-img:/src/www/img
       - www-ico:/src/www/ico
+      - www-uploads:/src/www/uploads
     networks:
       - 1chan
     depends_on:
@@ -96,6 +98,7 @@ volumes:
   redis_data:
   www-img:
   www-ico:
+  www-uploads:
 
 networks:
   1chan:

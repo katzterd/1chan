@@ -1,7 +1,0 @@
-<?php
-
-// настройки общей чат-комнаты
-define('COMMON_ROOM_CONTROLWORD', '<controlword>');
-
-// разное
-define('RATE_BUTTON_ORDER', 'up|down'); // or down|up

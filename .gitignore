@@ -1,7 +1,6 @@
 /1chan.conf
 /.env
 /scripts/1chan.generated.conf
-/instance-config.php
 /scripts/cron.sh
 /www/uploads
 /app/views/static

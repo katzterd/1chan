@@ -112,7 +112,7 @@ async function startDaemon() {
 		return true
 	}
 	else {
-		log.fatal(`searchd не запущен, втозапуск searchd отключен в .env-файле`)
+		log.fatal(`searchd не запущен, автозапуск searchd отключен в .env-файле`)
 	}
 }
 

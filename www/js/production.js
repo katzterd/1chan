@@ -2984,7 +2984,7 @@
 		)
 	}
 
-	$.get("http://"+ location.host +"/auth", function(data, status) {
+	$.get(location.protocol + "//" + location.host + "/auth", function(data, status) {
 		if (status != 'error' && (+data.auth) >= 0) {
 			x.callPageProcessors(":moderator", data.auth == 0);
 		}
@@ -2993,7 +2993,7 @@
 	function switchTheme(theme) {
 		if (!~[':reset', ...COLOR_THEMES].indexOf(theme)) theme = ':reset';
 		// Сохранить выбор в сессии
-		$.get("http://"+ location.host +"/service/theme/" + theme)
+		$.get(location.protocol + "//" + location.host + "/service/theme/" + theme)
 		
 		$selected_theme = [$('#color-theme'), $('#color-theme-custom')]
 		$default_themes = $('#default-themes')

@@ -598,11 +598,11 @@
 			}
 		}
 		$(".js-post-id-link").click(function() {
-			insertText(">>" + id);
+			insertText(">>" + id + '\n');
 			return false;
 		});
 		$(document.body).on("click", ".js-paste-link", function() {
-			insertText(">>" + $(this).attr("name"));
+			insertText(">>" + $(this).attr("name") + '\n');
 			return false;
 		});
 
@@ -1028,14 +1028,14 @@
 
 		$(".js-post-id-link").click(function() {
 			if (updateMode) {
-				insertText(">>" + id);
+				insertText(">>" + id + '\n');
 				return false;
 			}
 		});
 
 		$(document.body).on("click", ".js-paste-link", function() {
 			if (updateMode) {
-				insertText(">>" + $(this).attr("name"));
+				insertText(">>" + $(this).attr("name") + '\n');
 				return false;
 			}
 		});
@@ -1483,14 +1483,14 @@
 
 			$(".js-post-id-link").click(function() {
 				if (updateMode) {
-					insertText(">>" + id);
+					insertText(">>" + id + '\n');
 					return false;
 				}
 			});
 
 			$(document.body).on("click", ".js-paste-link", function() {
 				if (updateMode) {
-					insertText(">>" + $(this).attr("name"));
+					insertText(">>" + $(this).attr("name") + '\n');
 					return false;
 				}
 			});
@@ -1768,12 +1768,12 @@
 				});
 
 				$(".js-post-id-link").click(function() {
-					insertText(">>" + id);
+					insertText(">>" + id + '\n');
 					return false;
 				});
 
 				$(document.body).on("click", ".js-paste-link", function() {
-					insertText(">>" + $(this).attr("name"));
+					insertText(">>" + $(this).attr("name") + '\n');
 					return false;
 				});
 

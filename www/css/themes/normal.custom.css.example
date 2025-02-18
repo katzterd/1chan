@@ -8,9 +8,9 @@
 }
 
 /* Маскот шапки (основной) */
-/*.b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
-    background: url(/img/mascot_hazmat.png) bottom center no-repeat;
-}*/
+.b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
+    background: url(/img/mascot.png) bottom center no-repeat;
+}
 .b-header-block.m-mascot-search {
     background: url(/img/mascot-investigator.png) bottom center no-repeat;
 }

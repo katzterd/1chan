@@ -5,6 +5,11 @@ on:
     tags:
       - "v*"
 
+env:
+  1CHAN_IMAGE_NAME: 1chan
+  SERVICE_IMAGE_NAME: 1chan-service
+  TORGATE_IMAGE_NAME: torgate
+
 jobs:
   buildx:
     runs-on: ubuntu-latest
@@ -26,5 +31,15 @@ jobs:
       -
         name: Build 1chan
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/1chan:latest
-          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./Dockerfile
+          IMAGE=ghcr.io/${{ github.repository }}/$1CHAN_IMAGE_NAME:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$1CHAN_IMAGE_NAME.Dockerfile
+      -
+        name: Build 1chan-service
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/$SERVICE_IMAGE_NAME:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$SERVICE_IMAGE_NAME.Dockerfile
+      -
+        name: Build torgate
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/$TORGATE_IMAGE_NAME:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$TORGATE_IMAGE_NAME.Dockerfile

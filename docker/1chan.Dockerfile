@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG CSS_PATH=www/css/themes
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -26,6 +27,8 @@ WORKDIR /src
 ADD ./docker/config/1chan   /
 ADD ./app                   ./app
 ADD ./www                   ./www
+
+RUN bash -c 'for example in $CSS_PATH/*.example ; do mv $example ${example//css.example/css} ; done'
 
 EXPOSE 80
 

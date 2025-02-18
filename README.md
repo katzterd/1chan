@@ -8,15 +8,13 @@
 
 ### Docker compose way
 
-#### 1. Prepare `.env` and base themes
+#### 1. Prepare `.env`
 ```
 $ cp .env-dist .env
-$ cp /www/css/themes/normal.custom.example.css /www/css/themes/normal.custom.css
-$ cp /www/css/themes/omsk.custom.example.css /www/css/themes/omsk.custom.css
 ```
 Then fill fields in `.env` by your text editor with needed values
 
-Optionally, you can edit base css themes, if you want to customize the appearance of your WC
+You can create your own css themes or edit existing ones. Script will copy all css files which ends with `.example`. See in [www/css/themes](https://github.com/rsddsdr/1chan-docker/tree/master/www/css/themes)
 
 #### 2. Deploy
 ```

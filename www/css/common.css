@@ -757,7 +757,7 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     text-decoration: none;
 }
 .b-rss-link {
-    width: 640px;
+    width: calc(100% - 6%);
     margin: 10px 0;
     text-align: right;
 }

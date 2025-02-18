@@ -3,7 +3,7 @@
                         <h1>Форсометр<sup>beta</sup></h1>
                         <form action="" method="get">
                             <div>
-                                <input type="text" name="query" value="<?php if(isset($query)) echo htmlspecialchars($query); ?>" style="width:460px" />
+                                <input type="text" name="query" value="<?php if(isset($query)) echo htmlspecialchars($query); ?>" style="width: calc(100% - 2%)" />
                                 <input type="submit" value="Вывести график" />
                             </div>
                         </form>

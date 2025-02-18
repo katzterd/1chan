@@ -7,4 +7,4 @@ RUN apt-get update && apt-get install -y tor
 ADD ./docker/config/torgate/torrc.conf /etc/tor/torrc
 ADD ./docker/config/torgate/init.sh /init.sh
 
-CMD bash /init.sh
+CMD [ "bash", "/init.sh" ]

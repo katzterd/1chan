@@ -82,6 +82,20 @@ services:
       - db
       - redis
 
+  torgate:
+    build:
+      context: .
+      dockerfile: ./docker/torgate.Dockerfile
+    container_name: torgate
+    environment:
+      TORGATE_ENDPOINT: "1chan:80"
+    env_file:
+      - .env
+    networks:
+      - 1chan
+    depends_on:
+      - 1chan
+
   redis:
     image: redis:7
     container_name: redis

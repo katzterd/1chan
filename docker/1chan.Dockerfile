@@ -23,10 +23,10 @@ RUN apt-get update && \
 
 WORKDIR /src
 
-ADD ./docker/config/1chan   .
+ADD ./docker/config/1chan   /
 ADD ./app                   ./app
 ADD ./www                   ./www
 
 EXPOSE 80
 
-ENTRYPOINT ["/bin/bash", "-c", "/src/docker-entrypoint.sh"]
+ENTRYPOINT [ "/bin/bash", "-c", "/docker-entrypoint.sh" ]

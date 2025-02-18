@@ -32,7 +32,7 @@ RUN mkdir -p /var/lib/sphinxsearch
 
 WORKDIR /src
 
-ADD ./docker/config/service           .
+ADD ./docker/config/service           /
 ADD ./scripts                         ./scripts
 COPY --from=builder /npm/node_modules ./scripts/node_modules
 ADD ./resources                       ./resources
@@ -47,4 +47,4 @@ VOLUME /var/lib/sphinxsearch
 EXPOSE 9393
 EXPOSE 3312
 
-ENTRYPOINT ["/bin/bash", "-c", "/src/docker-entrypoint.sh"]
+ENTRYPOINT [ "/bin/bash", "-c", "/docker-entrypoint.sh" ]

@@ -30,7 +30,7 @@ export async function updateSmilies() {
 		}
 	})
 
-	await fs.writeFile(`${www}/smilies.json`, JSON.stringify(smilies))
+	await fs.writeFile(`${smilies_dir}/smilies.json`, JSON.stringify(smilies))
 	await cacheSet(`Smilies::list`, smilies)
 
 	log.succ(`Список смайликов обновлен (всего: ${smilies.length} шт.)`)

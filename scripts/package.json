@@ -30,6 +30,7 @@
     "redis": "^4.6.15",
     "socket.io": "^4.8.1",
     "sql-template-strings": "^2.2.2",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "glob": "^11.0.1"
   }
 }

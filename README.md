@@ -23,7 +23,7 @@ $ docker compose up -d
 
 #### 3. Setup db and admin account
 ```
-$ docker exec -t 1chan-service /src/docker-entrypoint.sh install
+$ docker exec -t 1chan-service /docker-entrypoint.sh install
 ```
 
 #### 4. Restart `1chan-service` container to run indexer properly after db setup

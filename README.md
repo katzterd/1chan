@@ -14,7 +14,7 @@ $ cp .env-dist .env
 ```
 Then fill fields in `.env` by your text editor with needed values
 
-You can create your own css themes or edit existing ones. Script will copy all css files which ends with `.example`. See in [www/css/themes](https://github.com/rsddsdr/1chan-docker/tree/master/www/css/themes)
+You can create your own css themes or edit existing ones. Script will copy all css files which ends with `.example`. See in [/www/css/themes](https://github.com/rsddsdr/1chan-docker/tree/master/www/css/themes)
 
 #### 2. Deploy
 ```

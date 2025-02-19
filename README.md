@@ -1,8 +1,8 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/rsddsdr/1chan/master/www/img/ogol.png" alt="1chan">
+    <img src="https://raw.githubusercontent.com/katzterd/1chan/master/www/img/ogol.png" alt="1chan">
 </p>
 
-![CI](https://img.shields.io/github/actions/workflow/status/rsddsdr/rsddsdr/build.yml?label=CI&logo=github&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/build.yml?label=CI&logo=github&style=for-the-badge)
 
 ## Installation
 
@@ -14,7 +14,7 @@ $ cp .env-dist .env
 ```
 Then fill fields in `.env` by your text editor with needed values
 
-You can create your own css themes or edit existing ones. Script will copy all css files which ends with `.example`. See in [/www/css/themes](https://github.com/rsddsdr/1chan-docker/tree/master/www/css/themes)
+You can create your own css themes or edit existing ones. Script will copy all css files which ends with `.example`. See in [/www/css/themes](https://github.com/katzterd/1chan-docker/tree/master/www/css/themes)
 
 #### 2. Deploy
 ```

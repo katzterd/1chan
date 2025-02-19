@@ -93,8 +93,6 @@ services:
       - .env
     networks:
       - 1chan
-    depends_on:
-      - 1chan
 
   redis:
     image: redis:7

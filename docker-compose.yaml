@@ -50,7 +50,7 @@ services:
       context: .
       dockerfile: ./docker/1chan-service.Dockerfile
     container_name: 1chan-service
-    restart: always
+    restart: on-failure
     env_file:
       - .env
     environment:
@@ -79,8 +79,12 @@ services:
     networks:
       - 1chan
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_started
+        restart: false
+      redis:
+        condition: service_started
+        restart: false
 
   torgate:
     build:
@@ -94,7 +98,9 @@ services:
     networks:
       - 1chan
     depends_on:
-      - 1chan
+      1chan:
+        condition: service_started
+        restart: false
 
   redis:
     image: redis:7

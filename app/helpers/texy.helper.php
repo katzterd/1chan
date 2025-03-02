@@ -44,18 +44,6 @@ class TexyHelper
 			'TexyHelper_spoiler'
 		);
 
-		/*$texy->registerLinePattern(
-			array('TexyHelper', 'nog'),
-			'/Нагаторо ❤️/',
-			'TexyHelper_nog'
-		);
-
-		$texy->registerLinePattern(
-			array('TexyHelper', 'nog3'),
-			'/Нагаторо/',
-			'TexyHelper_nog3'
-		);*/
-
 		$texy->registerLinePattern(
 			array('TexyHelper', 'tts'),
 			'/#%(([^%]|%[^%])+)%#/',
@@ -385,13 +373,6 @@ class TexyHelper
 		$parser -> again = true;
 		return $spl;
 	}
-
-	/*static function nog($parser, $matches, $name) {
-		return 'Поркич 🐽';
-	}
-	static function nog3($parser, $matches, $name) {
-		return 'Поркич';
-	}*/
 	
 	/**
 	 * Ссылка на пост (комментарий):

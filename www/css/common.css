@@ -64,16 +64,13 @@ a.g-dynamic.m-current:visited {
     height: 0;
 }
 .g-clearfix {
-    display: inline-block;
+    display: block;
 }
 html[xmlns] .g-clearfix {
     display: block;
 }
 * html .g-clearfix {
     height: 1%;
-}
-.g-clearfix {
-    display: inline-block;
 }
 html[xmlns] .g-clearfix {
     display: block;

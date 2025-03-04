@@ -104,7 +104,8 @@ services:
       dockerfile: ./docker/i2pgate.Dockerfile
     container_name: i2pgate
     environment:
-      I2PGATE_ENDPOINT: "1chan"
+      I2PGATE_ENDPOINT_HOST: "1chan"
+      I2PGATE_ENDPOINT_PORT: "80"
     env_file:
       - .env
     networks:

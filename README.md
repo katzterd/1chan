@@ -32,3 +32,10 @@ $ docker compose restart 1chan-service
 ```
 
 frontend will appear on `http://localhost:80`
+
+
+
+#### (Optional) get Yggdrasil address
+```
+$ docker exec -t yggdrasil /docker-entrypoint.sh getaddr
+```

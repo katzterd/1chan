@@ -97,10 +97,36 @@ services:
       - .env
     networks:
       - 1chan
-    depends_on:
-      1chan:
-        condition: service_started
-        restart: false
+        
+  i2pgate:
+    build:
+      context: .
+      dockerfile: ./docker/i2pgate.Dockerfile
+    container_name: i2pgate
+    environment:
+      I2PGATE_ENDPOINT: "1chan"
+    env_file:
+      - .env
+    networks:
+      - 1chan
+        
+  yggdrasil:
+    build:
+      context: .
+      dockerfile: ./docker/yggdrasil.Dockerfile
+    container_name: yggdrasil
+    environment:
+      YGGDRASILGATE_ENDPOINT: "1chan"
+    env_file:
+      - .env
+    networks:
+      - 1chan
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    sysctls:
+      - "net.ipv6.conf.all.disable_ipv6=0"
 
   redis:
     image: redis:7

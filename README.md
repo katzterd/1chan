@@ -35,7 +35,7 @@ frontend will appear on `http://localhost:80`
 
 
 
-#### (optional) Get yggdrasil address
+#### (Optional) Get yggdrasil node address (if enabled)
 ```
 $ docker exec -t yggdrasil /docker-entrypoint.sh getaddr
 ```

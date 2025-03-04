@@ -14,6 +14,4 @@ ADD ./docker/config/i2pgate/tunnels.conf    /etc/i2pd/tunnels.conf
 ADD ./docker/config/i2pgate/i2pd.conf       /etc/i2pd/i2pd.conf
 ADD ./docker/config/i2pgate/init.sh         /init.sh
 
-VOLUME /var/lib/i2pd
-
 CMD [ "bash", "/init.sh" ]

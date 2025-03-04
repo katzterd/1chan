@@ -9,6 +9,8 @@ env:
   1CHAN_IMAGE_NAME: 1chan
   SERVICE_IMAGE_NAME: 1chan-service
   TORGATE_IMAGE_NAME: torgate
+  I2PGATE_IMAGE_NAME: i2pgate
+  YGGDRASILGATE_IMAGE_NAME: yggdrasil
 
 jobs:
   buildx:
@@ -43,3 +45,13 @@ jobs:
         run: |
           IMAGE=ghcr.io/${{ github.repository }}/$TORGATE_IMAGE_NAME:latest
           docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$TORGATE_IMAGE_NAME.Dockerfile
+      -
+        name: Build i2pgate
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/$I2PGATE_IMAGE_NAME:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$I2PGATE_IMAGE_NAME.Dockerfile
+      -
+        name: Build yggdrasilgate
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/$YGGDRASILGATE_IMAGE_NAME:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t $IMAGE . --push -f ./docker/$YGGDRASILGATE_IMAGE_NAME.Dockerfile

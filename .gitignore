@@ -2,7 +2,6 @@
 /.env
 /scripts/1chan.generated.conf
 /scripts/cron.sh
-/www/uploads
 /app/views/static
 /www/img/smilies/smilies.json
 /www/css/themes/normal.custom.css

@@ -28,7 +28,7 @@ ADD ./docker/config/1chan   /
 ADD ./app                   ./app
 ADD ./www                   ./www
 
-RUN mkdir -p ./www/uploads && chown -R www-data:www-data ./www/uploads
+RUN chown -R 33:33 ./www
 
 RUN bash -c 'for example in $CSS_PATH/*.example ; do mv $example ${example//css.example/css} ; done'
 

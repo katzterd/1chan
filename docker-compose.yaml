@@ -38,8 +38,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - www-img:/src/www/img
-      - www-ico:/src/www/ico
+      - www-smilies:/src/www/img/smilies
+      - www-homeboards:/src/www/ico/homeboards
       - www-uploads:/src/www/uploads
     networks:
       - bridge
@@ -74,8 +74,8 @@ services:
       SEARCHD_MAX_CHILDREN: "30"
       SEARCHD_PID_FILE: "searchd.pid"
     volumes:
-      - www-img:/src/www/img
-      - www-ico:/src/www/ico
+      - www-smilies:/src/www/img/smilies
+      - www-homeboards:/src/www/ico/homeboards
       - www-uploads:/src/www/uploads
     networks:
       - bridge
@@ -149,8 +149,8 @@ services:
 volumes:
   mariadb_data:
   redis_data:
-  www-img:
-  www-ico:
+  www-smilies:
+  www-homeboards:
   www-uploads:
 
 networks:

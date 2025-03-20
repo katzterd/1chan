@@ -22,6 +22,7 @@
 
                     <!-- Graph library: -->
 
+                    <script language="javascript" type="text/javascript" src="/js/jquery.min.js"></script>
                     <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/js/excanvas.js"></script><![endif]-->
                     <script language="javascript" type="text/javascript" src="/js/jquery.jqplot.min.js"></script>
                     <script type="text/javascript" src="/js/plugins/jqplot.barRenderer.min.js"></script>

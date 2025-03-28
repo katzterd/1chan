@@ -627,7 +627,7 @@ class BlogController extends BaseController
 			}
 
 			$validator -> assertExists('title', 'Не введён заголовок');
-			$validator -> assertLength('title', TITLE_MIN_LENGTH, 'Заголовок слишком длинный');
+			$validator -> assertLength('title', TITLE_MAX_LENGTH, 'Заголовок слишком длинный');
 			$validator -> assertExists('text', 'Не введён вводный текст');
 			$validator -> assertLength('text', TEXT_MAX_LENGTH, 'Вводный текст слишком длинный');
 

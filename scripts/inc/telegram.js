@@ -4,7 +4,7 @@ import log from '#inc/logger.js'
 import checkEnv from '#inc/check-env.js'
 import { kvsConnection } from "#inc/kvs.js"
 import SQL from 'sql-template-strings'
-import { sqlConnection } from '#inc/database.js'
+import { connectionPool as sql } from '#inc/database.js'
 
 let tg = null
 if (process.env?.TG_ENABLE) {
@@ -32,7 +32,6 @@ async function sendMessage(data) {
 
 	// Получение категории
 	if (category) {
-		const sql = await sqlConnection()
 		const [record, _] = await sql.query(SQL`SELECT title FROM 1chan_category WHERE id = ${category}`)
 		if (record.length) {
 			// Убрать из имени пробелы и пунктуацию для создания хэштега

@@ -98,6 +98,7 @@ async function sendMessage(data) {
 	return msg
 }
 
+
 async function saveMessageID(id, msg_id) {
 	const kvs = await kvsConnection()
 	kvs.set(`Telegram:id:${id}`, msg_id)
@@ -233,7 +234,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 				return
 			}
 			ctx.wizard.state.topicName = htmlspecialchars(topicName)
-			await ctx.reply('Введите текст новости')
+			await ctx.reply('Введите текст новости (можно с картинкой)')
     	return ctx.wizard.next()
 		},
 		// 5) Текст. → ЭкстраТекст?
@@ -299,11 +300,13 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 			
 			const id = await kvs.incr('Blog_BlogPostsModel::nextPostId')
 			const ip = createHash('md5').update(ctx.from.id + process.env.MD5_SALT).digest('hex')
-			const now = Math.floor(Date.now() / 1000)
+			const now = php_now()
 			const category = ctx.wizard.state.category
 			const link = ctx.wizard.state?.link ?? ''
 			const title = ctx.wizard.state.topicName
 			const text_full = ctx.wizard.state?.extraContent ?? ''
+
+			ctx.session.lastSubmission = now
 
 			// Send the message to the channel
 			const msg = await sendMessage({
@@ -410,7 +413,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 	// Crucial step! Won't work without it don't ask why
 	bot.use((ctx, next) => {
 		// Preserve scene system
-		if (!ctx.session?.__scenes) {
+		if (ctx?.session && !ctx.session?.__scenes) {
 			ctx.session.__scenes = { current: undefined, state: {} };
 		}
 		return next();
@@ -419,15 +422,15 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 	bot.use(stage.middleware())
 
 	bot.command('post', async (ctx) => {
-		// const now = Date.now()
+		const now = php_now()
 		
-		// if (ctx.session.lastSubmission) {
-		// 	const cooldownEnd = ctx.session.lastSubmission + (RATE_LIMIT_MINUTES * 60 * 1000)
-		// 	if (now < cooldownEnd) {
-		// 		const minutesLeft = Math.ceil((cooldownEnd - now) / (60 * 1000))
-		// 		return ctx.reply(`You can only submit once every ${RATE_LIMIT_MINUTES} minutes. Please try again in ${minutesLeft} minute(s).`)
-		// 	}
-		// }
+		if (ctx.session.lastSubmission) {
+			const cooldownEnd = ctx.session.lastSubmission + (process.env.TG_FORWARDING_COOLDOWN * 60)
+			if (now < cooldownEnd) {
+				const secondsLeft = Math.ceil(cooldownEnd - now)
+				return ctx.reply(`Таймаут ${secondsLeft} с.`)
+			}
+		}
 		
 		return ctx.scene.enter('add-news-entry')
 	})
@@ -467,4 +470,8 @@ async function downloadImage(fileUrl) {
 			reject()
 		})
 	})
+}
+
+function php_now() {
+	return Math.floor(Date.now() / 1000)
 }

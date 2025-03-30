@@ -15,7 +15,7 @@ const creds = {
 	database: process.env.SQL_NAME
 }
 
-export const connectionPool = createAndVerifyPool({
+export const connectionPool = await createAndVerifyPool({
 	...creds,
 	waitForConnections: true,
 	connectionLimit: 10,

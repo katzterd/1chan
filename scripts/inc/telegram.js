@@ -485,7 +485,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 			}
 			await cacheSet(`Blog_BlogOnlineModel:links:${id}`, record)
 			await kvs.expire(`Blog_BlogOnlineModel:links:${id}`, 60*60*24)
-			await kvs.rPush(`Blog_BlogOnlineModel::links`, id.toString())
+			await kvs.lPush(`Blog_BlogOnlineModel::links`, id.toString())
 			await kvs.set(`Blog_BlogOnlineModel::lastUpdate`, now.toString())
 			await ctx.reply('Ссылка отправлена!')
 			ctx.session.lastSubmission = now

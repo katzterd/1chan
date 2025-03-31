@@ -87,7 +87,7 @@
 				<?php endforeach; ?>
 			</ul></div>
 
-			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?><?= ($this -> getParameter('mascot', null)) ? " m-mascot-".($this -> getParameter('mascot', null)) : "" ?> ">
+			<div class="b-header-block m-mascot m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?><?= ($this -> getParameter('mascot', null)) ? " m-mascot-".($this -> getParameter('mascot', null)) : "" ?> <?php if (date('j n') === '1 4') { echo 'clickme'; } ?>">
 				<div class="b-header-block_b-logotype">
 					<a href="/news/all/">
 						<div id="logo"></div>

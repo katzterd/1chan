@@ -384,6 +384,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 						0,
 						"telegram"
 					)`)
+					await clientBroadcast('posts', 'add_post')
 					await ctx.reply('Пост отправлен!')
 			} catch(e) {
 				log.err('Ошибка при отправке поста', e)

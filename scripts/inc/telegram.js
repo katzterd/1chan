@@ -11,7 +11,7 @@ import {
 } from '#inc/markup.js'
 import log from '#inc/logger.js'
 import checkEnv from '#inc/check-env.js'
-import { kvsConnection } from "#inc/kvs.js"
+import { kvsConnection, cacheGet, cacheSet } from "#inc/kvs.js"
 import SQL from 'sql-template-strings'
 import { connectionPool as sql } from '#inc/database.js'
 import { createHash } from 'crypto'
@@ -20,6 +20,7 @@ import axios from 'axios'
 import { promises as fs } from 'fs'
 import fsSync from 'fs'
 import path from 'path'
+import { load as $load } from 'cheerio'
 
 let tg = null, bot = null
 if (process.env?.TG_ENABLE) {
@@ -136,7 +137,18 @@ export default async function telegramSrvPlugin(fastify) {
 }
 
 if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
-	checkEnv(["TG_FORWARDING_COOLDOWN", "REDIS_HOST", "REDIS_PORT", "TITLE_MIN_LENGTH", "TITLE_MAX_LENGTH", "TEXT_MIN_LENGTH", "TEXT_MAX_LENGTH", "FULL_MAX_LENGTH", "MD5_SALT"])
+	checkEnv([
+		"TG_FORWARDING_COOLDOWN",
+		"REDIS_HOST",
+		"REDIS_PORT",
+		"TITLE_MIN_LENGTH",
+		"TITLE_MAX_LENGTH",
+		"TEXT_MIN_LENGTH",
+		"TEXT_MAX_LENGTH",
+		"FULL_MAX_LENGTH",
+		"MD5_SALT",
+		"SERVER_STATUS_PROXY"
+	])
 	const bot = new Telegraf(process.env.TG_BOT_TOKEN)
 	const store = Redis({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` })
 	const kvs = await kvsConnection()
@@ -151,7 +163,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 				reply_markup: {
 					keyboard: ctx.wizard.state.cats.map(c => [{text: c.title}]),
 					one_time_keyboard: true,
-        	resize_keyboard: true
+					resize_keyboard: true
 				}
 			})
 			return ctx.wizard.next()
@@ -187,7 +199,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 				return ctx.wizard.next()
 			}
 			const link = ctx?.message?.text
-			if (!link || !link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)) {
+			if (!link || !isValidURL(link)) {
 				await ctx.reply('Введите валидную ссылку', {
 					reply_markup: { 
 						inline_keyboard: [[{ text: 'Пропустить', callback_data: 'skip_link' }]]
@@ -235,7 +247,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 			}
 			ctx.wizard.state.topicName = htmlspecialchars(topicName)
 			await ctx.reply('Введите текст новости (можно с картинкой)')
-    	return ctx.wizard.next()
+			return ctx.wizard.next()
 		},
 		// 5) Текст. → ЭкстраТекст?
 		async (ctx) => {
@@ -297,9 +309,8 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 		},
 		// 7) Конец
 		async (ctx) => {
-			
 			const id = await kvs.incr('Blog_BlogPostsModel::nextPostId')
-			const ip = createHash('md5').update(ctx.from.id + process.env.MD5_SALT).digest('hex')
+			const ip = userHash(ctx)
 			const now = php_now()
 			const category = ctx.wizard.state.category
 			const link = ctx.wizard.state?.link ?? ''
@@ -330,8 +341,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 							href="${src}">
 							<img src="${src}" alt="" /></a>` + ctx.wizard.state.mainContent
 					}
-						
-				} catch(e) {console.log(e)}
+				} catch(e) {log.err(e)}
 			}
 			if (text_full && ctx.wizard.state.extraImageTempFile) {
 				try {
@@ -342,7 +352,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 							href="${src}">
 							<img src="${src}" alt="" /></a>` + text_full
 					}
-				} catch(e) {console.log(e)}
+				} catch(e) {log.err(e)}
 			}
 
 			// Store the message in the database
@@ -383,16 +393,116 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 		}
 	)
 
+	const shareLinkScene = new Scenes.WizardScene(
+		'share-link',
+		// 1) (Начало) → Ссылка?
+		async (ctx) => {
+			await ctx.reply("Пришлите ссылку")
+			return ctx.wizard.next()
+		},
+		// 2) Ссылка. → Описание?
+		async (ctx) => {
+			const link = ctx?.message?.text
+			if (!link || !isValidURL(link)) {
+				await ctx.reply("Пришлите валидную ссылку")
+				return
+			}
+			else if (link.length > 255) {
+				await ctx.reply("Длина ссылки не должна превышать 255 символов")
+				return
+			}
+			else if (await checkLinkPosted(link)) {
+				await ctx.reply("Ссылка уже участвует в ленте")
+				return
+			}
+			else if (await isBlackListedLink(link)) {
+				await ctx.reply("Запрещенная ссылка")
+				return
+			}
+			else {
+				ctx.wizard.state.link = htmlspecialchars(link)
+				const title = await getPageTitle(link)
+				if (title) {
+					const titleCropped = cropText(title, 100)
+					ctx.wizard.state.title = titleCropped
+					await ctx.reply(`Введите описание`+'\n\n'+`\\(описание по умолчанию: «_${escapeSpecialChars(titleCropped)}_»\\)`, {
+						parse_mode: "MarkdownV2",
+						reply_markup: { 
+							inline_keyboard: [[{ text: 'Использовать по умолчанию', callback_data: 'use_default' }]]
+						}
+					})
+					return ctx.wizard.next()
+				}
+				else {
+					await ctx.reply(`Введите описание`)
+				}
+				return ctx.wizard.next()
+			}
+		},
+		// 3) Описание. → (Конец)
+		async (ctx) => {
+			if (ctx.callbackQuery) {
+				await ctx.answerCbQuery()
+				return ctx.wizard.steps[ctx.wizard.cursor + 1](ctx)
+			}
+			else {
+				const title = ctx?.message?.text
+				if (!title) {
+					await ctx.reply('Не введено описание')
+					return
+				}
+				if (title.length >= 100) {
+					ctx.wizard.state.title = cropText(title, 100)
+					await ctx.reply(`Описание слишком длинное`, {
+						reply_markup: { 
+							inline_keyboard: [[{ text: 'Обрезать', callback_data: 'use_cropped' }]]
+						}
+					})
+				}
+				else {
+					ctx.wizard.state.title = title
+					return ctx.wizard.steps[ctx.wizard.cursor + 1](ctx)
+				}
+			}
+		},
+		// 4) Конец
+		async (ctx) => {
+			// Create a record of TOTALLY USELESS INFORMATION; JUST WHY?
+			const id = await kvs.incr('Blog_BlogOnlineModel::nextId')
+			const now = php_now()
+			const record = {
+				id,
+				link: ctx.wizard.state.link.replace(/(#.*)$/i, ''),
+				description: ctx.wizard.state.title,
+				category: {
+					title: 'Интернеты',
+					url: process.env.WEB_DOMAIN,
+					board: 'other'
+				},
+				board: 'other',
+				clicks: 0,
+				visitors: [userHash(ctx)]
+			}
+			await cacheSet(`Blog_BlogOnlineModel:links:${id}`, record)
+			await kvs.expire(`Blog_BlogOnlineModel:links:${id}`, 60*60*24)
+			await kvs.rPush(`Blog_BlogOnlineModel::links`, id.toString())
+			await kvs.set(`Blog_BlogOnlineModel::lastUpdate`, now.toString())
+			await ctx.reply('Ссылка отправлена!')
+			ctx.session.lastSubmission = now
+			return ctx.scene.leave()
+		}
+	)
+
 	bot.use(session({ 
 		store, 
 		getSessionKey: (ctx) => ctx.from?.id.toString() 
 	}))
-	const stage = new Scenes.Stage([createPostScene])
+	const stage = new Scenes.Stage([createPostScene, shareLinkScene])
 
 	const commands = [
 		{ command: 'post', description: 'Отправить новость' },
+		{ command: 'link', description: 'Отправить ссылку' },
 		{ command: 'cancel', description: 'Отменить отправку' }
-		// ... other commands
 	]
 	bot.telegram.setMyCommands(commands)
 
@@ -422,17 +532,17 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 	bot.use(stage.middleware())
 
 	bot.command('post', async (ctx) => {
-		const now = php_now()
-		
-		if (ctx.session.lastSubmission) {
-			const cooldownEnd = ctx.session.lastSubmission + (process.env.TG_FORWARDING_COOLDOWN * 60)
-			if (now < cooldownEnd) {
-				const secondsLeft = Math.ceil(cooldownEnd - now)
-				return ctx.reply(`Таймаут ${secondsLeft} с.`)
-			}
-		}
-		
+		const coolDownMsg = await checkCooldown(ctx)
+		if (coolDownMsg)
+			return ctx.reply(coolDownMsg)
 		return ctx.scene.enter('add-news-entry')
+	})
+
+	bot.command('link', async (ctx) => {
+		const coolDownMsg = await checkCooldown(ctx)
+		if (coolDownMsg)
+			return ctx.reply(coolDownMsg)
+		return ctx.scene.enter('share-link')
 	})
 
 	bot.launch()
@@ -448,6 +558,18 @@ async function ensureDirectory(dir) {
 	} catch (err) {
 		if (err.code !== 'EEXIST') throw err
 	}
+}
+
+async function checkCooldown(ctx) {
+	const now = php_now()
+	if (ctx.session.lastSubmission) {
+		const cooldownEnd = ctx.session.lastSubmission + (process.env.TG_FORWARDING_COOLDOWN * 60)
+		if (now < cooldownEnd) {
+			const secondsLeft = Math.ceil(cooldownEnd - now)
+			return `Таймаут ${secondsLeft} с.`
+		}
+	}
+	return false
 }
 
 async function downloadImage(fileUrl) {
@@ -474,4 +596,67 @@ async function downloadImage(fileUrl) {
 
 function php_now() {
 	return Math.floor(Date.now() / 1000)
+}
+
+function isValidURL(link) {
+	return link.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)
+}
+
+async function getPageTitle(url) {
+	try {
+		const resp = await axios.get(url, {
+			proxy: process.env.SERVER_STATUS_PROXY,
+			timeout: 5000,
+			headers: { // An attempt to use more "realistic" headers so Cloudflare may spare our anus
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+				'Accept-Language': 'en-US,en;q=0.9',
+				'Accept-Encoding': 'gzip, deflate, br',
+				'Referer': 'https://google.com/'
+			}
+		})
+		const $ = $load(resp.data)
+		return $('meta[property="og:title"]').attr('content')?.trim()
+			||
+			$('title').text()?.trim()
+			||
+			null
+	}
+	catch(e) {
+		log.err(`Ошибка загрузки страницы по адресу ${url}`, e.message)
+		return null
+	}
+}
+
+function cropText(text, maxLength, suffix="...") {
+	if (text.length <= maxLength) return text
+	maxLength -= suffix.length
+	const cropped = text.substr(0, maxLength + 1)
+	const lastSpace = cropped.lastIndexOf(' ')
+	const endIndex = lastSpace > 0 ? lastSpace : maxLength
+	return text.substr(0, endIndex).trim() + suffix
+}
+
+async function checkLinkPosted(url) {
+	const kvs = await kvsConnection()
+	const linkIDs = await kvs.lRange('Blog_BlogOnlineModel::links', 0, -1)
+	const links = []
+	for (const id of linkIDs) {
+		const link = await cacheGet(`Blog_BlogOnlineModel:links:${id}`)
+		if (link?.link == url) return true;
+	}
+	return false
+}
+
+async function isBlackListedLink(url) {
+	const linkFilter = await cacheGet(`ControlModel::links`)
+	if (!linkFilter?.length) return false;
+	return linkFilter.find(link => url.match(RegExp('^' + escapeRegExp(link), 'i')))
+}
+
+function escapeRegExp(str) {
+	// fill
+}
+
+function userHash(ctx) {
+	return createHash('md5').update(ctx.from.id + process.env.MD5_SALT).digest('hex')
 }

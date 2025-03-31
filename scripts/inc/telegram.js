@@ -21,6 +21,7 @@ import { promises as fs } from 'fs'
 import fsSync from 'fs'
 import path from 'path'
 import { load as $load } from 'cheerio'
+import { emit as clientBroadcast } from '#inc/broadcast.js'
 
 let tg = null, bot = null
 if (process.env?.TG_ENABLE) {
@@ -488,6 +489,7 @@ if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
 			await kvs.lPush(`Blog_BlogOnlineModel::links`, id.toString())
 			await kvs.set(`Blog_BlogOnlineModel::lastUpdate`, now.toString())
 			await ctx.reply('Ссылка отправлена!')
+			await broadcastLink(record)
 			ctx.session.lastSubmission = now
 			return ctx.scene.leave()
 		}
@@ -659,4 +661,10 @@ function escapeRegExp(str) {
 
 function userHash(ctx) {
 	return createHash('md5').update(ctx.from.id + process.env.MD5_SALT).digest('hex')
+}
+
+async function broadcastLink(data) {
+	delete data.visitors
+	await clientBroadcast('live', 'add_online_link', data)
+	await clientBroadcast('global', 'add_online_link', data)
 }

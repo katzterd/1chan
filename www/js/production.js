@@ -3043,4 +3043,43 @@
 		})
 	}
 
+    function clickCount(className) {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll(`.${className}`).forEach(block => {
+                var click = 0;
+                const eyeImg = 'booba.png';
+                const clickNum = 100;
+                const clickHandler = e => {
+                    const r = block.getBoundingClientRect();
+                    const x = e.clientX;
+                    const y = e.clientY;
+                    if ( x >= r.left + r.width/2 &&
+                        x <= r.left + r.width/2 + 32 && 
+                        y >= r.top + r.height - 51 && 
+                        y <= r.top + r.height - 28 ) {
+                        if ( ++click === clickNum ) {
+                            if (!block.querySelector('.eyeimg')) {
+                                const eyeElement = document.createElement('div');
+                                eyeElement.className = 'eyeimg';
+                                eyeElement.style.cssText = `
+                                    position: absolute;
+                                    background: url(/img/${eyeImg}) bottom center no-repeat;
+                                    margin-left: 50%;
+                                    left: -5px;
+                                    bottom: 15px;
+                                    width: 41px;
+                                    height: 47px;
+                                    `;
+                                block.appendChild(eyeElement);
+                            }
+                        block.removeEventListener('click', clickHandler);
+                        }
+                    }
+                };
+            block.addEventListener('click', clickHandler);
+            });
+        });
+    }
+    clickCount('clickme');
+
 })();

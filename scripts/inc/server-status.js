@@ -18,7 +18,7 @@ export async function updateServerStatus() {
 		const offline = current ? await isOffline(current.link) : true
 		if (!offline) continue;
 		const result = await kvs.lRem(`Blog_BlogOnlineModel::links`, 0, oLink)
-		if (result === 1) {
+		if (current && result === 1) {
 			log.timed.info(`Ссылка ${current.link} удалена из Онлайна`)
 		}
 	}

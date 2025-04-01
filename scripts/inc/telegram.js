@@ -7,7 +7,8 @@ import {
 	findMediaInText, 
 	TgEntitiesToHTML, 
 	removeSymbolsFromString,
-	htmlspecialchars
+	htmlspecialchars,
+	toMarkdownV2
 } from '#inc/markup.js'
 import log from '#inc/logger.js'
 import checkEnv from '#inc/check-env.js'
@@ -15,7 +16,6 @@ import { kvsConnection, cacheGet, cacheSet } from "#inc/kvs.js"
 import SQL from 'sql-template-strings'
 import { connectionPool as sql } from '#inc/database.js'
 import { createHash } from 'crypto'
-import { toMarkdownV2 } from "@telegraf/entity"
 import axios from 'axios'
 import { promises as fs } from 'fs'
 import fsSync from 'fs'
@@ -38,8 +38,8 @@ async function sendMessage(data) {
 	// Обработка данных
 	let { id, category, link, title, text_original, text_full, origin, media } = data
 	let text = null
+	title = escapeSpecialChars(title.trim())
 	if (origin == 'web') {
-		title = escapeSpecialChars(title.trim());
 		[media, text] = findMediaInText(text_original)
 		text = texyToTgMarkdown(text.trim())
 	}
@@ -89,7 +89,8 @@ async function sendMessage(data) {
 		try {
 			msg = await tg.sendMessage(process.env.TG_CHANNEL_ALL, msgText, { parse_mode: "MarkdownV2" })
 		}	catch(e) {
-			log.err("Ошибка при отправке поста в канал", e)
+			log.err("Ошибка при отправке поста в канал")
+			console.error(msgText, e)
 		}
 	}
 

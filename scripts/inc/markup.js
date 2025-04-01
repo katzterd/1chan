@@ -2,6 +2,7 @@
 // SPOOKY REGULAR EXPRESSIONS AHEAD - YOU HAVE BEEN WARNED.
 
 import { html } from 'telegram-format'
+import { toMarkdownV2 as toMarkdownV2original } from "@telegraf/entity"
 
 export function findMediaInText(str) {
 	let media = null
@@ -184,4 +185,14 @@ export function htmlspecialchars(str) {
 			"'": '&#039;'
 		}[match]
 	})
+}
+
+// Properly working toMarkdownV2 (see https://github.com/telegraf/entity/issues/13)
+export function toMarkdownV2(message) {
+	if (message?.entities && message.entities.length) {
+		return toMarkdownV2original(message)
+	}
+	else {
+		return escapeSpecialChars(message.text)
+	}
 }

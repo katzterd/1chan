@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+items:
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: {{ .Release.Name }}-www-pvc
+    namespace: {{ .Release.Namespace }}
+  spec:
+    accessModes: [ {{ .Values.storageClass.accessMode }} ]
+    storageClassName: {{ include "StorageClassName" . }}
+    resources:
+      requests:
+        storage: {{ include "WWWSpace" . }}
+    volumeMode: Filesystem
+
+kind: List
+metadata: 
+  name: "pvc-list"

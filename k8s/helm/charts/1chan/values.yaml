@@ -1,0 +1,57 @@
+defaultSecretsName: 1chan-secrets
+defaultRegistry: ghcr.io/katzterd/1chan
+    
+storageClass:
+  defaultName: "1chan-sc"
+  accessMode: "ReadWriteOnce"
+  pods:
+    db:
+      defaultRequestSpace: 10Gi
+    www:
+      defaultRequestSpace: 25Gi
+
+restartPolicy: Always
+
+svc:
+  onechan:
+    name: onechan
+    image:
+      name: 1chan
+      tag: latest
+      pullPolicy: Always
+      replicas: 1
+  torgate:
+    name: torgate
+    image:
+      name: torgate
+      tag: latest
+      pullPolicy: Always
+      replicas: 1
+  i2pgate:
+    name: i2pgate
+    image:
+      name: i2pgate
+      tag: latest
+      pullPolicy: Always
+      replicas: 1
+  yggdrasilgate:
+    name: yggdrasilgate
+    image:
+      name: yggdrasil
+      tag: latest
+      pullPolicy: Always
+      replicas: 1
+  db:
+    name: db
+    image:
+      name: mariadb
+      tag: "11.6"
+      pullPolicy: IfNotPresent
+      replicas: 1
+  redis:
+    name: redis
+    image:
+      name: redis
+      tag: 7-alpine
+      pullPolicy: IfNotPresent
+      replicas: 1

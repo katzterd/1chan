@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+items:
+
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    name: {{ .Release.Name }}-{{ .Values.svc.db.name }}
+    namespace: {{ .Release.Namespace }}
+  spec:
+    replicas: {{ .Values.svc.db.image.replicas }}
+    serviceName: "{{ .Values.svc.db.name }}"
+    minReadySeconds: 10
+    selector:
+      matchLabels:
+        app: {{ .Values.svc.db.name }}
+    template:
+      metadata:
+        labels:
+          app: {{ .Values.svc.db.name }}
+          part-of: lb
+      spec:
+        hostname: {{ .Values.svc.db.name }}
+        restartPolicy: {{ .Values.restartPolicy }}
+        terminationGracePeriodSeconds: 30
+        containers:
+        - name: {{ .Values.svc.db.image.name }}
+          image: {{ .Values.svc.db.image.name }}:{{ .Values.svc.db.image.tag }}
+          imagePullPolicy: {{ .Values.svc.db.image.pullPolicy }}
+          ports:
+          - containerPort: 3306
+            protocol: TCP
+          env:
+          - name: MARIADB_RANDOM_ROOT_PASSWORD
+            value: "1"
+          - name: MARIADB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: MARIADB_DATABASE
+                name: {{ include "SecretsName" . }}
+          - name: MARIADB_USER
+            valueFrom:
+              secretKeyRef:
+                key: MARIADB_USER
+                name: {{ include "SecretsName" . }}
+          - name: MARIADB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: MARIADB_PASSWORD
+                name: {{ include "SecretsName" . }}
+          volumeMounts:
+          - name: {{ .Values.svc.db.name }}-pv
+            mountPath: /var/lib/mysql
+    volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.svc.db.name }}-pv
+      spec:
+        accessModes: [ {{ .Values.storageClass.accessMode }} ]
+        storageClassName: {{ include "StorageClassName" . }}
+        resources:
+          requests:
+            storage: {{ include "DbSpace" . }}
+        volumeMode: Filesystem
+            
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: {{ .Values.svc.db.name }}
+    namespace: {{ .Release.Namespace }}
+  spec:
+    selector:
+      app: {{ .Values.svc.db.name }}
+    ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+    clusterIP: None
+
+kind: List
+metadata:
+  name: "db-list"

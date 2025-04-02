@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/katzterd/1chan/master/www/img/ogol.png" alt="1chan">
 </p>
 
-![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/build.yml?label=CI&logo=github&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/ci.yml?label=CI&logo=github&style=for-the-badge)
 
 ## Installation
 

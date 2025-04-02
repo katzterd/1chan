@@ -3,7 +3,7 @@ name: Docker build
 on: workflow_call
 
 env:
-  1CHAN_IMAGE_NAME: 1chan
+  ONECHAN_IMAGE_NAME: 1chan
   TORGATE_IMAGE_NAME: torgate
   I2PGATE_IMAGE_NAME: i2pgate
   YGGDRASILGATE_IMAGE_NAME: yggdrasil
@@ -33,10 +33,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/${{ env.$1CHAN_IMAGE_NAME }}.Dockerfile
+          file: docker/1chan.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}/${{ env.1CHAN_IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ github.repository }}/${{ env.ONECHAN_IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/${{ env.$TORGATE_IMAGE_NAME }}.Dockerfile
+          file: docker/torgate.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.TORGATE_IMAGE_NAME }}:latest
@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/${{ env.$I2PGATE_IMAGE_NAME }}.Dockerfile
+          file: docker/i2pgate.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.I2PGATE_IMAGE_NAME }}:latest
@@ -66,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/${{ env.$YGGDRASILGATE_IMAGE_NAME }}.Dockerfile
+          file: docker/yggdrasil.Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.YGGDRASILGATE_IMAGE_NAME }}:latest

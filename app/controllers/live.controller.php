@@ -29,12 +29,12 @@ class LiveController extends BaseController
 	public function indexAjaxAction(Application $application)
 	{
 		$session = Session::getInstance();
-		/* $filter = $session -> persistenceGet('live_filter', true); */
+		$filter = $session -> persistenceGet('live_filter', true);
 		$session -> persistenceSet('live_last_visit', time());
 		$links = Blog_BlogOnlineModel::GetLinks($filter);
 		
 		if (@$_GET['num'])
-		    return array_slice($links, 0, (int)$_GET['num']);
+		  return array_slice($links, 0, (int)$_GET['num']);
 		
 		return $links;
 	}

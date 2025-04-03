@@ -15,23 +15,32 @@ const creds = {
 	database: process.env.MARIADB_DATABASE
 }
 
-let connection = null
-export async function sqlConnection() {
-	if (connection) return connection
+export const connectionPool = await createAndVerifyPool({
+	...creds,
+	waitForConnections: true,
+	connectionLimit: 10,
+	queueLimit: 0
+})
+
+async function createAndVerifyPool(config) {
+	const pool = mysql.createPool(config)
 	try {
-		connection = await mysql.createConnection(creds)
-		return connection
-	}
-	catch (e) {
-		log.fatal(`Не удалось подключиться к базе данных`)
+		// Test the connection
+		const connection = await pool.getConnection()
+		await connection.ping() // Simple query to verify connectivity
+		connection.release()
+		log.succ('✅ Успешное подключение к БД');
+		return pool
+	} catch (err) {
+		await pool.end() // Close the pool if credentials are bad
+		lo.fatal('❌ Ошибка подключения к БД:');
 	}
 }
 
 export async function checkDB() {
 	let succ = true
-	const conn = await sqlConnection()
 	for (let table of ['1chan_category', '1chan_comment', '1chan_post']) {
-		const results = await conn.query(SQL`SHOW TABLES LIKE ${table}`)
+		const results = await connectionPool.query(SQL`SHOW TABLES LIKE ${table}`)
 		if (results[0].length) {
 			log.info(`Таблица "${table}" существует`)
 		}

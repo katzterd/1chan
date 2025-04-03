@@ -6,6 +6,8 @@ import checkEnv from '#inc/check-env.js'
 
 checkEnv(["SIO_TOKEN", "SRV_LOCAL_HOST"])
 
+let io = null
+
 export default async function socketIOplugin(fastify) {
 	fastify.register(socketioServer)
 
@@ -24,20 +26,10 @@ export default async function socketIOplugin(fastify) {
 		reply.code(200).send()
 	})
 
-	async function emit(channel, event, data, expire=false) {
-		const kvs = await kvsConnection()
-
-		fastify.io.to(channel).emit(event, data)
-		if (expire) {
-			const expiryDate = new Date().getTime() + expire *1000 *60 *60
-			kvs.sAdd(`Events:${channel}`, JSON.stringify([ event, data, expiryDate ]) )
-		}
-	}
-
 	fastify.ready(async (err) => {
 		if (err) throw err;
 		fastify.io.setMaxListeners(100)
-
+		io = fastify.io
 		const kvs = await kvsConnection()
 		fastify.io.on("connection", socket => {
 			socket.on('subscribe', function(channels) {
@@ -74,6 +66,19 @@ export default async function socketIOplugin(fastify) {
 			})
 		})
 	})
+}
+
+export async function emit(channel, event, data, expire=false) {
+	if (!io) {
+		log.err('Fastify+Socket.IO is not initialized')
+		return
+	}
+	const kvs = await kvsConnection()
+	io.to(channel).emit(event, data)
+	if (expire) {
+		const expiryDate = new Date().getTime() + expire *1000 *60 *60
+		kvs.sAdd(`Events:${channel}`, JSON.stringify([ event, data, expiryDate ]) )
+	}
 }
 
 function unserializeSafe(str) {

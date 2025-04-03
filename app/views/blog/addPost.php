@@ -40,7 +40,7 @@
                             </div>
 							<div class="b-blog-form_b-form_b-field">
 								<h2>Заголовок:</h2>
-								<p>Размер заголовка не должен превышать 70 символов (сейчас введено — <span id="blog_form_title_length">0 символов</span>).</p>
+								<p>Размер заголовка не должен превышать <?= TITLE_MAX_LENGTH ?> символов (сейчас введено — <span id="blog_form_title_length">0 символов</span>).</p>
 								<input type="text" name="title" value="<?php echo @htmlspecialchars($blog_form['title']); ?>"<?php if(array_key_exists('title', $form_errors)):?> class="g-input-error"<?php endif; ?> />
 							</div>
 							<div class="b-blog-form_b-form_b-field">
@@ -53,7 +53,7 @@
 								<p>Можно использовать <a href="/help/markup/" target="_blank">язык разметки</a>.</p>
 								<p>
 									Если текст записи большой, он должен быть разделен на две части: вводную и подробную.
-									Размер вводной части не должен превышать 1024 символа.
+									Размер вводной части не должен превышать <?= TEXT_MAX_LENGTH ?> символа.
 								</p>
 								<textarea name="text" rows="6"<?php if(array_key_exists('text', $form_errors)):?> class="g-input-error"<?php endif; ?>><?php echo @htmlspecialchars($blog_form['text']); ?></textarea>
 								<br />

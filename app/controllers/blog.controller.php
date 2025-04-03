@@ -626,22 +626,22 @@ class BlogController extends BaseController
 					);
 			}
 
-			$validator -> assertExists('title',           'Не введён заголовок');
-			$validator -> assertLength('title',     70,   'Заголовок слишком длинный');
-			$validator -> assertExists('text',            'Не введён вводный текст');
-			$validator -> assertLength('text',      1024, 'Вводный текст слишком длинный');
+			$validator -> assertExists('title', 'Не введён заголовок');
+			$validator -> assertLength('title', TITLE_MAX_LENGTH, 'Заголовок слишком длинный');
+			$validator -> assertExists('text', 'Не введён вводный текст');
+			$validator -> assertLength('text', TEXT_MAX_LENGTH, 'Вводный текст слишком длинный');
 
 			if (!$session -> isModeratorSession())
-			    $validator -> assertLength('text_full', 5096, 'Подробный текст слишком длинный');
+			    $validator -> assertLength('text_full', FULL_MAX_LENGTH, 'Подробный текст слишком длинный');
 
-			$validator -> assertNotExists('email',        'Заполнено лишнее поле');
+			$validator -> assertNotExists('email', 'Заполнено лишнее поле');
 
 			if (!isset($_POST['hidepost']) || $_POST['hidepost'] != 'on') {
 				if ($validator -> fieldValid('title'))
-					$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
+					$validator -> assertLengthMore('title', TITLE_MIN_LENGTH, 'Заголовок слишком короткий');
 
 				if ($validator -> fieldValid('text'))
-					$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
+					$validator -> assertLengthMore('text', TEXT_MIN_LENGTH, 'Вводный текст слишком короткий');
 
 				if ($validator -> fieldValid('title'))
 					// https://stackoverflow.com/questions/16733674/php-remove-symbols-from-string

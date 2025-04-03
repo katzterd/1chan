@@ -15,10 +15,10 @@ export async function updateServerStatus() {
 	const onlineLinks = await kvs.lRange(`Blog_BlogOnlineModel::links`, 0, -1)
 	for (let oLink of onlineLinks) {
 		const current = await cacheGet(`Blog_BlogOnlineModel:links:${oLink}`)
-		const offline = await isOffline(current.link)
-		if (current && !offline) continue;
+		const offline = current ? await isOffline(current.link) : true
+		if (!offline) continue;
 		const result = await kvs.lRem(`Blog_BlogOnlineModel::links`, 0, oLink)
-		if (result === 1) {
+		if (current && result === 1) {
 			log.timed.info(`Ссылка ${current.link} удалена из Онлайна`)
 		}
 	}

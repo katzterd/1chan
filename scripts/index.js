@@ -7,7 +7,7 @@ import { updateSmilies, watchSmilies } from '#inc/smilies.js'
 import checkEnv from '#inc/check-env.js'
 import fastify from "fastify"
 
-checkEnv(['SRV_HOST', 'SRV_PORT', 'SRV_LOCAL_IP'])
+checkEnv(['SRV_HOST', 'SRV_PORT', 'SRV_LOCAL_HOST'])
 
 // Запуск индексатора
 await indexerInit()
@@ -32,4 +32,4 @@ if (process.env?.TG_ENABLE) {
 }
 // Запуск сервера
 app.listen({ host: process.env.SRV_HOST, port: process.env.SRV_PORT })
-log.succ(`Сервер Node.JS @ ${process.env.SRV_HOST}:${process.env.SRV_PORT} принимает сообщения с локального адреса ${process.env.SRV_LOCAL_IP}`)
+log.succ(`Сервер Node.JS @ ${process.env.SRV_HOST}:${process.env.SRV_PORT} принимает сообщения с локального адреса ${process.env.SRV_LOCAL_HOST}`)

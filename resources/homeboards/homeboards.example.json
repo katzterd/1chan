@@ -9,25 +9,15 @@
         "0chan.ru.png",
         "0chan.ru"
     ],
-    "ochan.ru":
-    [
-        "crown.png",
-        "Королева"
-    ],
-    "1chan.plus":
-    [
-        "1chan.plus.png",
-        "1chan.plus"
-    ],
-    "1chan.life":
-    [
-        "1chan.life.png",
-        "1chan.life"
-    ],
     "1chan.ca":
     [
         "1chan.ca.png",
         "1chan.ca"
+    ],
+    "1chan.cyou":
+    [
+        "1chan.cyou.png",
+        "1chan.cyou"
     ],
     "1chan.ru":
     [
@@ -46,8 +36,8 @@
     ],
     "2ch.hk":
     [
-        "2ch.hk.png",
-        "2ch.hk"
+        "2ch.so.png",
+        "Мочан"
     ],
     "iichan.hk":
     [
@@ -78,16 +68,6 @@
     [
         "wiki1chan.png",
         "wiki.1chan.ru"
-    ],
-    "dollchan.net":
-    [
-        "dollchan.net.png",
-        "dollchan.net"
-    ],
-    "slonik.0chan.ru":
-    [
-        "slon.png",
-        "Слоник"
     ],
     "314n.org":
     [

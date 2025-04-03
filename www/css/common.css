@@ -32,7 +32,7 @@ form {
     padding: 0;
 }
 p {
-    margin: 12px 0;
+    margin: 10px 0;
     line-height: 16px;
 }
 code {
@@ -71,9 +71,6 @@ html[xmlns] .g-clearfix {
 }
 * html .g-clearfix {
     height: 1%;
-}
-.g-clearfix {
-    display: inline-block;
 }
 html[xmlns] .g-clearfix {
     display: block;
@@ -641,7 +638,8 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     font-style: regular;
 }
 .b-comment .b-comment_b-body pre {
-    max-width: 500px;
+    max-width: 540px;
+    white-space: break-spaces;
 }.b-post-statistics {
     width: 560px;
     margin: 2px auto;
@@ -756,7 +754,7 @@ b-blog-entry.m-hide .b-blog-entry_b-header a:hover {
     text-decoration: none;
 }
 .b-rss-link {
-    width: 640px;
+    width: 94%;
     margin: 10px 0;
     text-align: right;
 }
@@ -1415,6 +1413,11 @@ a.b-chat-rooms_b-chat-group_b-add-hidden:hover {
     height: 20px;
     padding: 2px;
 }
+
+.b-force-form {
+    width: 98%;
+}
+
 em .smiley {
     -webkit-transform: skewX(-20deg);
     -ms-transform: skewX(-20deg);
@@ -1451,6 +1454,7 @@ a.hidden:hover {
     padding-right: 0px; 
     padding-bottom: 3px; 
     padding-left: 0px;
+    cursor: move;
 }
 
 /**
@@ -1790,6 +1794,8 @@ a.hidden:hover {
         text-indent: 0;
         top: 0px!important;
         left: 8px;
+        right: 8px;
+        border-radius: 0px 0px 8px 8px;
     }
     .b-header-block.m-mascot-news, .b-header-block.m-mascot-fav {
         padding-bottom: 0;
@@ -1815,11 +1821,12 @@ a.hidden:hover {
         display: none;
     }
     .b-header-block .b-header-block_b-stats p {
-        margin: 10px 10px 0;
+        margin: 4px 0px 4px -4px;
         max-width: 100vw;
         overflow-wrap: anywhere;
         height: auto;
-        white-space: normal;
+        white-space: nowrap;
+        font-size: 0.6em!important;
     }
     .b-comment.m-tip {
         left: 0px!important;

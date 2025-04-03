@@ -5,14 +5,14 @@ import log from '#inc/logger.js'
 import ProgressBar from 'progress'
 import checkEnv from '#inc/check-env.js'
 
-checkEnv(["SQL_HOST", "SQL_PORT", "SQL_USER", "SQL_PASSWORD", "SQL_NAME"])
+checkEnv(["MARIADB_HOST", "MARIADB_PORT", "MARIADB_USER", "MARIADB_PASSWORD", "MARIADB_DATABASE"])
 
 const creds = {
-	host: process.env.SQL_HOST,
-	port: process.env.SQL_PORT,
-	user: process.env.SQL_USER,
-	password: process.env.SQL_PASSWORD,
-	database: process.env.SQL_NAME
+	host: process.env.MARIADB_HOST,
+	port: process.env.MARIADB_PORT,
+	user: process.env.MARIADB_USER,
+	password: process.env.MARIADB_PASSWORD,
+	database: process.env.MARIADB_DATABASE
 }
 
 let connection = null

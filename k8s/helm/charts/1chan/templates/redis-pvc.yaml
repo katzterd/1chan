@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+items:
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: {{ .Release.Name }}-{{ .Values.svc.redis.name }}-pvc
+    namespace: {{ .Release.Namespace }}
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    accessModes: [ {{ .Values.storageClass.accessMode }} ]
+    storageClassName: {{ include "StorageClassName" . }}
+    resources:
+      requests:
+        storage: {{ include "RedisSpace" . }}
+    volumeMode: Filesystem
+
+kind: List
+metadata: 
+  name: "pvc-list"

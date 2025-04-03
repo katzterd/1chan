@@ -934,14 +934,14 @@ class AdminController extends Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this['form_submitted'] = true;
 			$errors = [];
-			list($action, $old_domain, $new_domain, $icon, $name) = [@$_POST['action'], @$_POST['new-domain'], @$_POST['old-domain'], @$_POST['icon'], @$_POST['name']];
+			list($action, $new_domain, $old_domain, $icon, $name) = [@$_POST['action'], @$_POST['new-domain'], @$_POST['old-domain'], @$_POST['icon'], @$_POST['name']];
 			if (!in_array($action, ['add', 'edit', 'delete'])) {
 				$errors []= "Неверно указано действие";
 				return true;
 			}
 			// Валидация
 			else {
-				if ((!$old_domain && $action != 'add') || (!$new_domain && $action != 'delete')) {
+				if ((!$new_domain && $action === 'add') || ((!$old_domain || !$new_domain) && $action === 'edit' ) || (!$old_domain && $action === 'delete')) {
 					$errors []= "Не указан домен";
 				}
 				else {

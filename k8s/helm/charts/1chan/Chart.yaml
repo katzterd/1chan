@@ -1,0 +1,13 @@
+apiVersion: v2
+name: 1chan
+version: 0.1.0
+appVersion: "1.0.0"
+description: 1chan k8s helm chart.
+home: https://github.com/katzterd/1chan
+icon: https://raw.githubusercontent.com/katzterd/1chan/master/www/img/ogol.png
+sources:
+  - https://github.com/katzterd/1chan
+  - https://github.com/katzterd/1chan/tree/main/k8s/helm
+
+type: application
+

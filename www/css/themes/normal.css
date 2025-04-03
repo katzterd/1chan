@@ -118,10 +118,7 @@ a.g-dynamic.m-current:hover {
     border: 1px solid #ddd;
 }
 .b-header-block .b-header-block_b-stats p {
-    white-space: nowrap;
-    font-size: 0.65em;
-    padding: 0 8px;
-    color: #aaa;
+    color: #40454b;
 }
 .b-menu-panel .b-menu-panel_b-title {
     border-bottom: 1px solid #bbb;

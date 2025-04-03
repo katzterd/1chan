@@ -61,11 +61,11 @@ $poo_route = ENABLE_POO=="true" ? [
 return array(
 	'database' => array(
 		'engine' => 'mysql',
-		'host'   => SQL_HOST,
-		'port'   => SQL_PORT,
-		'name'   => SQL_NAME,
-		'user'   => SQL_USER,
-		'pass'   => SQL_PASSWORD
+		'host'   => MARIADB_HOST,
+		'port'   => MARIADB_PORT,
+		'name'   => MARIADB_DATABASE,
+		'user'   => MARIADB_USER,
+		'pass'   => MARIADB_PASSWORD
 	),
 	'md5salt'=> MD5_SALT,
 	'routes' => array_merge($board_routes, $poo_route, array(

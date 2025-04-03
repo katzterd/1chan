@@ -100,7 +100,7 @@
 							</a>
 							<?php endif; ?>
 						</div>
-						<div class="b-comment_b-body g-clearfix">
+						<div class="b-comment_b-body">
 							<?php echo($comment['text']); ?>
 
 						</div>

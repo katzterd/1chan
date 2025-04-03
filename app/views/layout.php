@@ -64,8 +64,8 @@
 				<div class="js-poo-wrapper">
 					<div class="js-poo-target">
 						<img src="/img/poo.png" width="64" height="65">
-						<a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a>
 					</div>
+					  <a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a>
 				</div>
 			<?php endif; ?> 
 

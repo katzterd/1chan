@@ -48,7 +48,7 @@ class Chat_ChatRoomsModel
 		$record = array(
 				'room_id'     => $id,
 						'title'       => 'Общая комната',
-						'description' => 'Свободное общение',
+						'description' => 'Свободное общение. Для просмотра доступных команд введите /help',
 						'password'    => '',
 						'controlword' => COMMON_ROOM_CONTROLWORD,
 						'public'      => true

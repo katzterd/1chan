@@ -4,13 +4,13 @@ import { Server } from "socket.io"
 import { kvsConnection } from '#inc/kvs.js'
 import checkEnv from '#inc/check-env.js'
 
-checkEnv(["SIO_TOKEN", "SRV_LOCAL_IP"])
+checkEnv(["SIO_TOKEN", "SRV_LOCAL_HOST"])
 
 export default async function socketIOplugin(fastify) {
 	fastify.register(socketioServer)
 
 	fastify.post("/broadcast/", async (req, reply) => {
-		if (req.ip !== process.env.SRV_LOCAL_IP || req.body.token !== process.env.SIO_TOKEN) {
+		if (req.hostname !== `${process.env.SRV_LOCAL_HOST}:${process.env.SRV_PORT}` || req.body.token !== process.env.SIO_TOKEN) {
 			reply.code(403).send()
 			return
 		}

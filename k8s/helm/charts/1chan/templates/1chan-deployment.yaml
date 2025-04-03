@@ -252,22 +252,22 @@ items:
                 key: SERVER_STATUS_TIMEOUT
                 name: {{ include "SecretsName" . }}
           volumeMounts:
-          - name: {{ .Values.svc.onechan.name }}-www-smilies-pv
+          - name: {{ .Values.svc.onechan.name }}-www-pv
             mountPath: /src/www/img/smilies
-          - name: {{ .Values.svc.onechan.name }}-www-homeboards-pv
+            subPath: www-smilies
+          - name: {{ .Values.svc.onechan.name }}-www-pv
             mountPath: /src/www/ico/homeboards
-          - name: {{ .Values.svc.onechan.name }}-www-uploads-pv
+            subPath: www-homeboards
+          - name: {{ .Values.svc.onechan.name }}-www-pv
             mountPath: /src/www/uploads
+            subPath: www-uploads
+          - name: {{ .Values.svc.onechan.name }}-www-pv
+            mountPath: /var/lib/sphinxsearch
+            subPath: sphinxsearch_data
         volumes:
-        - name: {{ .Values.svc.onechan.name }}-www-smilies-pv
+        - name: {{ .Values.svc.onechan.name }}-www-pv
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-www-pvc
-        - name: {{ .Values.svc.onechan.name }}-www-homeboards-pv
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-www-pvc
-        - name: {{ .Values.svc.onechan.name }}-www-uploads-pv
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-www-pvc
+            claimName: {{ .Release.Name }}-{{ .Values.svc.onechan.name }}-www-pvc
 
 - apiVersion: v1
   kind: Service

@@ -19,7 +19,7 @@ Then fill fields in `.env` by your text editor with desired values
 Simple opaque secrets from `.env`:
 ```console
 kubectl create namespace <namespace>
-kubectl create -n <namespace> secret generic <secretsName> --from-env-file=.env
+kubectl -n <namespace> create secret generic <secretsName> --from-env-file=.env
 ```
 
 ##### OR
@@ -48,10 +48,15 @@ helm upgrade --install <my-release> 1chan/1chan \
 
 #### 5. Set up db and admin account
 ```console
-kubectl exec -n <namespace> -t deployments/1chan -- /docker-entrypoint.sh install
+kubectl -n <namespace> exec -t deployments/<my-release>-onechan -- /docker-entrypoint.sh install
 ```
 
-#### 6. (Optional) Expose to clearnet
+#### 6. Restart `1chan` deployment to run indexer properly after db setup
+```console
+kubectl -n <namespace> rollout restart deployments/<my-release>-onechan
+```
+
+#### 7. (Optional) Expose to clearnet
 Examples is located in `examples/loadbalancer` directory
 ```console
 kubectl apply -f examples/loadbalancer/expose-frontend.yaml

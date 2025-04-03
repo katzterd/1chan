@@ -62,3 +62,14 @@ www space request override
 {{- .Values.storageClass.pods.www.defaultRequestSpace }}
 {{- end }}
 {{- end }}
+
+{{/*
+redis space request override
+*/}}
+{{- define "RedisSpace" -}}
+{{- if .Values.redisSpace }}
+{{- .Values.redisSpace }}
+{{- else }}
+{{- .Values.storageClass.pods.redis.defaultRequestSpace }}
+{{- end }}
+{{- end }}

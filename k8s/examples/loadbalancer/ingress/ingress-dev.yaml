@@ -13,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: onechan
             port:
               number: 80

@@ -23,12 +23,12 @@ $ docker compose up -d
 
 #### 3. Setup db and admin account
 ```
-$ docker exec -t 1chan-service /docker-entrypoint.sh install
+$ docker exec -t 1chan /docker-entrypoint.sh install
 ```
 
-#### 4. Restart `1chan-service` container to run indexer properly after db setup
+#### 4. Restart `1chan` container to run indexer properly after db setup
 ```
-$ docker compose restart 1chan-service
+$ docker compose restart 1chan
 ```
 
 frontend will appear on `http://localhost:80`

@@ -17,7 +17,7 @@ helm install <my-release> (--set <key1=val1,key2=val2,...>) 1chan/1chan -n <name
 ## Uninstall chart
 
 ```console
-helm delete -n <namespace> <my-release>
+helm -n <namespace> delete <my-release>
 ```
 
 ## Configuration
@@ -32,17 +32,18 @@ helm delete -n <namespace> <my-release>
 | `storageClass.name`                        | Override storage class name                   | `1chan-sc`                                              |
 | `dbSpace`                                  | Size of database free space (in Gi)           | `10Gi`                                                  |
 | `wwwSpace`                                 | Size of storage free space (in Gi)            | `25Gi`                                                  |
+| `redisSpace`                               | Size of redis free space (in Gi)              | `5Gi`                                                   |
 | `imagePullSecretName`                      | For pulling from private registry             | None                                                    |
 
 
 ### Pulling from private registry
 ```console
-kubectl create -n <namespace> secret generic <imagePullSecretName> \ 
+kubectl -n <namespace> create secret generic <imagePullSecretName> \ 
     --from-file=.dockerconfigjson=/path/to/.docker/config.json \
     --type=kubernetes.io/dockerconfigjson
 ```
 
 ## Get yggdrasil node address (if enabled)
 ```console
-kubectl exec -n <namespace> -t deployments/yggdrasil -- /docker-entrypoint.sh getaddr
+kubectl -n <namespace> exec -t deployments/yggdrasil -- /docker-entrypoint.sh getaddr
 ```

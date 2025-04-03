@@ -4,14 +4,16 @@ items:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: {{ .Release.Name }}-www-pvc
+    name: {{ .Release.Name }}-{{ .Values.svc.redis.name }}-pvc
     namespace: {{ .Release.Namespace }}
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     accessModes: [ {{ .Values.storageClass.accessMode }} ]
     storageClassName: {{ include "StorageClassName" . }}
     resources:
       requests:
-        storage: {{ include "WWWSpace" . }}
+        storage: {{ include "RedisSpace" . }}
     volumeMode: Filesystem
 
 kind: List

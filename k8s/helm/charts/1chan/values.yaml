@@ -9,6 +9,8 @@ storageClass:
       defaultRequestSpace: 10Gi
     www:
       defaultRequestSpace: 25Gi
+    redis:
+      defaultRequestSpace: 5Gi
 
 restartPolicy: Always
 

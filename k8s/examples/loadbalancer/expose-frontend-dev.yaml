@@ -5,7 +5,7 @@ metadata:
   namespace: onechan-dev
 spec:
   ports:
-  - name: frontend
+  - name: onechan
     port: 80
     targetPort: 80
   externalTrafficPolicy: Local

@@ -15,7 +15,7 @@ services:
     networks:
       - bridge
 
-  1chan:
+  onechan:
     build:
       context: .
       dockerfile: ./docker/1chan.Dockerfile
@@ -51,6 +51,7 @@ services:
       - www-smilies:/src/www/img/smilies
       - www-homeboards:/src/www/ico/homeboards
       - www-uploads:/src/www/uploads
+      - sphinxsearch_data:/var/lib/sphinxsearch
     networks:
       - bridge
     depends_on:

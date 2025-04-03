@@ -26,6 +26,14 @@ items:
           imagePullPolicy: {{ .Values.svc.redis.image.pullPolicy }}
           ports:
           - containerPort: 6379
+          volumeMounts:
+          - name: {{ .Values.svc.redis.name }}-pv
+            mountPath: /data
+            subPath: redis_data
+        volumes:
+        - name: {{ .Values.svc.redis.name }}-pv
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-{{ .Values.svc.redis.name }}-pvc
 
 - apiVersion: v1
   kind: Service

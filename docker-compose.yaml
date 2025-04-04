@@ -64,7 +64,7 @@ services:
       dockerfile: ./docker/torgate.Dockerfile
     container_name: torgate
     depends_on:
-      1chan:
+      onechan:
         condition: service_started
         restart: false
     env_file:
@@ -78,7 +78,7 @@ services:
       dockerfile: ./docker/i2pgate.Dockerfile
     container_name: i2pgate
     depends_on:
-      1chan:
+      onechan:
         condition: service_started
         restart: false
     env_file:
@@ -92,7 +92,7 @@ services:
       dockerfile: ./docker/yggdrasil.Dockerfile
     container_name: yggdrasil
     depends_on:
-      1chan:
+      onechan:
         condition: service_started
         restart: false
     env_file:

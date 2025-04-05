@@ -1405,6 +1405,7 @@ a.b-chat-rooms_b-chat-group_b-add-hidden:hover {
     padding: 37px 0 0 0;
     font-size: 0.65em;
     text-align: center;
+    overflow-wrap: break-word;
 }
 .b-mod-toolbar {
     position: absolute;

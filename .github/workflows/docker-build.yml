@@ -11,6 +11,8 @@ env:
 jobs:
   buildDocker:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
     
     # Prepare

@@ -3,6 +3,9 @@ kind: Ingress
 metadata:
   name: ingress-1chan
   namespace: onechan
+  annotations:
+    nginx.ingress.kubernetes.io/enable-real-ip: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For, X-Real-IP"
 spec:
   ingressClassName: nginx
   rules:

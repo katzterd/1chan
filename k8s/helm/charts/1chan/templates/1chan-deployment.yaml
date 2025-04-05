@@ -24,16 +24,17 @@ items:
         hostname: {{ .Values.svc.onechan.name }}
         restartPolicy: {{ .Values.restartPolicy }}
         {{- include "ImagePullSecret" . | nindent 8 }}
-#        initContainers:
-#        - name: wait-db-redis
-#          image: alpine/curl
-#          command:
-#          - sh
-#          - -c
-#          - |
-#            until curl http://{{ .Values.svc.db.name }}:3306 2>&1 | grep -q "Received HTTP/0.9 when not allowed"; do
-#              sleep 1
-#            done
+        initContainers:
+        - name: wait-db-and-redis
+          image: alpine/curl
+          command:
+          - sh
+          - -c
+          - |
+            until curl http://{{ .Values.svc.db.name }}:3306 2>&1 | grep -q "1" && \
+              curl http://{{ .Values.svc.redis.name }}:6379 2>&1 | grep -q "52"; do 
+              sleep 1
+            done
         containers:
         - name: {{ .Values.svc.onechan.image.name }}
           image: {{ include "ImageRegistry" . }}/{{ .Values.svc.onechan.image.name }}:{{ .Values.svc.onechan.image.tag }}

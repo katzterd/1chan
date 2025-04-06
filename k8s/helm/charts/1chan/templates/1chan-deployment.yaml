@@ -27,6 +27,7 @@ items:
         initContainers:
         - name: wait-db-and-redis
           image: alpine/curl
+          imagePullPolicy: IfNotPresent
           command:
           - sh
           - -c

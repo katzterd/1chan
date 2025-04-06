@@ -24,6 +24,7 @@ items:
         initContainers:
         - name: torgate-wait-1chan
           image: alpine/curl
+          imagePullPolicy: IfNotPresent
           command:
           - sh
           - -c
@@ -36,12 +37,14 @@ items:
           image: {{ include "ImageRegistry" . }}/{{ .Values.svc.torgate.image.name }}:{{ .Values.svc.torgate.image.tag }}
           imagePullPolicy: {{ .Values.svc.torgate.image.pullPolicy }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-              host: {{ .Values.svc.onechan.name }}
+            exec:
+              command:
+              - curl
+              - -f
+              - http://{{ .Values.svc.onechan.name }}:80
             periodSeconds: 5
-            initialDelaySeconds: 60
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
           env:
           - name: TORGATE_HOSTNAME
             valueFrom:

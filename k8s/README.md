@@ -83,4 +83,4 @@ kubectl apply -f examples/loadbalancer/ingress/ingress.yaml
 
 ### Configuration
 
-See in [./helm/charts/1chan](https://github.com/katzterd/1chan/tree/main/k8s/helm/charts/1chan)
+See in [./helm/charts/1chan](https://github.com/katzterd/1chan/tree/master/k8s/helm/charts/1chan)

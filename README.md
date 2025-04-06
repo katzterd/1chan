@@ -2,7 +2,7 @@
     <img src="https://raw.githubusercontent.com/katzterd/1chan/master/www/img/ogol.png" alt="1chan">
 </p>
 
-![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/ci.yml?label=CI&logo=github&style=for-the-badge)
+![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/docker-build.yml?label=CI&logo=github&style=for-the-badge)
 
 ## Installation
 
@@ -39,3 +39,6 @@ frontend will appear on `http://localhost:80`
 ```
 $ docker exec -t yggdrasil /docker-entrypoint.sh getaddr
 ```
+
+### K8S way
+See in [/k8s](https://github.com/katzterd/1chan/tree/master/k8s)

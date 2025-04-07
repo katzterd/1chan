@@ -20,15 +20,36 @@ env:
   YGGDRASILGATE_IMAGE_NAME: yggdrasil
 
 jobs:
+
   buildDocker:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-    
-    # Prepare
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Filter
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            1chan:
+              - 'app/**'
+              - 'resources/**'
+              - 'scripts/**'
+              - 'www/**'
+              - 'docker/1chan.Dockerfile'
+              - 'docker/config/1chan/*'
+            torgate:
+              - 'docker/torgate.Dockerfile'
+              - 'docker/config/torgate/*'
+            i2pgate:
+              - 'docker/i2pgate.Dockerfile'
+              - 'docker/config/i2pgate/*'
+            yggdrasilgate:
+              - 'docker/yggdrasil.Dockerfile'
+              - 'docker/config/yggdrasil/*'
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -38,11 +59,11 @@ jobs:
       -
         name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      
-    # Build
+
       -
         name: Build 1chan
         uses: docker/build-push-action@v5
+        if: steps.filter.outputs.1chan == 'true'
         with:
           context: .
           file: docker/1chan.Dockerfile
@@ -51,9 +72,11 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ env.ONECHAN_IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
       -
         name: Build torgate
         uses: docker/build-push-action@v5
+        if: steps.filter.outputs.torgate == 'true'
         with:
           context: .
           file: docker/torgate.Dockerfile
@@ -62,9 +85,11 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ env.TORGATE_IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
       -
         name: Build i2pgate
         uses: docker/build-push-action@v5
+        if: steps.filter.outputs.i2pgate == 'true'
         with:
           context: .
           file: docker/i2pgate.Dockerfile
@@ -73,9 +98,11 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/${{ env.I2PGATE_IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
       -
         name: Build yggdrasilgate
         uses: docker/build-push-action@v5
+        if: steps.filter.outputs.yggdrasilgate == 'true'
         with:
           context: .
           file: docker/yggdrasil.Dockerfile

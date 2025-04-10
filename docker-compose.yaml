@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/1chan.Dockerfile
-    container_name: 1chan
+    container_name: onechan
     restart: always
     env_file:
       - .env

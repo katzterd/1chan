@@ -26,9 +26,9 @@ $ docker compose up -d
 $ docker exec -t 1chan /docker-entrypoint.sh install
 ```
 
-#### 4. Restart `1chan` container to run indexer properly after db setup
+#### 4. Restart `onechan` container to run indexer properly after db setup
 ```
-$ docker compose restart 1chan
+$ docker compose restart onechan
 ```
 
 frontend will appear on `http://localhost:80`

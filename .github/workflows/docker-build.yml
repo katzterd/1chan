@@ -34,7 +34,7 @@ jobs:
         id: filter
         with:
           filters: |
-            1chan:
+            onechan:
               - 'app/**'
               - 'resources/**'
               - 'scripts/**'
@@ -63,7 +63,7 @@ jobs:
       -
         name: Build 1chan
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.1chan == 'true'
+        if: steps.filter.outputs.onechan == 'true'
         with:
           context: .
           file: docker/1chan.Dockerfile

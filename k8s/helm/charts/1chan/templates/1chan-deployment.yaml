@@ -223,6 +223,11 @@ items:
               secretKeyRef:
                 key: META_DESCRIPTION
                 name: {{ include "SecretsName" . }}
+          - name: META_KEYWORDS
+            valueFrom:
+              secretKeyRef:
+                key: META_KEYWORDS
+                name: {{ include "SecretsName" . }}
           - name: RSS_MANAGING_EDITOR
             valueFrom:
               secretKeyRef:

@@ -17,7 +17,7 @@ class PreviewHelper
 	    if (isset($data['Content-Length']) && $data['Content-Length'] > 3*10485760) {
 			return false; // File is too large
 		}
-        if (in_array($data['Content-Type'], array('image/jpeg', 'image/jpg', 'image/png', 'image/gif'))) {
+        if (in_array($data['Content-Type'], array('image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'))) {
 			$tm = tempnam('/tmp', 'img');
 			$nam = md5(uniqid('', true));
 			$dir = substr($nam, 0, 1);
@@ -45,10 +45,10 @@ class PreviewHelper
 			if ((time() - $start) > 5)
 				return false;
             
-            self::createThumbnail($tm, UPLOAD_PATH .'/news/'. $dir .'/'. $nam .'.png');
-            $p = '/uploads/news/'. $dir .'/'. $nam .'.png';
+            self::createThumbnail($tm, UPLOAD_PATH .'/news/'. /*$dir .'/'.*/ $nam .'.png');
+            $p = '/uploads/news/'. /*$dir .'/'.*/ $nam .'.png';
             @unlink($tm);
-            $kvs -> set(__CLASS__, $url, null, '/uploads/news/'. $dir .'/'. $nam .'.png');
+            $kvs -> set(__CLASS__, $url, null, '/uploads/news/'. /*$dir .'/'.*/ $nam .'.png');
             $kvs -> expire(__CLASS__, $url, null, 60 * 60 * 24 * 30);
             
             return $p;

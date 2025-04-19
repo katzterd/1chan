@@ -5,7 +5,7 @@
 class Template
 {
 	/**
-	 * Парамтеры вида:
+	 * Параметры вида:
 	 */
 	private $viewParams = array();
 	

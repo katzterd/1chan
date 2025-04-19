@@ -873,6 +873,7 @@ class BlogController extends BaseController
 						'captcha', $session -> instantGet('captcha_'. $_POST['captcha_key'], false),
 						'Капча введена неверно'
 					);
+					$show_captcha = true;
 			}
 			$validator -> assertExists('text',       'Не введен текст комментария');
 			$validator -> assertExists('post_id',    'Не указан идентификатор поста');
@@ -951,6 +952,7 @@ class BlogController extends BaseController
 					'captcha', $session -> instantGet('captcha_'. $_POST['captcha_key'], false),
 					'Капча введена неверно'
 				);
+				$show_captcha = true;
 //			return array('captcha' => true);
 		}
 		$validator -> assertExists('text',       'Не введен текст комментария');
@@ -996,7 +998,8 @@ class BlogController extends BaseController
 
 		return array(
 			'isValid'           => $validator -> isValid(),
-			'validationResults' => $validator -> getValidationResults()
+			'validationResults' => $validator -> getValidationResults(),
+			'showCaptcha'       => $show_captcha
 		);
 	}
 

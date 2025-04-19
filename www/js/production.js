@@ -451,6 +451,7 @@
 					$("#comment_form input[type=submit]").attr("disabled", null);
 					if (status != "error") {
 						if (result.isValid != true) {
+						    $(".b-comment-form_b-captcha").show();
 							var error_strings = [];
 							for (var field in result.validationResults)
 							if (result.validationResults.hasOwnProperty(field))
@@ -461,6 +462,11 @@
 							$("#captchaimage").attr('src',$("#captchaimage").attr('src')+'&u=n');
 							return false;
 						}
+						if (result.showCaptcha) {
+				            $(".b-comment-form_b-captcha").show();
+			            } else {
+			                $("b-comment-form_b-captcha").hide();
+			            };
 						$("#comment_form textarea").val("");
 						$("#comment_form input[name=captcha]").val("");
 						$.get(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
@@ -694,6 +700,14 @@
 			}
 			commentPreview(node);
 			$.getJSON(location.protocol + "//"+ location.host +"/news/res/"+ id +"/");
+			
+			$.get(location.protocol + "//"+ location.host +"/news/res/"+ id +"/add_comment/", function(result, status) {
+		        if (result.showCaptcha) {
+				    $(".b-comment-form_b-captcha").show();
+			    } else {
+				    $(".b-comment-form_b-captcha").hide();
+			    }
+			}, "json");
 		});
 		x.subscribe("post_"+ id, "remove_post_comment", function(data) {
 			$("#comment_" + data.id).slideUp(500);

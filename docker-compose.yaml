@@ -42,9 +42,6 @@ services:
       SEARCHD_READ_TIMEOUT: "5"
       SEARCHD_MAX_CHILDREN: "30"
       SEARCHD_PID_FILE: "searchd.pid"
-      CSS_VERSION: "?1"
-      JS_VERSION: "?1"
-      ICONS_VERSION: "?1"
     ports:
       - "80:80"
     volumes:

@@ -432,12 +432,11 @@
 			$("#post_notify").show("fade");
 		});
 	});
-
 	x.addPageProcessor(/^news\/res\/(\d+)/, function(match) {
 		var id = match[1],
-			addComment = function() {  
+			addComment = function($replyBtn) {
 			$("#comment_form_error").html("");
-			$("#comment_form input[type=submit]").attr("disabled", "disabled");
+			$replyBtn.attr("disabled", "disabled");
 			$.post(
 				location.protocol + "//"+ location.host +"/news/res/"+ id +"/add_comment/",
 				{
@@ -474,7 +473,11 @@
 					}
 				},
 				"json"
-			);
+			)
+			.always(() => {
+                isPosting = false;
+                $replyBtn.attr("disabled", null);
+            });
 		};
 		var writing, waiting, writingTimeout = null, _title = document.title,
 		statusReading = function() {
@@ -643,10 +646,21 @@
 			$(".js-homeboard-select").hide();
 		});
 
-		$("#comment_form input[type=submit]").click(function() {
-			addComment();
-			return false;
-		});
+        var isPosting = false;
+        $("#comment_form input[type=submit]").click(function() {
+            if (isPosting) return false;
+            isPosting = true;
+            const $replyBtn = $(this);
+            const sleep = setTimeout(() => {
+                isPosting = false;
+                $replyBtn.attr("disabled", "disabled");
+            }, 2000);
+            addComment($replyBtn);
+            $(document).one('ajaxComplete', () => {
+                clearTimeout(sleep);
+            });
+            return false;
+        });
 		$("#comment_form_text")
 			.bind("keyup", function(e) {
 				if (!writing) {

@@ -81,7 +81,8 @@ items:
           - name: SEARCHD_PID_FILE
             value: "searchd.pid"
           - name: CSS_VERSION
-            secretKeyRef:
+            valueFrom:
+              secretKeyRef:
                 key: CSS_VERSION
                 name: {{ include "SecretsName" . }}
           - name: JS_VERSION
@@ -90,7 +91,8 @@ items:
                 key: JS_VERSION
                 name: {{ include "SecretsName" . }}
           - name: ICONS_VERSION
-            secretKeyRef:
+            valueFrom:
+              secretKeyRef:
                 key: ICONS_VERSION
                 name: {{ include "SecretsName" . }}
           - name: ADMIN_LOGIN

@@ -43,6 +43,8 @@ items:
           ports:
           - containerPort: 80
             protocol: TCP
+          - containerPort: 81
+            protocol: TCP
           env:
           - name: MARIADB_HOST
             value: {{ .Values.svc.db.name }}
@@ -294,9 +296,14 @@ items:
     selector:
       app: {{ .Values.svc.onechan.name }}
     ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
+    - name: onion
+      protocol: TCP
+      port: 81
+      targetPort: 81
     clusterIP: None
 
 kind: List

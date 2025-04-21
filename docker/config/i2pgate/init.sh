@@ -14,13 +14,6 @@ else
     sed -i 's/\__GATE_ENDPOINT_HOST__/'"${GATE_ENDPOINT_HOST}"'/g' /etc/i2pd/tunnels.conf
 fi
 
-if [ -z "${GATE_ENDPOINT_PORT}" ]; then
-    echo "GATE_ENDPOINT_PORT environment var is undefined, i2pgate will be disabled";
-    exit 0;
-else
-    sed -i 's/\__GATE_ENDPOINT_PORT__/'"${GATE_ENDPOINT_PORT}"'/' /etc/i2pd/tunnels.conf
-fi
-
-printf "i2pgate started: ${GATE_ENDPOINT_HOST}:${GATE_ENDPOINT_PORT}\n\n"
+printf "i2pgate started: ${GATE_ENDPOINT_HOST}:80\n\n"
 
 i2pd --service --conf /etc/i2pd/i2pd.conf

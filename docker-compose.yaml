@@ -44,6 +44,7 @@ services:
       SEARCHD_PID_FILE: "searchd.pid"
     ports:
       - "80:80"
+      - "81:81"
     volumes:
       - www-smilies:/src/www/img/smilies
       - www-homeboards:/src/www/ico/homeboards

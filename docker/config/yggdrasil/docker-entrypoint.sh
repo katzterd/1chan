@@ -23,17 +23,10 @@ if [[ -z $@ ]]; then
         sed -i 's/\__GATE_ENDPOINT_HOST__/'"${GATE_ENDPOINT_HOST}"'/g' ./supervisord.conf
     fi
     
-    if [ -z "${GATE_ENDPOINT_PORT}" ]; then
-        echo "GATE_ENDPOINT_PORT environment var is undefined, yggdrasil will be disabled";
-        exit 0;
-    else
-        sed -i 's/\__GATE_ENDPOINT_PORT__/'"${GATE_ENDPOINT_PORT}"'/g' ./supervisord.conf
-    fi
-    
 printf "Updating peers...\n\n"
 ./peers_updater -c ./yggdrasil.conf -n 5 -u
 
-printf "yggdrasil started: ${GATE_ENDPOINT_HOST}:${GATE_ENDPOINT_PORT}\n\n"
+printf "yggdrasil started: ${GATE_ENDPOINT_HOST}:80\n\n"
 supervisord -c ./supervisord.conf
 
 fi

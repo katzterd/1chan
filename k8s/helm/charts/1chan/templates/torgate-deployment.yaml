@@ -66,11 +66,6 @@ items:
               secretKeyRef:
                 key: GATE_ENDPOINT_HOST
                 name: {{ include "SecretsName" . }}
-          - name: GATE_ENDPOINT_PORT
-            valueFrom:
-              secretKeyRef:
-                key: GATE_ENDPOINT_PORT
-                name: {{ include "SecretsName" . }}
 
 kind: List
 metadata:

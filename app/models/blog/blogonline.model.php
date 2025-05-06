@@ -93,8 +93,7 @@ class Blog_BlogOnlineModel
 		{
 			if (($current = unserialize($cache -> get(__CLASS__, 'links', $link))) != null)
 			{
-				if ($boards !== true)
-				{
+				if (is_array($boards)) { // I don't even begin to understand what this shit means. What boards, what do boards have to do with this? Who the fuck knows
 					if (in_array($current['board'], $boards))
 						$results[] = $current;
 				}

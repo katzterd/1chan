@@ -204,6 +204,18 @@ items:
                 key: TG_CHANNEL_APPROVED
                 name: {{ include "SecretsName" . }}
                 optional: true
+          - name: TG_FORWARDING_ENABLE
+            valueFrom:
+              secretKeyRef:
+                key: TG_FORWARDING_ENABLE
+                name: {{ include "SecretsName" . }}
+                optional: true
+          - name: TG_FORWARDING_COOLDOWN
+            valueFrom:
+              secretKeyRef:
+                key: TG_FORWARDING_COOLDOWN
+                name: {{ include "SecretsName" . }}
+                optional: true
           - name: HOME_FAVICON
             valueFrom:
               secretKeyRef:
@@ -238,6 +250,31 @@ items:
             valueFrom:
               secretKeyRef:
                 key: META_KEYWORDS
+                name: {{ include "SecretsName" . }}
+          - name: TITLE_MIN_LENGTH
+            valueFrom:
+              secretKeyRef:
+                key: TITLE_MIN_LENGTH
+                name: {{ include "SecretsName" . }}
+          - name: TITLE_MAX_LENGTH
+            valueFrom:
+              secretKeyRef:
+                key: TITLE_MAX_LENGTH
+                name: {{ include "SecretsName" . }}
+          - name: TEXT_MIN_LENGTH
+            valueFrom:
+              secretKeyRef:
+                key: TEXT_MIN_LENGTH
+                name: {{ include "SecretsName" . }}
+          - name: TEXT_MAX_LENGTH
+            valueFrom:
+              secretKeyRef:
+                key: TEXT_MAX_LENGTH
+                name: {{ include "SecretsName" . }}
+          - name: FULL_MAX_LENGTH
+            valueFrom:
+              secretKeyRef:
+                key: FULL_MAX_LENGTH
                 name: {{ include "SecretsName" . }}
           - name: RSS_MANAGING_EDITOR
             valueFrom:

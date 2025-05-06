@@ -1,6 +1,9 @@
 name: Docker build
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - master
 
 env:
   ONECHAN_IMAGE_NAME: 1chan
@@ -10,38 +13,21 @@ env:
 
 jobs:
 
-  diff:
+  buildDocker:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
-    outputs:
-      buildDocker: ${{ steps.diff.outputs.buildDocker }}
-    steps:
-    - uses: dorny/paths-filter@v3
-      id: diff
-      with:
-        filters: |
-          buildDocker:
-            - 'app/**'
-            - 'docker/**'
-            - 'resources/**'
-            - 'scripts/**'
-            - 'www/**'
-
-  buildDocker:
-    runs-on: ubuntu-latest
-    needs: diff
-    if: ${{ needs.diff.outputs.buildDocker == 'true' }}
+      packages: write
     steps:
       -
         name: Checkout
         uses: actions/checkout@v4
       -
         name: Filter
-        uses: dorny/paths-filter@v3
+        uses: tj-actions/changed-files@v46.0.5
         id: filter
         with:
-          filters: |
+          files_yaml: |
             onechan:
               - 'app/**'
               - 'resources/**'
@@ -71,7 +57,7 @@ jobs:
       -
         name: Build 1chan
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.onechan == 'true'
+        if: steps.filter.outputs.onechan_any_changed == 'true'
         with:
           context: .
           file: docker/1chan.Dockerfile
@@ -84,7 +70,7 @@ jobs:
       -
         name: Build torgate
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.torgate == 'true'
+        if: steps.filter.outputs.torgate_any_changed == 'true'
         with:
           context: .
           file: docker/torgate.Dockerfile
@@ -97,7 +83,7 @@ jobs:
       -
         name: Build i2pgate
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.i2pgate == 'true'
+        if: steps.filter.outputs.i2pgate_any_changed == 'true'
         with:
           context: .
           file: docker/i2pgate.Dockerfile
@@ -110,7 +96,7 @@ jobs:
       -
         name: Build yggdrasilgate
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.yggdrasilgate == 'true'
+        if: steps.filter.outputs.yggdrasilgate_any_changed == 'true'
         with:
           context: .
           file: docker/yggdrasil.Dockerfile

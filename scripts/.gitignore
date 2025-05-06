@@ -1,0 +1,10 @@
+*
+!inc
+!legacy
+!1chan.template.conf
+!dump.sql
+!ecosystem.config.cjs
+!index.js
+!installation.js
+!package.json
+!.gitignore

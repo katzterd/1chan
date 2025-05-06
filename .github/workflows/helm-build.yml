@@ -1,6 +1,9 @@
 name: Helm build
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - master
     
 permissions: {}
 jobs:
@@ -12,10 +15,10 @@ jobs:
     outputs:
       buildHelm: ${{ steps.diff.outputs.buildHelm }}
     steps:
-    - uses: dorny/paths-filter@v3
+    - uses: tj-actions/changed-files@v46.0.5
       id: diff
       with:
-        filters: |
+        files_yaml: |
           buildHelm:
             - 'k8s/helm/**'
             - '.cr.yaml'

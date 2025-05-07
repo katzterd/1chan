@@ -13,7 +13,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
-      - bridge
+      - 1chan
 
   onechan:
     build:
@@ -51,7 +51,7 @@ services:
       - www-uploads:/src/www/uploads
       - sphinxsearch_data:/var/lib/sphinxsearch
     networks:
-      - bridge
+      - 1chan
     depends_on:
       - db
       - redis
@@ -68,7 +68,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 1chan
         
   i2pgate:
     build:
@@ -82,7 +82,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 1chan
         
   yggdrasil:
     build:
@@ -96,7 +96,7 @@ services:
     env_file:
       - .env
     networks:
-      - bridge
+      - 1chan
     cap_add:
       - NET_ADMIN
     devices:
@@ -113,7 +113,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - bridge
+      - 1chan
 
 volumes:
   mariadb_data:
@@ -124,4 +124,4 @@ volumes:
   sphinxsearch_data:
 
 networks:
-  bridge:
+  1chan:

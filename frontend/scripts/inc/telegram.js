@@ -24,7 +24,7 @@ import { load as $load } from 'cheerio'
 import { emit as clientBroadcast } from '#inc/broadcast.js'
 
 let tg = null, bot = null
-if (process.env?.TG_ENABLE) {
+if (process.env?.TG_ENABLE == true) {
 	checkEnv(["TG_CHANNEL_ALL", "TG_BOT_TOKEN", "WEB_DOMAIN"])
 	tg = new Telegram(process.env.TG_BOT_TOKEN)
 }
@@ -138,7 +138,7 @@ export default async function telegramSrvPlugin(fastify) {
 	})
 }
 
-if (process.env?.TG_ENABLE && process.env?.TG_FORWARDING_ENABLE) {
+if (process.env?.TG_ENABLE == true && process.env?.TG_FORWARDING_ENABLE == true) {
 	checkEnv([
 		"TG_FORWARDING_COOLDOWN",
 		"REDIS_HOST",

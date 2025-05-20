@@ -1,10 +1,9 @@
-*
-!app
-!docker
+/*
+!frontend
+!i2pgate
 !k8s
-!resources
-!scripts
-!www
+!torgate
+!yggdrasil
 !.github
 !docker-compose.yaml
 !LICENSE

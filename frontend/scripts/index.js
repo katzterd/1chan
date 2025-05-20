@@ -26,7 +26,7 @@ watchSmilies()
 const app = fastify()
 // Подключение плагина Socket.IO
 app.register(import('#inc/broadcast.js'))
-if (process.env?.TG_ENABLE) {
+if (process.env?.TG_ENABLE == true) {
 	// Подключение плагина Telegram
 	app.register(import('#inc/telegram.js'))
 }

@@ -29,21 +29,13 @@ jobs:
         with:
           files_yaml: |
             onechan:
-              - 'app/**'
-              - 'resources/**'
-              - 'scripts/**'
-              - 'www/**'
-              - 'docker/1chan.Dockerfile'
-              - 'docker/config/1chan/*'
+              - 'frontend/**'
             torgate:
-              - 'docker/torgate.Dockerfile'
-              - 'docker/config/torgate/*'
+              - 'torgate/**'
             i2pgate:
-              - 'docker/i2pgate.Dockerfile'
-              - 'docker/config/i2pgate/*'
+              - 'i2pgate/**'
             yggdrasilgate:
-              - 'docker/yggdrasil.Dockerfile'
-              - 'docker/config/yggdrasil/*'
+              - 'yggdrasil/**'
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -59,8 +51,8 @@ jobs:
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.onechan_any_changed == 'true'
         with:
-          context: .
-          file: docker/1chan.Dockerfile
+          context: frontend/.
+          file: frontend/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.ONECHAN_IMAGE_NAME }}:latest
@@ -72,8 +64,8 @@ jobs:
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.torgate_any_changed == 'true'
         with:
-          context: .
-          file: docker/torgate.Dockerfile
+          context: torgate/.
+          file: torgate/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.TORGATE_IMAGE_NAME }}:latest
@@ -85,8 +77,8 @@ jobs:
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.i2pgate_any_changed == 'true'
         with:
-          context: .
-          file: docker/i2pgate.Dockerfile
+          context: i2pgate/.
+          file: i2pgate/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.I2PGATE_IMAGE_NAME }}:latest
@@ -98,8 +90,8 @@ jobs:
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.yggdrasilgate_any_changed == 'true'
         with:
-          context: .
-          file: docker/yggdrasil.Dockerfile
+          context: yggdrasil/.
+          file: yggdrasil/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.YGGDRASILGATE_IMAGE_NAME }}:latest

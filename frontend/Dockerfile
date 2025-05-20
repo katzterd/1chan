@@ -48,7 +48,7 @@ RUN mkdir -p /var/lib/sphinxsearch
 
 WORKDIR /src
 
-ADD ./docker/config/1chan             /
+ADD ./config                          /
 ADD ./scripts                         ./scripts
 COPY --from=builder /npm/node_modules ./scripts/node_modules
 ADD ./resources                       ./resources
@@ -64,4 +64,4 @@ VOLUME /var/lib/sphinxsearch
 
 EXPOSE 80
 
-ENTRYPOINT [ "/bin/bash", "-c", "/docker-entrypoint.sh" ]
+ENTRYPOINT [ "bash", "/docker-entrypoint.sh" ]

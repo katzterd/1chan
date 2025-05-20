@@ -103,7 +103,7 @@ class EventModel
 	 * Отправка поста в telegram канал:
 	 */
 	public function TelegramPost($data) {
-		if (TG_ENABLE) {
+		if (TG_ENABLE == true) {
 			$this -> CURLmessage('/publish/', $data);
 		}
 		return $this;
@@ -114,7 +114,7 @@ class EventModel
 	 */
 	public function TelegramApprove($data) {
 		list($id, $rated) = $data;
-		if (TG_ENABLE && TG_CHANNEL_APPROVED && $rated) {
+		if (TG_ENABLE == true && TG_CHANNEL_APPROVED && $rated) {
 			$payload = [
 				"id" => $id,
 				"approve" => true

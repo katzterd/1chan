@@ -25,8 +25,8 @@ WORKDIR /ygg
 RUN curl -L -o ./peers_updater.zip https://github.com/ygguser/peers_updater/releases/download/0.3.4/x86_64-unknown-linux-gnu.zip
 RUN unzip ./peers_updater.zip && rm ./peers_updater.zip
 
-ADD ./docker/config/yggdrasil/docker-entrypoint.sh    /docker-entrypoint.sh
-ADD ./docker/config/yggdrasil/supervisord.conf        ./supervisord.conf
-ADD ./docker/config/yggdrasil/yggdrasil.conf          ./yggdrasil.conf
+ADD ./docker-entrypoint.sh    /docker-entrypoint.sh
+ADD ./supervisord.conf        ./supervisord.conf
+ADD ./yggdrasil.conf          ./yggdrasil.conf
 
-ENTRYPOINT /docker-entrypoint.sh $(echo $ARGS)
+ENTRYPOINT [ "bash", "/docker-entrypoint.sh" ]

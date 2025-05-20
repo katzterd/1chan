@@ -16,9 +16,7 @@ services:
       - 1chan
 
   onechan:
-    build:
-      context: .
-      dockerfile: ./docker/1chan.Dockerfile
+    build: ./frontend
     container_name: onechan
     restart: always
     env_file:
@@ -57,9 +55,7 @@ services:
       - redis
 
   torgate:
-    build:
-      context: .
-      dockerfile: ./docker/torgate.Dockerfile
+    build: ./torgate
     container_name: torgate
     depends_on:
       onechan:
@@ -71,9 +67,7 @@ services:
       - 1chan
         
   i2pgate:
-    build:
-      context: .
-      dockerfile: ./docker/i2pgate.Dockerfile
+    build: ./i2pgate
     container_name: i2pgate
     depends_on:
       onechan:
@@ -85,9 +79,7 @@ services:
       - 1chan
         
   yggdrasil:
-    build:
-      context: .
-      dockerfile: ./docker/yggdrasil.Dockerfile
+    build: ./yggdrasil
     container_name: yggdrasil
     depends_on:
       onechan:

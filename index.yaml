@@ -3,6 +3,21 @@ entries:
   1chan:
   - apiVersion: v2
     appVersion: 2.0.0
+    created: "2025-09-13T22:16:00.992437543Z"
+    description: 1chan k8s helm chart.
+    digest: b3a7fb4aeffd2863ee0e5a4be26ffdde6e82ecd574e93d7b7d0d0d585d677f27
+    home: https://github.com/katzterd/1chan
+    icon: https://raw.githubusercontent.com/katzterd/1chan/master/www/img/ogol.png
+    name: 1chan
+    sources:
+    - https://github.com/katzterd/1chan
+    - https://github.com/katzterd/1chan/tree/main/k8s/helm
+    type: application
+    urls:
+    - https://github.com/katzterd/1chan/releases/download/1chan-1.2.2/1chan-1.2.2.tgz
+    version: 1.2.2
+  - apiVersion: v2
+    appVersion: 2.0.0
     created: "2025-09-13T18:58:25.767700468Z"
     description: 1chan k8s helm chart.
     digest: 59ab7c6bfb913dba9e766acc9d26b68c2ffabb1eb655595f566113a113d49604
@@ -181,4 +196,4 @@ entries:
     urls:
     - https://github.com/katzterd/1chan/releases/download/1chan-0.1.0/1chan-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-13T18:58:25.767775298Z"
+generated: "2025-09-13T22:16:00.992542599Z"

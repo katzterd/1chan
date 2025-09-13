@@ -289,12 +289,6 @@ app:
         secretKeyRef:
           key: SERVER_STATUS_TIMEOUT
           name: "{{ .Values.secret }}"
-    - name: TORGATE_HOSTNAME
-      valueFrom:
-        secretKeyRef:
-          key: TORGATE_HOSTNAME
-          name: "{{ .Values.secret }}"
-          optional: true
 
 db:
   ## Additional pod Labels for db

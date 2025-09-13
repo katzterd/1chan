@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  APP_IMAGE_NAME: 1chan
+  APP_IMAGE_NAME: app
   TORGATE_IMAGE_NAME: torgate
   I2PGATE_IMAGE_NAME: i2pgate
   YGGDRASILGATE_IMAGE_NAME: yggdrasilgate

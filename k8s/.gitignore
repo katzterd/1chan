@@ -1,9 +1,6 @@
-*
-!examples
-!helm
-!README.md
-!.cr.yaml
-!encrypted_secrets.yaml
-!pub-sealed-secrets.pem
-!.env-dist
-!.gitignore
+/*
+!/helm
+!/README.md
+!/.cr.yaml
+!/.env-dist
+!/.gitignore

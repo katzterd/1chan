@@ -54,14 +54,14 @@ spec:
             {{- end }}
         {{- end }}
         volumeMounts:
-        - name: {{ .Release.Name }}-db-pv
+        - name: {{ .Release.Name }}-db-pvc
           mountPath: /var/lib/mysql
           subPath: mariadb_data
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
-      name: {{ .Release.Name }}-db-pv
+      name: {{ .Release.Name }}-db-pvc
     spec:
       accessModes: [ {{ .Values.db.persistentVolume.storageClass.accessMode }} ]
       resources:

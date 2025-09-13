@@ -6,61 +6,53 @@ on:
       - master
 
 env:
-  ONECHAN_IMAGE_NAME: 1chan
+  APP_IMAGE_NAME: 1chan
   TORGATE_IMAGE_NAME: torgate
   I2PGATE_IMAGE_NAME: i2pgate
-  YGGDRASILGATE_IMAGE_NAME: yggdrasil
+  YGGDRASILGATE_IMAGE_NAME: yggdrasilgate
 
 jobs:
-
   buildDocker:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
       packages: write
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      -
-        name: Filter
+      - name: Filter
         uses: tj-actions/changed-files@v46.0.5
         id: filter
         with:
           files_yaml: |
-            onechan:
+            app:
               - 'frontend/**'
             torgate:
               - 'torgate/**'
             i2pgate:
               - 'i2pgate/**'
             yggdrasilgate:
-              - 'yggdrasil/**'
-      -
-        name: Set up QEMU
+              - 'yggdrasilgate/**'
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Log in to registry
+      - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      -
-        name: Build 1chan
+      - name: Build 1chan
         uses: docker/build-push-action@v5
-        if: steps.filter.outputs.onechan_any_changed == 'true'
+        if: steps.filter.outputs.app_any_changed == 'true'
         with:
           context: frontend/.
           file: frontend/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}/${{ env.ONECHAN_IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ github.repository }}/${{ env.APP_IMAGE_NAME }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      -
-        name: Build torgate
+      - name: Build torgate
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.torgate_any_changed == 'true'
         with:
@@ -72,8 +64,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      -
-        name: Build i2pgate
+      - name: Build i2pgate
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.i2pgate_any_changed == 'true'
         with:
@@ -85,13 +76,12 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      -
-        name: Build yggdrasilgate
+      - name: Build yggdrasilgate
         uses: docker/build-push-action@v5
         if: steps.filter.outputs.yggdrasilgate_any_changed == 'true'
         with:
-          context: yggdrasil/.
-          file: yggdrasil/Dockerfile
+          context: yggdrasilgate/.
+          file: yggdrasilgate/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}/${{ env.YGGDRASILGATE_IMAGE_NAME }}:latest

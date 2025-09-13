@@ -1,0 +1,126 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      name: app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        name: app
+        {{- with .Values.app.podLabels }}
+        {{ toYaml . }}
+        {{- end }}
+      {{- with .Values.app.podAnnotations }}
+      annotations:
+        {{ toYaml . }}
+      {{- end }}
+    spec:
+      hostname: app
+      restartPolicy: Always
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{ toYaml .Values.imagePullSecrets }}
+      {{- end }}
+      initContainers:
+      - name: wait-db-and-redis
+        image: alpine/curl
+        imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        - -c
+        - |
+          until curl http://db:3306 2>&1 | grep -q "1" && \
+            curl http://cache:6379 2>&1 | grep -q "52"; do 
+            sleep 1
+          done
+      containers:
+      - name: app
+        image: {{ .Values.Registry }}/app:{{ .Values.app.image.tag }}
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        - containerPort: 81
+          protocol: TCP
+        {{- $secretName := .Values.secret | default "1chan-secret" }}
+        {{- with .Values.app.env }}
+        env:
+          {{- range . }}
+          - name: {{ .name }}
+            {{- if .value }}
+            value: {{ .value | quote }}
+            {{- else if .valueFrom }}
+            valueFrom:
+              {{- $valueFrom := .valueFrom }}
+              {{- if kindIs "string" $valueFrom.secretKeyRef.name }}
+              secretKeyRef:
+                key: {{ $valueFrom.secretKeyRef.key }}
+                name: {{ $secretName | quote }}
+              {{- else }}
+                {{- toYaml $valueFrom }}
+              {{- end }}
+            {{- end }}
+            {{- end }}
+        {{- end }}
+        volumeMounts:
+        - name: app-www-pv
+          mountPath: /src/www/img/smilies
+          subPath: www-smilies
+        - name: app-www-pv
+          mountPath: /src/www/ico/homeboards
+          subPath: www-homeboards
+        - name: app-www-pv
+          mountPath: /src/www/uploads
+          subPath: www-uploads
+        - name: app-www-pv
+          mountPath: /var/lib/sphinxsearch
+          subPath: sphinxsearch_data
+      volumes:
+      - name: app-www-pv
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-app-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    name: app
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: onion
+    protocol: TCP
+    port: 81
+    targetPort: 81
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-app-pvc
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes: [ {{ .Values.app.persistentVolume.storageClass.accessMode }} ]
+  storageClassName: {{ .Values.app.persistentVolume.storageClass.name | default "" }}
+  resources:
+    requests:
+      storage: "{{ .Values.app.persistentVolume.size }}"
+  volumeMode: Filesystem

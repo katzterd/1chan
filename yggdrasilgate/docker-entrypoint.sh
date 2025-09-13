@@ -19,7 +19,7 @@ if [[ -z $@ ]]; then
 printf "Updating peers...\n\n"
 ./peers_updater -c ./yggdrasil.conf -n 5 -u
 
-printf "yggdrasilgate started: onechan:80\n\n"
+printf "yggdrasilgate started\n\n"
 
 supervisord -c ./supervisord.conf
 

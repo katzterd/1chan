@@ -1,4 +1,5 @@
 # 1chan Helm Chart
+
 ![CI](https://img.shields.io/github/actions/workflow/status/katzterd/1chan/helm-build.yml?label=Chart&logo=helm&style=for-the-badge)
 
 ## Get Repository
@@ -17,33 +18,48 @@ helm install <my-release> (--set <key1=val1,key2=val2,...>) 1chan/1chan -n <name
 ## Uninstall chart
 
 ```console
-helm -n <namespace> delete <my-release>
+helm delete -n <namespace> <my-release>
 ```
 
-## Configuration
+## Configurable options
 
-| Parameter                                  | Description                                   | Default Value                                           |
-|--------------------------------------------|-----------------------------------------------|---------------------------------------------------------|
-| `svc.torgate.enable`                       | "true" to enable torgate                      | None (Disabled)                                         |
-| `svc.i2pgate.enable`                       | "true" to enable i2pgate                      | None (Disabled)                                         |
-| `svc.yggdrasilgate.enable`                 | "true" to enable yggdrasilgate                | None (Disabled)                                         |
-| `registry`                                 | Override Container registry                   | `ghcr.io/katzterd/1chan`                                |
-| `secretsName`                              | Override secrets name                         | `1chan-secrets`                                         |
-| `storageClass.name`                        | Override storage class name                   | `1chan-sc`                                              |
-| `dbSpace`                                  | Size of database free space (in Gi)           | `10Gi`                                                  |
-| `wwwSpace`                                 | Size of storage free space (in Gi)            | `25Gi`                                                  |
-| `redisSpace`                               | Size of redis free space (in Gi)              | `5Gi`                                                   |
-| `imagePullSecretName`                      | For pulling from private registry             | None                                                    |
-
+| Parameter                                  | Description                              | Default Value                 |
+| ------------------------------------------ | ---------------------------------------- | ----------------------------- |
+| `torgate.enable`                           | "true" to enable torgate                 | None (disabled)               |
+| `i2pgate.enable`                           | "true" to enable i2pgate                 | None (disabled)               |
+| `yggdrasilgate.enable`                     | "true" to enable yggdrasilgate           | None (disabled)               |
+| `registry`                                 | Override Container registry              | `ghcr.io/katzterd/1chan`      |
+| `secret`                                   | Override secrets name                    | `1chan-secret`                |
+| `app.persistentVolume.storageClass.name`   | Override storageClass name for app       | None (default)                |
+| `db.persistentVolume.storageClass.name`    | Override storageClass name for database  | None (default)                |
+| `cache.persistentVolume.storageClass.name` | Override storageClass name for cache     | None (default)                |
+| `app.persistentVolume.size`                | Size of app free space (in Gi)           | `15Gi`                        |
+| `db.persistentVolume.size`                 | Size of database free space (in Gi)      | `10Gi`                        |
+| `cache.persistentVolume.size`              | Size of cache free space (in Gi)         | `5Gi`                         |
+| `imagePullSecrets`                         | For pulling from private registry        | None (Array, see values.yaml) |
+| `app.podAnnotations`                       | Custom Annotations for app pod           | None                          |
+| `db.podAnnotations`                        | Custom Annotations for db pod            | None                          |
+| `cache.podAnnotations`                     | Custom Annotations for cache pod         | None                          |
+| `torgate.podAnnotations`                   | Custom Annotations for torgate pod       | None                          |
+| `i2pgate.podAnnotations`                   | Custom Annotations for i2pgate pod       | None                          |
+| `yggdrasilgate.podAnnotations`             | Custom Annotations for yggdrasilgate pod | None                          |
+| `app.podLabels`                            | Custom Labels for app pod                | None                          |
+| `db.podLabels`                             | Custom Labels for db pod                 | None                          |
+| `cache.podLabels`                          | Custom Labels for cache pod              | None                          |
+| `torgate.podLabels`                        | Custom Labels for torgate pod            | None                          |
+| `i2pgate.podLabels`                        | Custom Labels for i2pgate pod            | None                          |
+| `yggdrasilgate.podLabels`                  | Custom Labels for yggdrasilgate pod      | None                          |
 
 ### Pulling from private registry
+
 ```console
-kubectl -n <namespace> create secret generic <imagePullSecretName> \ 
+kubectl create -n <namespace> secret generic <imagePullSecretName> \
     --from-file=.dockerconfigjson=/path/to/.docker/config.json \
     --type=kubernetes.io/dockerconfigjson
 ```
 
 ## Get yggdrasil node address (if enabled)
+
 ```console
-kubectl -n <namespace> exec -t deployments/yggdrasil -- /docker-entrypoint.sh getaddr
+kubectl exec -n <namespace> -t deployments/yggdrasilgate -- /docker-entrypoint.sh getaddr
 ```

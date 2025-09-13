@@ -24,6 +24,6 @@ else
 fi
 
 chmod -R 600 /var/lib/tor/hidden_service
-echo "Torgate started: ${TORGATE_HOSTNAME} -> onechan:81"
+echo "Torgate started: ${TORGATE_HOSTNAME} -> app:81"
 
 supervisord -c ./supervisord.conf

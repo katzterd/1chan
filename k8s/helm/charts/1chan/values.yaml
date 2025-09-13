@@ -1,59 +1,426 @@
-defaultSecretsName: 1chan-secrets
-defaultRegistry: ghcr.io/katzterd/1chan
-    
-storageClass:
-  defaultName: "1chan-sc"
-  accessMode: "ReadWriteOnce"
-  pods:
-    db:
-      defaultRequestSpace: 10Gi
-    www:
-      defaultRequestSpace: 25Gi
-    redis:
-      defaultRequestSpace: 5Gi
+Registry: ghcr.io/katzterd/1chan
 
-restartPolicy: Always
+imagePullSecrets: []
+# - name: "image-pull-secret"
 
-svc:
-  onechan:
-    name: onechan
-    image:
-      name: 1chan
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  torgate:
-    name: torgate
-    image:
-      name: torgate
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  i2pgate:
-    name: i2pgate
-    image:
-      name: i2pgate
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  yggdrasilgate:
-    name: yggdrasilgate
-    image:
-      name: yggdrasil
-      tag: latest
-      pullPolicy: Always
-      replicas: 1
-  db:
-    name: db
-    image:
-      name: mariadb
-      tag: "11.6"
-      pullPolicy: IfNotPresent
-      replicas: 1
-  redis:
-    name: redis
-    image:
-      name: redis
-      tag: 7-alpine
-      pullPolicy: IfNotPresent
-      replicas: 1
+## Main secret name
+secret: ""
+
+## Application configuration
+
+app:
+  ## Additional pod Labels for app
+  podLabels: {}
+
+  ## podAnnotations for app
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  persistentVolume:
+    storageClass:
+      accessMode: "ReadWriteOnce"
+    size: 15Gi
+
+  env:
+    - name: MARIADB_HOST
+      value: db
+    - name: MARIADB_PORT
+      value: "3306"
+    - name: SRV_HOST
+      value: "127.0.0.1"
+    - name: SRV_PORT
+      value: "9393"
+    - name: SRV_LOCAL_HOST
+      value: "127.0.0.1"
+    - name: REDIS_HOST
+      value: cache
+    - name: REDIS_PORT
+      value: "6379"
+    - name: SPHINX_HOST
+      value: "127.0.0.1"
+    - name: SPHINX_PORT
+      value: "3312"
+    - name: SPHINX_DATA_DIR
+      value: "/var/lib/sphinxsearch"
+    - name: SPHINX_BIN_DIR
+      value: "/usr/bin"
+    - name: INDEXER_MEM_LIMIT
+      value: "64M"
+    - name: INDEXER_MAX_IOPS
+      value: "40"
+    - name: SEARCHD_START
+      value: "true"
+    - name: SEARCHD_LOG_FILE
+      value: "searchd.log"
+    - name: SEARCHD_READ_TIMEOUT
+      value: "5"
+    - name: SEARCHD_MAX_CHILDREN
+      value: "30"
+    - name: SEARCHD_PID_FILE
+      value: "searchd.pid"
+    - name: CSS_VERSION
+      valueFrom:
+        secretKeyRef:
+          key: CSS_VERSION
+          name: "{{ .Values.secret }}"
+    - name: JS_VERSION
+      valueFrom:
+        secretKeyRef:
+          key: JS_VERSION
+          name: "{{ .Values.secret }}"
+    - name: ICONS_VERSION
+      valueFrom:
+        secretKeyRef:
+          key: ICONS_VERSION
+          name: "{{ .Values.secret }}"
+    - name: ADMIN_LOGIN
+      valueFrom:
+        secretKeyRef:
+          key: ADMIN_LOGIN
+          name: "{{ .Values.secret }}"
+    - name: ADMIN_PASSWD
+      valueFrom:
+        secretKeyRef:
+          key: ADMIN_PASSWD
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_DATABASE
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_DATABASE
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_USER
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_USER
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_PASSWORD
+          name: "{{ .Values.secret }}"
+    - name: MD5_SALT
+      valueFrom:
+        secretKeyRef:
+          key: MD5_SALT
+          name: "{{ .Values.secret }}"
+    - name: CHANNEL_SALT
+      valueFrom:
+        secretKeyRef:
+          key: CHANNEL_SALT
+          name: "{{ .Values.secret }}"
+    - name: SIO_TOKEN
+      valueFrom:
+        secretKeyRef:
+          key: SIO_TOKEN
+          name: "{{ .Values.secret }}"
+    - name: WEB_DOMAIN
+      valueFrom:
+        secretKeyRef:
+          key: WEB_DOMAIN
+          name: "{{ .Values.secret }}"
+    - name: DEFAULT_TIMEZONE
+      valueFrom:
+        secretKeyRef:
+          key: DEFAULT_TIMEZONE
+          name: "{{ .Values.secret }}"
+    - name: COLOR_THEMES
+      valueFrom:
+        secretKeyRef:
+          key: COLOR_THEMES
+          name: "{{ .Values.secret }}"
+    - name: COMMON_ROOM_CONTROLWORD
+      valueFrom:
+        secretKeyRef:
+          key: COMMON_ROOM_CONTROLWORD
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_HOSTNAME
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_HOSTNAME
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: ENABLE_POO
+      valueFrom:
+        secretKeyRef:
+          key: ENABLE_POO
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: POO_EXPIRY_TIME
+      valueFrom:
+        secretKeyRef:
+          key: POO_EXPIRY_TIME
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: RATE_BUTTON_ORDER
+      valueFrom:
+        secretKeyRef:
+          key: RATE_BUTTON_ORDER
+          name: "{{ .Values.secret }}"
+    - name: TG_ENABLE
+      valueFrom:
+        secretKeyRef:
+          key: TG_ENABLE
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: TG_BOT_TOKEN
+      valueFrom:
+        secretKeyRef:
+          key: TG_BOT_TOKEN
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: TG_CHANNEL_ALL
+      valueFrom:
+        secretKeyRef:
+          key: TG_CHANNEL_ALL
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: TG_CHANNEL_APPROVED
+      valueFrom:
+        secretKeyRef:
+          key: TG_CHANNEL_APPROVED
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: TG_FORWARDING_ENABLE
+      valueFrom:
+        secretKeyRef:
+          key: TG_FORWARDING_ENABLE
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: TG_FORWARDING_COOLDOWN
+      valueFrom:
+        secretKeyRef:
+          key: TG_FORWARDING_COOLDOWN
+          name: "{{ .Values.secret }}"
+          optional: true
+    - name: HOME_FAVICON
+      valueFrom:
+        secretKeyRef:
+          key: HOME_FAVICON
+          name: "{{ .Values.secret }}"
+    - name: COPYRIGHT_MSG
+      valueFrom:
+        secretKeyRef:
+          key: COPYRIGHT_MSG
+          name: "{{ .Values.secret }}"
+    - name: FAVORITES_ICON
+      valueFrom:
+        secretKeyRef:
+          key: FAVORITES_ICON
+          name: "{{ .Values.secret }}"
+    - name: APPROVED_ICON
+      valueFrom:
+        secretKeyRef:
+          key: APPROVED_ICON
+          name: "{{ .Values.secret }}"
+    - name: ALL_ICON
+      valueFrom:
+        secretKeyRef:
+          key: ALL_ICON
+          name: "{{ .Values.secret }}"
+    - name: META_DESCRIPTION
+      valueFrom:
+        secretKeyRef:
+          key: META_DESCRIPTION
+          name: "{{ .Values.secret }}"
+    - name: META_KEYWORDS
+      valueFrom:
+        secretKeyRef:
+          key: META_KEYWORDS
+          name: "{{ .Values.secret }}"
+    - name: TITLE_MIN_LENGTH
+      valueFrom:
+        secretKeyRef:
+          key: TITLE_MIN_LENGTH
+          name: "{{ .Values.secret }}"
+    - name: TITLE_MAX_LENGTH
+      valueFrom:
+        secretKeyRef:
+          key: TITLE_MAX_LENGTH
+          name: "{{ .Values.secret }}"
+    - name: TEXT_MIN_LENGTH
+      valueFrom:
+        secretKeyRef:
+          key: TEXT_MIN_LENGTH
+          name: "{{ .Values.secret }}"
+    - name: TEXT_MAX_LENGTH
+      valueFrom:
+        secretKeyRef:
+          key: TEXT_MAX_LENGTH
+          name: "{{ .Values.secret }}"
+    - name: FULL_MAX_LENGTH
+      valueFrom:
+        secretKeyRef:
+          key: FULL_MAX_LENGTH
+          name: "{{ .Values.secret }}"
+    - name: RSS_MANAGING_EDITOR
+      valueFrom:
+        secretKeyRef:
+          key: RSS_MANAGING_EDITOR
+          name: "{{ .Values.secret }}"
+    - name: RSS_CHANNEL_DESCRIPTION
+      valueFrom:
+        secretKeyRef:
+          key: RSS_CHANNEL_DESCRIPTION
+          name: "{{ .Values.secret }}"
+    - name: INDEXER_SCHEDULE
+      valueFrom:
+        secretKeyRef:
+          key: INDEXER_SCHEDULE
+          name: "{{ .Values.secret }}"
+    - name: SERVER_STATUS_SCHEDULE
+      valueFrom:
+        secretKeyRef:
+          key: SERVER_STATUS_SCHEDULE
+          name: "{{ .Values.secret }}"
+    - name: SERVER_STATUS_PROXY
+      valueFrom:
+        secretKeyRef:
+          key: SERVER_STATUS_PROXY
+          name: "{{ .Values.secret }}"
+    - name: SERVER_STATUS_TIMEOUT
+      valueFrom:
+        secretKeyRef:
+          key: SERVER_STATUS_TIMEOUT
+          name: "{{ .Values.secret }}"
+
+db:
+  ## Additional pod Labels for db
+  podLabels: {}
+
+  ## podAnnotations for db
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: "11.6"
+    pullPolicy: IfNotPresent
+
+  persistentVolume:
+    storageClass:
+      accessMode: "ReadWriteOnce"
+    size: 10Gi
+
+  env:
+    - name: MARIADB_RANDOM_ROOT_PASSWORD
+      value: "1"
+    - name: MARIADB_DATABASE
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_DATABASE
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_USER
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_USER
+          name: "{{ .Values.secret }}"
+    - name: MARIADB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: MARIADB_PASSWORD
+          name: "{{ .Values.secret }}"
+
+cache:
+  ## Additional pod Labels for cache
+  podLabels: {}
+
+  ## podAnnotations for cache
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: 7-alpine
+    pullPolicy: IfNotPresent
+
+  persistentVolume:
+    storageClass:
+      accessMode: "ReadWriteOnce"
+    size: 5Gi
+
+torgate:
+  ## Additional pod Labels for torgate
+  podLabels: {}
+
+  ## podAnnotations for torgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: TORGATE_HOSTNAME
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_HOSTNAME
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_PUBLIC_KEY
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_PUBLIC_KEY
+          name: "{{ .Values.secret }}"
+    - name: TORGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: TORGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"
+
+i2pgate:
+  ## Additional pod Labels for i2pgate
+  podLabels: {}
+
+  ## podAnnotations for i2pgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: I2PGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: I2PGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"
+
+yggdrasilgate:
+  ## Additional pod Labels for yggdrasilgate
+  podLabels: {}
+
+  ## podAnnotations for yggdrasilgate
+  podAnnotations: {}
+
+  ## Pod Replicas
+  replicas: 1
+
+  ## Container image settings
+  image:
+    tag: latest
+    pullPolicy: Always
+
+  env:
+    - name: YGGDRASILGATE_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          key: YGGDRASILGATE_PRIVATE_KEY
+          name: "{{ .Values.secret }}"

@@ -1,23 +1,7 @@
-services: 
-
-  db:
-    image: mariadb:11.6
-    container_name: db
-    ports:
-      - "3306:3306"
-    env_file:
-      - .env
-    environment:
-      MARIADB_RANDOM_ROOT_PASSWORD: 1
-    restart: always
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    networks:
-      - 1chan
-
-  onechan:
+services:
+  app:
     build: ./frontend
-    container_name: onechan
+    container_name: app
     restart: always
     env_file:
       - .env
@@ -27,7 +11,7 @@ services:
       SRV_HOST: "127.0.0.1"
       SRV_PORT: "9393"
       SRV_LOCAL_HOST: "127.0.0.1"
-      REDIS_HOST: "redis"
+      REDIS_HOST: "cache"
       REDIS_PORT: "6379"
       SPHINX_HOST: "127.0.0.1"
       SPHINX_PORT: "3312"
@@ -52,37 +36,63 @@ services:
       - 1chan
     depends_on:
       - db
-      - redis
+      - cache
+
+  db:
+    image: mariadb:11.6
+    container_name: db
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+    restart: always
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - 1chan
+
+  cache:
+    image: redis:7-alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - cache_data:/data
+    networks:
+      - 1chan
 
   torgate:
     build: ./torgate
     container_name: torgate
     depends_on:
-      onechan:
+      app:
         condition: service_started
         restart: false
     env_file:
       - .env
     networks:
       - 1chan
-        
+
   i2pgate:
     build: ./i2pgate
     container_name: i2pgate
     depends_on:
-      onechan:
+      app:
         condition: service_started
         restart: false
     env_file:
       - .env
     networks:
       - 1chan
-        
-  yggdrasil:
-    build: ./yggdrasil
-    container_name: yggdrasil
+
+  yggdrasilgate:
+    build: ./yggdrasilgate
+    container_name: yggdrasilgate
     depends_on:
-      onechan:
+      app:
         condition: service_started
         restart: false
     env_file:
@@ -96,20 +106,9 @@ services:
     sysctls:
       - "net.ipv6.conf.all.disable_ipv6=0"
 
-  redis:
-    image: redis:7-alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-    restart: always
-    volumes:
-      - redis_data:/data
-    networks:
-      - 1chan
-
 volumes:
   mariadb_data:
-  redis_data:
+  cache_data:
   www-smilies:
   www-homeboards:
   www-uploads:

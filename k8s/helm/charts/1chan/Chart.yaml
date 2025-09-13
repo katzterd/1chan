@@ -1,6 +1,6 @@
 apiVersion: v2
 name: 1chan
-version: 1.2.1
+version: 1.2.2
 appVersion: "2.0.0"
 description: 1chan k8s helm chart.
 home: https://github.com/katzterd/1chan

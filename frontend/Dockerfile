@@ -49,6 +49,7 @@ RUN mkdir -p /var/lib/sphinxsearch
 WORKDIR /src
 
 ADD ./config                          /
+ADD ./static                          ./static
 ADD ./scripts                         ./scripts
 COPY --from=builder /npm/node_modules ./scripts/node_modules
 ADD ./resources                       ./resources
